@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "144747506237",
+    "project_id": "seg2105projectfirebase",
+    "storage_bucket": "seg2105projectfirebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144747506237:android:0d1d7004f3962369f41854",
+        "android_client_info": {
+          "package_name": "com.example.doctorregistration"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKQS1u4XY1HiwEIgQJCQW4EE0XW5qXjF4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144747506237:android:8678d3de5a08f934f41854",
+        "android_client_info": {
+          "package_name": "com.example.segproject4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKQS1u4XY1HiwEIgQJCQW4EE0XW5qXjF4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
