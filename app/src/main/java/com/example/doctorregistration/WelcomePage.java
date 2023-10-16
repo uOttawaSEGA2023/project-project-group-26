@@ -19,8 +19,7 @@ public class WelcomePage extends AppCompatActivity {
         buttonForRegister = findViewById(R.id.buttonForRegister);
         buttonForRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                openDummyActivity1();
+            public void onClick(View view) { openRegisterPage();
             }
         });
         buttonForLogin = findViewById(R.id.buttonForLogin);
@@ -32,8 +31,8 @@ public class WelcomePage extends AppCompatActivity {
         });
 
     }
-    public void openDummyActivity1(){
-        Intent intent = new Intent(this,DummyActivity1.class);
+    public void openRegisterPage(){
+        Intent intent = new Intent(this,RegisterPage.class);
         startActivity(intent);
     }
     public void openLogin(){
