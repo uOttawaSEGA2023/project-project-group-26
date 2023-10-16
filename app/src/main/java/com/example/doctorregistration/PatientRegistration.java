@@ -63,8 +63,7 @@ public class PatientRegistration extends AppCompatActivity {
 
     private EditText etFirstName, etLastName, etEmail, etPhoneNumber, etStreetAddress, etCountry, etPostalCode, etCity, etPassword, etHealthCardNum;
     private Button btnRegister;
-
-    TextView tvBack;
+    private TextView tvBack;
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -93,10 +92,27 @@ public class PatientRegistration extends AppCompatActivity {
         etCity = findViewById(R.id.city);
         etHealthCardNum = findViewById(R.id.healthCardNum);
 
-        //tvBack = findViewById(R.id.textViewBack);
+        //Text View initialization
+        tvBack = findViewById(R.id.textViewBack);
 
         //Declaring all buttons
         btnRegister = findViewById(R.id.submitButton);
+
+
+        /*
+         *
+         * This method executes when TextView Back is clicked
+         * Sends the back to registration or login selection page  ********************
+         *
+         */
+        tvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Register.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
         /*

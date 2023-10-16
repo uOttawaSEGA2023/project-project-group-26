@@ -26,6 +26,7 @@
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:layout_marginEnd="4dp"
+               android:layout_marginBottom="1464dp"
                android:orientation="vertical"
                app:layout_constraintBottom_toBottomOf="parent"
                app:layout_constraintEnd_toEndOf="parent"
@@ -326,6 +327,20 @@
                    android:layout_marginBottom="12dp"
                    android:text="Submit"
                    android:textSize="18sp" />
+
+               <TextView
+                   android:id="@+id/textViewBack"
+                   android:layout_width="74dp"
+                   android:layout_height="wrap_content"
+                   android:layout_marginEnd="8dp"
+                   android:layout_marginBottom="16dp"
+                   android:layout_marginLeft="46dp"
+                   android:text="Back"
+                   android:textSize="20sp"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="1.0"
+                   app:layout_constraintStart_toEndOf="@+id/submitButton" />
 
 
            </LinearLayout>
