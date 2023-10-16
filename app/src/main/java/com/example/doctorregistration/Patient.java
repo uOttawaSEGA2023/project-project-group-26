@@ -23,8 +23,8 @@ public class Patient extends User{
      * @param address the object Address which holds variables street, postal code, city, and country
      */
 
-    public Patient(String firstName, String lastName, String email, int healthCardNum, int phoneNum, Address address, String password){
-        super(firstName, lastName, email, phoneNum, password, address);
+    public Patient(String firstName, String lastName, String email, int healthCardNum, int phoneNumber, Address address, String password){
+        super(firstName, lastName, email, phoneNumber, password, address);
         this.healthCardNum = healthCardNum;
 
         /*

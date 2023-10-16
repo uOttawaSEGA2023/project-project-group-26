@@ -16,10 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -36,13 +34,13 @@ import java.util.Map;
 public class DoctorRegistration extends AppCompatActivity {
 
     public static final String TAG = "TAG";
-    EditText etFirstName, etLastName, etEmail, etPassword, etPhoneNumber, etStreetAddress, etPostalCode, etCountry, etCity, etEmployeeNumber;
-    Button btnRegister;
-    CheckBox cbPediatrics, cbFamilyMedicine, cbDermatology, cbObgyn, cbCardiology, cbNeurology, cbOrthopedic, cbOphthalmology;
-    TextView tvSpecialtyText, tvBack;
-    FirebaseAuth fAuth;
-    FirebaseFirestore fStore;
-    String userID;
+    private EditText etFirstName, etLastName, etEmail, etPassword, etPhoneNumber, etStreetAddress, etPostalCode, etCountry, etCity, etEmployeeNumber;
+    private Button btnRegister;
+    private CheckBox cbPediatrics, cbFamilyMedicine, cbDermatology, cbObgyn, cbCardiology, cbNeurology, cbOrthopedic, cbOphthalmology;
+    private TextView tvSpecialtyText, tvBack;
+    private FirebaseAuth fAuth;
+    private FirebaseFirestore fStore;
+    private String userID;
 
 
     @Override
@@ -93,7 +91,7 @@ public class DoctorRegistration extends AppCompatActivity {
         tvBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), WelcomePage.class);
+                Intent intent = new Intent(getApplicationContext(), Register.class);
                 startActivity(intent);
                 finish();
             }
@@ -280,6 +278,7 @@ public class DoctorRegistration extends AppCompatActivity {
 
                                 Map<String, Object> user = new HashMap<>();
                                 user.put("Doctor", doctorUser);       //Stores Doctor user information if Firestore database
+                                user.put("userType", "Doctor");
 
                                 documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -290,7 +289,6 @@ public class DoctorRegistration extends AppCompatActivity {
 
                                 Intent intent = new Intent(getApplicationContext(), Login.class);
                                 startActivity(intent);
-                                finish();
                             }
                             else
                                 task.getException(); //Check Logcat if task is unsuccessful or app crashes for error message

@@ -22,10 +22,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".DoctorRegistration"/>
+        <activity android:name=".PatientRegistration"/>
         <activity android:name=".DoctorLogout"/>
         <activity android:name=".AdminLogout"/>
         <activity android:name=".PatientLogout"/>
-        <activity android:name=".RegisterPage"/>
+        <activity android:name=".Register"/>
         <activity android:name=".Login"/>
      
     </application>

@@ -19,9 +19,10 @@ public class WelcomePage extends AppCompatActivity {
         buttonForRegister = findViewById(R.id.buttonForRegister);
         buttonForRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { openRegisterPage();
+            public void onClick(View view) { openRegister();
             }
         });
+
         buttonForLogin = findViewById(R.id.buttonForLogin);
         buttonForLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,8 +32,8 @@ public class WelcomePage extends AppCompatActivity {
         });
 
     }
-    public void openRegisterPage(){
-        Intent intent = new Intent(getApplicationContext(),RegisterPage.class);
+    public void openRegister(){
+        Intent intent = new Intent(getApplicationContext(), Register.class);
         startActivity(intent);
     }
     public void openLogin(){

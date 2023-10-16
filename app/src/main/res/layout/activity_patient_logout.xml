@@ -27,7 +27,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Patient Logs!"
+        android:text="Welcome Patient"
         android:textColor="#CFCFCF"
         android:textSize="100px"
         android:textStyle="bold"

@@ -25,7 +25,7 @@ public class DoctorLogout extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(DoctorLogout.this, AdminLogout.class)); //Switch from one page to the other
+                startActivity(new Intent(getApplicationContext(), WelcomePage.class)); //Switch from one page to the other
     }
 });
     }}
