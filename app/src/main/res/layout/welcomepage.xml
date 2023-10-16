@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:background="@drawable/background1"
     android:gravity="center"
-    tools:context=".MainActivity"
+    tools:context=".WelcomePage"
     tools:ignore="ExtraText">
 
     <View
