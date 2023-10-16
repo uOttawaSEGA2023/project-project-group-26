@@ -31,7 +31,7 @@ public class RegisterPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //       switch DummyActivity2 with the activity you want the button to bring you to (Patient Register Page)
-                openDummyActivity2();
+                openPatientRegistration();
             }
         });
     }
@@ -40,9 +40,9 @@ public class RegisterPage extends AppCompatActivity {
         Intent intent = new Intent(this,DoctorRegistration.class);
         startActivity(intent);
     }
-    public void openDummyActivity2(){
+    public void openPatientRegistration(){
         //        switch DummyActivty2 here again with the name of the activity you want opened (Patient)
-        Intent intent = new Intent(this,DummyActivity2.class);
+        Intent intent = new Intent(this,PatientRegistration.class);
         startActivity(intent);
     }
 
