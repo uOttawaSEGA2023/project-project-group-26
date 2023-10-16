@@ -93,9 +93,9 @@ public class DoctorRegistration extends AppCompatActivity {
         tvBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getApplicationContext(), RegisterOrLogin.class);
-                //startActivity(intent);
-                //finish();
+                Intent intent = new Intent(getApplicationContext(), WelcomePage.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -288,9 +288,9 @@ public class DoctorRegistration extends AppCompatActivity {
                                     }
                                 });
 
-                                //Intent intent = new Intent(getApplicationContext(), Login.class);
-                                //startActivity(intent);
-                                //finish();
+                                Intent intent = new Intent(getApplicationContext(), Login.class);
+                                startActivity(intent);
+                                finish();
                             }
                             else
                                 task.getException(); //Check Logcat if task is unsuccessful or app crashes for error message
