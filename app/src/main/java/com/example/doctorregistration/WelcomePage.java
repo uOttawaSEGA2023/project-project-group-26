@@ -32,11 +32,11 @@ public class WelcomePage extends AppCompatActivity {
 
     }
     public void openRegisterPage(){
-        Intent intent = new Intent(this,RegisterPage.class);
+        Intent intent = new Intent(getApplicationContext(),RegisterPage.class);
         startActivity(intent);
     }
     public void openLogin(){
-        Intent intent = new Intent(this, com.example.login.Login.class);
+        Intent intent = new Intent(getApplicationContext(), Login.class);
         startActivity(intent);
     }
 }

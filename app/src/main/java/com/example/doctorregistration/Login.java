@@ -1,4 +1,4 @@
-package com.example.login;
+package com.example.doctorregistration;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +37,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getApplicationContext(), DoctorResgistration.class, PatientRegistration.class);
+                //Intent intent = new Intent(getApplicationContext(), DoctorRegistration.class, PatientRegistration.class);
 
                 if (editEmailAddress.getText().toString().equals("admin@telewelness.ca") && editPassword.getText().toString().equals("1234")){
                     Toast.makeText(Login.this, "Logged in successfully. Redirecting to new page.", Toast.LENGTH_SHORT).show();
@@ -67,7 +67,7 @@ public class Login extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Login.this, "Logged in successfully. Redirecting to new page.", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), DoctorLogOut.class, PatientLogOut.class, AdminLogOut.class);
+                                    Intent intent = new Intent(getApplicationContext(), DoctorLogout.class);//, PatientLogout.class, AdminLogout.class);
                                     startActivity(intent);
                                     finish();
                                 } else {

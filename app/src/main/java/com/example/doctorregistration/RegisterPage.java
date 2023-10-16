@@ -42,8 +42,8 @@ public class RegisterPage extends AppCompatActivity {
     }
     public void openDummyActivity2(){
         //        switch DummyActivty2 here again with the name of the activity you want opened (Patient)
-        Intent intent = new Intent(this,DummyActivity2.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this,DummyActivity2.class);
+        //startActivity(intent);
     }
 
 }

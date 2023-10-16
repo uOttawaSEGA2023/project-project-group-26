@@ -9,7 +9,7 @@ import android.content.Intent;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class AdminLogOut extends AppCompatActivity {
+public class AdminLogout extends AppCompatActivity {
 
     private Button logout;
     FirebaseAuth adminLogoutAuth;
@@ -26,7 +26,7 @@ public class AdminLogOut extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 adminLogoutAuth.getInstance().signOut();
-                startActivity(new Intent(AdminLogOut.this, PatientLogout.class)); //Switch from one page to the other
+                startActivity(new Intent(AdminLogout.this, PatientLogout.class)); //Switch from one page to the other
             }
         });
 
