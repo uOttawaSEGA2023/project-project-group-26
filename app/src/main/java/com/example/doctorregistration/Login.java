@@ -1,4 +1,4 @@
-package com.example.login;
+package com.example.doctorregistration;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

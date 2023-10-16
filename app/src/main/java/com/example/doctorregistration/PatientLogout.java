@@ -24,7 +24,7 @@ public class PatientLogout extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(PatientLogout.this, DoctorLogout.class));
+                startActivity(new Intent(PatientLogout.this, Login.class));
     }
 });
     }}

@@ -26,7 +26,7 @@ public class AdminLogOut extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 adminLogoutAuth.getInstance().signOut();
-                startActivity(new Intent(AdminLogOut.this, PatientLogout.class)); //Switch from one page to the other
+                startActivity(new Intent(AdminLogOut.this, Login.class)); //Switch from one page to the other
             }
         });
 
