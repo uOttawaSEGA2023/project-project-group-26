@@ -36,7 +36,7 @@ public class WelcomePage extends AppCompatActivity {
         startActivity(intent);
     }
     public void openLogin(){
-        Intent intent = new Intent(this, com.example.login.Login.class);
+        Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
 }
