@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Doctor Registration</string>
+    <string name="your_personal_medical_portal"><u>YOUR PERSONAL MEDICAL PORTAL</u></string>
+    <string name="welcome">WELCOME!</string>
+    <string name="register_here">Register Here</string>
+    <string name="log_in_here">Log-in Here</string>
 </resources>
