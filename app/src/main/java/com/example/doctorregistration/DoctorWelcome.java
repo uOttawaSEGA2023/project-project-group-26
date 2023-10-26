@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class DoctorLogout extends AppCompatActivity {
+public class DoctorWelcome extends AppCompatActivity {
     private Button logout;
     FirebaseAuth doctorLogoutAuth;
 
@@ -18,14 +18,14 @@ public class DoctorLogout extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doctor_logout);
+        setContentView(R.layout.activity_doctor_welcome);
 
         logout = (Button) findViewById(R.id.signOut); // connecting logout variable to UI
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getApplicationContext(), WelcomePage.class)); //Switch from one page to the other
+                startActivity(new Intent(getApplicationContext(), MainWelcome.class)); //Switch from one page to the other
     }
 });
     }}

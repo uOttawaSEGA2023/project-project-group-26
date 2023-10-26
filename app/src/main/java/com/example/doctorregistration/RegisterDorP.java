@@ -7,21 +7,20 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Register extends AppCompatActivity {
+public class RegisterDorP extends AppCompatActivity {
     private Button buttonfordoc;
     private Button buttonforpatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register_d_or_p);
 
         buttonfordoc = findViewById(R.id.buttonDoctor);
         buttonfordoc.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                //       switch DummyActivity1 with the activity you want the button to bring you to (Doctor Register Page)
                 openDoctorRegistration();
             }
         });

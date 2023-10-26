@@ -7,19 +7,20 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-public class WelcomePage extends AppCompatActivity {
+public class MainWelcome extends AppCompatActivity {
     private CardView buttonForRegister;
     private CardView buttonForLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcomepage);
+        setContentView(R.layout.activity_main_welcome);
 
         buttonForRegister = findViewById(R.id.buttonForRegister);
         buttonForRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { openRegister();
+            public void onClick(View view) {
+                openRegister();
             }
         });
 
@@ -33,7 +34,7 @@ public class WelcomePage extends AppCompatActivity {
 
     }
     public void openRegister(){
-        Intent intent = new Intent(getApplicationContext(), Register.class);
+        Intent intent = new Intent(getApplicationContext(), RegisterDorP.class);
         startActivity(intent);
     }
     public void openLogin(){

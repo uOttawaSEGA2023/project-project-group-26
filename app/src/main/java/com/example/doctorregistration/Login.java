@@ -18,10 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Login extends AppCompatActivity {
@@ -87,20 +84,29 @@ public class Login extends AppCompatActivity {
                             docRef.get().addOnSuccessListener(documentSnapshot -> {
                                 if (documentSnapshot.exists()) {
                                     String userType = documentSnapshot.getString("userType");
+                                    String accountStatus = documentSnapshot.getString("accountStatus");
 
                                     if (userType != null) {
                                         if (userType.equals("Doctor")) {
-                                            Intent intentDoctor = new Intent(Login.this, DoctorLogout.class);
-                                            startActivity(intentDoctor);
-                                            finish();
+                                            /*
+                                            if(accountStatusApproved(accountStatus) == true
+                                             */
+
+                                                Intent intentDoctor = new Intent(Login.this, DoctorWelcome.class);
+                                                startActivity(intentDoctor);
+                                                finish();
+
 
                                         } else if (userType.equals("Patient")) {
-                                            Intent intentPatient = new Intent(Login.this, PatientLogout.class);
+                                            /*
+                                            if(accountStatusApproved(accountStatus) == true
+                                             */
+                                            Intent intentPatient = new Intent(Login.this, PatientWelcome.class);
                                             startActivity(intentPatient);
                                             finish();
 
                                         } else {
-                                            Intent intentAdmin = new Intent(Login.this, AdminLogout.class);
+                                            Intent intentAdmin = new Intent(Login.this, AdminWelcome.class);
                                             startActivity(intentAdmin);
                                             finish();
                                         }
@@ -128,4 +134,28 @@ public class Login extends AppCompatActivity {
 
 
     }
+
+    private boolean accountStatusApproved(String accountStatus){
+        /*
+        If accountStatus.equals("approved")
+            //send email approved
+            return true
+
+
+        else if "pending"
+            Toast "pending"
+
+        else
+            //send email denied
+            Toast "denied"
+
+        return false
+         */
+       return false;
+    }
+
+
+
+
+
 }

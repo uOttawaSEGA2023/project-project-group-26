@@ -46,7 +46,7 @@ public class DoctorRegistration extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doctorregistration);
+        setContentView(R.layout.activity_doctor_registration);
 
         //Firebase related initialization
         fAuth = FirebaseAuth.getInstance();
@@ -91,7 +91,7 @@ public class DoctorRegistration extends AppCompatActivity {
         tvBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Register.class);
+                Intent intent = new Intent(getApplicationContext(), RegisterDorP.class);
                 startActivity(intent);
                 finish();
             }

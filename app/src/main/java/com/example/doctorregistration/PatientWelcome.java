@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class PatientLogout extends AppCompatActivity {
+public class PatientWelcome extends AppCompatActivity {
     private Button logout;
     FirebaseAuth patientLogoutAuth;
 
@@ -17,14 +17,14 @@ public class PatientLogout extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_logout);
+        setContentView(R.layout.activity_patient_welcome);
 
         logout = (Button) findViewById(R.id.signOut);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getApplicationContext(), WelcomePage.class));
+                startActivity(new Intent(getApplicationContext(), MainWelcome.class));
     }
 });
     }}
