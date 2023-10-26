@@ -14,12 +14,12 @@ public class Patient extends User{
     /**
      * Constructs user of type Patient
      *
-     * @param healthCardNum the employee number of the Doctor
-     * @param firstName the first name of the Doctor
-     * @param lastName the last name of the Doctor
-     * @param email the email/username of the Doctor
-     * @param password the password of the Doctor
-     * @param phoneNumber the phone number of the Doctor
+     * @param healthCardNum the employee number of the Patient
+     * @param firstName the first name of the Patient
+     * @param lastName the last name of the Patient
+     * @param email the email/username of the Patient
+     * @param password the password of the Patient
+     * @param phoneNumber the phone number of the Patient
      * @param address the object Address which holds variables street, postal code, city, and country
      */
 
