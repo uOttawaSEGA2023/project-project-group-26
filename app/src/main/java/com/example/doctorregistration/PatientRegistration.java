@@ -240,16 +240,31 @@ public class PatientRegistration extends AppCompatActivity {
                                 //Patient patientUser = (firstName,lastName,email,healthCardNum,phoneNum,address,password);
 
                                 userID = fAuth.getCurrentUser().getUid();
-                                DocumentReference documentReference = fStore.collection("user").document(userID);
+                                DocumentReference documentReferenceUser = fStore.collection("user").document(userID);
+                                DocumentReference documentReferencePending = fStore.collection("Pending Requests").document(userID);
 
                                 Map<String, Object> user = new HashMap<>();
                                 user.put("Patient", patientUser);       //Stores Patient user information in Firestore database
                                 user.put("userType", "Patient");
+                                user.put("accountStatus", "pending");
 
-                                documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                //Places user data into Firestore collection "Pending Requests"
+                                Map<String, Object> pendingRequests = new HashMap<>();
+                                pendingRequests.put("Patient", patientUser);
+                                pendingRequests.put("userType", "Patient");
+                                pendingRequests.put("accountStatus", "pending");
+
+                                documentReferenceUser.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Log.d(TAG, "User profile created " + userID);
+                                    }
+                                });
+
+                                documentReferencePending.set(pendingRequests).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d(TAG, "User profile created and account is pending" + userID);
                                     }
                                 });
 

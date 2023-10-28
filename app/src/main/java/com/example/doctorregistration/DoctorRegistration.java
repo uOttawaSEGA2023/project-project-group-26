@@ -274,21 +274,38 @@ public class DoctorRegistration extends AppCompatActivity {
                                         email, password, finalPhoneNumber, address);
 
                                 userID = fAuth.getCurrentUser().getUid();
-                                DocumentReference documentReference = fStore.collection("user").document(userID);
+                                DocumentReference documentReferenceUser = fStore.collection("user").document(userID);
+                                DocumentReference documentReferencePending = fStore.collection("Pending Requests").document(userID);
 
+                                //Places user data into Firestore collection "user"
                                 Map<String, Object> user = new HashMap<>();
                                 user.put("Doctor", doctorUser);       //Stores Doctor user information if Firestore database
                                 user.put("userType", "Doctor");
+                                user.put("accountStatus", "pending");
 
-                                documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                //Places user data into Firestore collection "Pending Requests"
+                                Map<String, Object> pendingRequests = new HashMap<>();
+                                pendingRequests.put("Doctor", doctorUser);
+                                pendingRequests.put("userType", "Doctor");
+                                pendingRequests.put("accountStatus", "pending");
+
+                                documentReferenceUser.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Log.d(TAG, "User profile created " + userID);
                                     }
                                 });
 
+                                documentReferencePending.set(pendingRequests).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d(TAG, "User profile created and account is pending" + userID);
+                                    }
+                                });
+
                                 Intent intent = new Intent(getApplicationContext(), Login.class);
                                 startActivity(intent);
+                                finish();
                             }
                             else
                                 task.getException(); //Check Logcat if task is unsuccessful or app crashes for error message
