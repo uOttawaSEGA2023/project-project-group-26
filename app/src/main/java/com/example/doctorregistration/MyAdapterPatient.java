@@ -25,7 +25,7 @@ import java.util.ArrayList;
         @NonNull
         @Override
         public com.example.doctorregistration.MyAdapterPatient.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(context).inflate(R.layout.pendinglistitem,parent,false);
+            View v = LayoutInflater.from(context).inflate(R.layout.pendinglistitemdoctor,parent,false);
             return new com.example.doctorregistration.MyAdapterPatient.MyViewHolder(v);
         }
 
