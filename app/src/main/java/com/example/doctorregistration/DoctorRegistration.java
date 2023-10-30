@@ -282,12 +282,15 @@ public class DoctorRegistration extends AppCompatActivity {
                                 user.put("Doctor", doctorUser);       //Stores Doctor user information if Firestore database
                                 user.put("userType", "Doctor");
                                 user.put("accountStatus", "pending");
+                                user.put("email", email);
 
                                 //Places user data into Firestore collection "Pending Requests"
                                 Map<String, Object> pendingRequests = new HashMap<>();
                                 pendingRequests.put("Doctor", doctorUser);
                                 pendingRequests.put("userType", "Doctor");
                                 pendingRequests.put("accountStatus", "pending");
+                                pendingRequests.put("email", email);
+
 
                                 documentReferenceUser.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override

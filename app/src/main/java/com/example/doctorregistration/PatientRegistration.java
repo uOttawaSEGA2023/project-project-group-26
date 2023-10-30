@@ -247,12 +247,14 @@ public class PatientRegistration extends AppCompatActivity {
                                 user.put("Patient", patientUser);       //Stores Patient user information in Firestore database
                                 user.put("userType", "Patient");
                                 user.put("accountStatus", "pending");
+                                user.put("email", email);
 
                                 //Places user data into Firestore collection "Pending Requests"
                                 Map<String, Object> pendingRequests = new HashMap<>();
                                 pendingRequests.put("Patient", patientUser);
                                 pendingRequests.put("userType", "Patient");
                                 pendingRequests.put("accountStatus", "pending");
+                                pendingRequests.put("email", email);
 
                                 documentReferenceUser.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
