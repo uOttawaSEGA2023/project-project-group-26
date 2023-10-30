@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
+public class MyAdapterDoctor extends RecyclerView.Adapter<MyAdapterDoctor.MyViewHolder>{
 
     Context context;
     ArrayList<Doctor> list;
 
-    public MyAdapter(Context context, ArrayList<Doctor> list) {
+    public MyAdapterDoctor(Context context, ArrayList<Doctor> list) {
         this.context = context;
         this.list = list;
     }
@@ -25,13 +25,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.pendinglistitem,parent,false);
+        View v = LayoutInflater.from(context).inflate(R.layout.pendinglistitemdoctor,parent,false);
         return new MyViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
+        //gets data from the user and sets it in specific text fields
         Doctor user = list.get(position);
         holder.firstName.setText(user.getFirstName());
         holder.lastName.setText(user.getLastName());
@@ -53,6 +54,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
     @Override
     public int getItemCount() {
+        //to know number of user in pending list
         return list.size();
     }
 
