@@ -30,7 +30,5 @@ public class AdminWelcome extends AppCompatActivity {
             }
         });
 
-
-
     }
 }

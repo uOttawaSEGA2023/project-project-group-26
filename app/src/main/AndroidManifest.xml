@@ -2,9 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,21 +15,24 @@
         android:theme="@style/Theme.DoctorRegistration"
         tools:targetApi="31">
         <activity
+            android:name=".AdminDeniedRequest"
+            android:exported="false" />
+        <activity
             android:name=".MainWelcome"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DoctorRegistration"/>
-        <activity android:name=".PatientRegistration"/>
-        <activity android:name=".DoctorWelcome"/>
-        <activity android:name=".AdminWelcome"/>
-        <activity android:name=".PatientWelcome"/>
-        <activity android:name=".RegisterDorP"/>
-        <activity android:name=".Login"/>
-     
+        <activity android:name=".DoctorRegistration" />
+        <activity android:name=".PatientRegistration" />
+        <activity android:name=".DoctorWelcome" />
+        <activity android:name=".AdminWelcome" />
+        <activity android:name=".PatientWelcome" />
+        <activity android:name=".RegisterDorP" />
+        <activity android:name=".Login" />
     </application>
 
 </manifest>
