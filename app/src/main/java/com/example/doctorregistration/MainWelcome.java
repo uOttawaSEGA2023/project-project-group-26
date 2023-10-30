@@ -34,10 +34,7 @@ public class MainWelcome extends AppCompatActivity {
 
     }
     public void openRegister(){
-        //Intent intent = new Intent(getApplicationContext(), RegisterDorP.class);
-        //startActivity(intent);
-
-        Intent intent = new Intent(getApplicationContext(), pendingListDoctor.class);
+        Intent intent = new Intent(getApplicationContext(), RegisterDorP.class);
         startActivity(intent);
     }
     public void openLogin(){
