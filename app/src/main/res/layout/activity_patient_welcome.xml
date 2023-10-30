@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background = "#365B6D"
-    tools:context="PatientLogout">
+    tools:context=".PatientWelcome">
 
     <ImageView
         android:id="@+id/imageView"
@@ -27,7 +27,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Patient Logs!"
+        android:text="Welcome Patient"
         android:textColor="#CFCFCF"
         android:textSize="100px"
         android:textStyle="bold"

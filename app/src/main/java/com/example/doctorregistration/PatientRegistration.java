@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,61 +24,56 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  *
- * This activity is the Doctor registration page
- * Launches after user selects to register as a doctor
+ * This activity is the Patient registration page
+ * Launches after user selects to register as a Patient
  *
  */
-public class DoctorRegistration extends AppCompatActivity {
+import static android.app.ProgressDialog.show;
+
+
+public class PatientRegistration extends AppCompatActivity {
 
     public static final String TAG = "TAG";
-    private EditText etFirstName, etLastName, etEmail, etPassword, etPhoneNumber, etStreetAddress, etPostalCode, etCountry, etCity, etEmployeeNumber;
+
+    private EditText etFirstName, etLastName, etEmail, etPhoneNumber, etStreetAddress, etCountry, etPostalCode, etCity, etPassword, etHealthCardNum;
     private Button btnRegister;
-    private CheckBox cbPediatrics, cbFamilyMedicine, cbDermatology, cbObgyn, cbCardiology, cbNeurology, cbOrthopedic, cbOphthalmology;
-    private TextView tvSpecialtyText, tvBack;
-    private FirebaseAuth fAuth;
-    private FirebaseFirestore fStore;
-    private String userID;
+    private TextView tvBack;
+
+    FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
+    String userID;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doctor_registration);
+        setContentView(R.layout.activity_patient_registration);
 
         //Firebase related initialization
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-        //Edit text initialization
-        etFirstName = findViewById(R.id.editTextFirstName);
-        etLastName = findViewById(R.id.editTextLastName);
-        etEmail = findViewById(R.id.editTextEmail);
-        etPassword = findViewById(R.id.editTextPassword);
-        etPhoneNumber = findViewById(R.id.editTextPhoneNumber);
-        etStreetAddress = findViewById(R.id.editTextStreetAddress);
-        etPostalCode = findViewById(R.id.editTextPostalCode);
-        etCountry = findViewById(R.id.editTextCountry);
-        etCity = findViewById(R.id.editTextCity);
-        etEmployeeNumber = findViewById(R.id.editTextEmployeeNumber);
+
+        //Declaring all edit text boxes
+        etFirstName = findViewById(R.id.firstName);
+        etLastName = findViewById(R.id.lastName);
+        etEmail = findViewById(R.id.email);
+        etPassword = findViewById(R.id.passwordfinal);
+        etPhoneNumber = findViewById(R.id.phoneNumber);
+        etStreetAddress = findViewById(R.id.streetAddress);
+        etPostalCode = findViewById(R.id.postalCode);
+        etCountry = findViewById(R.id.country);
+        etCity = findViewById(R.id.city);
+        etHealthCardNum = findViewById(R.id.healthCardNum);
 
         //Text View initialization
-        tvSpecialtyText = findViewById(R.id.textViewSpecialtyText);
         tvBack = findViewById(R.id.textViewBack);
 
-        //Check Box initialization
-        cbPediatrics = findViewById(R.id.checkBoxPediatrics);
-        cbFamilyMedicine = findViewById(R.id.checkBoxFamilyMedicine);
-        cbDermatology = findViewById(R.id.checkBoxDermatology);
-        cbObgyn = findViewById(R.id.checkBoxOBGYN);
-        cbCardiology = findViewById(R.id.checkBoxCardiology);
-        cbNeurology = findViewById(R.id.checkBoxNeurology);
-        cbOrthopedic = findViewById(R.id.checkBoxOrthopedic);
-        cbOphthalmology = findViewById(R.id.checkBoxOphthalmology);
-
-        //Button initialization
-        btnRegister = findViewById(R.id.buttonRegister);
+        //Declaring all buttons
+        btnRegister = findViewById(R.id.submitButton);
 
 
         /*
@@ -105,6 +99,7 @@ public class DoctorRegistration extends AppCompatActivity {
          * If successful, sends user to Login page to enter created credentials
          *
          */
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             /**
              * @param view The Register button that was clicked.
@@ -121,17 +116,21 @@ public class DoctorRegistration extends AppCompatActivity {
                 String postalCode = etPostalCode.getText().toString();
                 String country = etCountry.getText().toString();
                 String city = etCity.getText().toString();
-                String employeeNumberString = etEmployeeNumber.getText().toString();
+                String healthCardNumberString = etHealthCardNum.getText().toString();
 
-                Validate v = new Validate(employeeNumberString, phoneNumberString, email);
+
+                Validate v = new Validate(healthCardNumberString, phoneNumberString, email);
 
                 /*
                  *********** All EditText Filled Validation ************
                  *
                  * This block validates if all Edit Text fields are complete
                  */
+
+                //******** Checks if all fields are filled *********
                 boolean allFieldsFilled = true;
                 ArrayList<EditText> etFieldsList = new ArrayList<>(); //Creates ArrayList of Edit Texts
+
 
                 etFieldsList.add(etFirstName);
                 etFieldsList.add(etLastName);
@@ -142,7 +141,7 @@ public class DoctorRegistration extends AppCompatActivity {
                 etFieldsList.add(etPostalCode);
                 etFieldsList.add(etCountry);
                 etFieldsList.add(etCity);
-                etFieldsList.add(etEmployeeNumber);
+                etFieldsList.add(etHealthCardNum);
 
                 allFieldsFilled = v.allTextFieldsFilled(etFieldsList);
 
@@ -152,20 +151,19 @@ public class DoctorRegistration extends AppCompatActivity {
                  *
                  * This block checks if Employee number contains only numbers
                  */
-                boolean validEmployeeNumber = false;
-                int employeeNumber = 0;
+                boolean validHealthCardNumber = false;
+                int healthCardNumber = 0;
 
-                //If the email is not valid format and field is not blank -> Invalid email error
-                //If email is blank -> Blank field error dominates
-                if (!v.isFieldBlank(etEmployeeNumber)) {
-                    if (!v.isStringToIntValid(employeeNumberString))
-                        etEmployeeNumber.setError("Invalid employee number");
+                //If the healthCardNum is not valid format and field is not blank -> Invalid healthCardNum error
+                //If HealthCardNum is blank -> Blank field error dominates
+                if (!v.isFieldBlank(etHealthCardNum)) {
+                    if (!v.isStringToIntValid(healthCardNumberString))
+                        etHealthCardNum.setError("Invalid health card number");
                     else {
-                        employeeNumber = Integer.parseInt(employeeNumberString);  //Converts string to int
-                        validEmployeeNumber = true;
+                        healthCardNumber = Integer.parseInt(healthCardNumberString);  //Converts string to int
+                        validHealthCardNumber = true;
                     }
                 }
-
 
                 /*
                  *********** Phone Number Validation ****************
@@ -215,32 +213,6 @@ public class DoctorRegistration extends AppCompatActivity {
                         etEmail.setError("Invalid email (ie. john.doe@domain.com)");
                 }
 
-
-                /*
-                 *********** Minimum CheckBox Checked Validation *******
-                 *
-                 * This block checks if at least one Doctor specialty checkbox is checked
-                 * Doctors can have one or more specialties
-                 */
-                boolean minCheckBox = false;
-                ArrayList<CheckBox> specialtyList = new ArrayList<>();
-
-                specialtyList.add(cbPediatrics);
-                specialtyList.add(cbFamilyMedicine);
-                specialtyList.add(cbDermatology);
-                specialtyList.add(cbObgyn);
-                specialtyList.add(cbCardiology);
-                specialtyList.add(cbNeurology);
-                specialtyList.add(cbOrthopedic);
-                specialtyList.add(cbOphthalmology);
-
-                //checks if at least one check box is checked
-                minCheckBox = v.minCheckBoxChecked(specialtyList);
-
-                if (!minCheckBox)
-                    tvSpecialtyText.setError("Please select a specialty");
-
-
                 /*
                  ********** Registration Attempt ***********
                  *
@@ -251,42 +223,35 @@ public class DoctorRegistration extends AppCompatActivity {
                  * All Doctor variables (parameters in Doctor constructor) is store in the Firestore database
                  *
                  */
-                int finalEmployeeNumber = employeeNumber;
+
+                int finalHealthCardNumber = healthCardNumber;
                 int finalPhoneNumber = phoneNumber;
 
-                if (allFieldsFilled && validEmployeeNumber && validEmail && validPhoneNumber && minCheckBox && validPassword) {
+                if (allFieldsFilled && validHealthCardNumber && validEmail && validPhoneNumber && validPassword) {
 
                     fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(DoctorRegistration.this, "Registration Successful.", Toast.LENGTH_SHORT).show();
-
-                                ArrayList<String> doctorSpecialtyList = new ArrayList<>(); //create ArrayList of Doctor user specialties
-                                for (CheckBox cb : specialtyList) {
-                                    if (cb.isChecked())
-                                        doctorSpecialtyList.add(cb.getText().toString()); //copies all checked boxes from previously defined specialty ArrayList
-
-                                }
-
-                                Address address = new Address(street, postalCode, city, country);   //create Doctor user address
-                                Doctor doctorUser = new Doctor(finalEmployeeNumber, doctorSpecialtyList, firstName, lastName, //create Doctor user
-                                        email, password, finalPhoneNumber, address);
+                                Toast.makeText(getApplicationContext(), "Registration Successful.", Toast.LENGTH_SHORT).show();
+                                //create Patient user address
+                                Address address = new Address(street, postalCode, city, country);
+                                Patient patientUser = new Patient(firstName, lastName, email, finalHealthCardNumber, finalPhoneNumber, address, password);
+                                //Patient patientUser = (firstName,lastName,email,healthCardNum,phoneNum,address,password);
 
                                 userID = fAuth.getCurrentUser().getUid();
                                 DocumentReference documentReferenceUser = fStore.collection("user").document(userID);
                                 DocumentReference documentReferencePending = fStore.collection("Pending Requests").document(userID);
 
-                                //Places user data into Firestore collection "user"
                                 Map<String, Object> user = new HashMap<>();
-                                user.put("Doctor", doctorUser);       //Stores Doctor user information if Firestore database
-                                user.put("userType", "Doctor");
+                                user.put("Patient", patientUser);       //Stores Patient user information in Firestore database
+                                user.put("userType", "Patient");
                                 user.put("accountStatus", "pending");
 
                                 //Places user data into Firestore collection "Pending Requests"
                                 Map<String, Object> pendingRequests = new HashMap<>();
-                                pendingRequests.put("Doctor", doctorUser);
-                                pendingRequests.put("userType", "Doctor");
+                                pendingRequests.put("Patient", patientUser);
+                                pendingRequests.put("userType", "Patient");
                                 pendingRequests.put("accountStatus", "pending");
 
                                 documentReferenceUser.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -306,19 +271,22 @@ public class DoctorRegistration extends AppCompatActivity {
                                 Intent intent = new Intent(getApplicationContext(), Login.class);
                                 startActivity(intent);
                                 finish();
-                            }
-                            else
+
+                            } else
                                 task.getException(); //Check Logcat if task is unsuccessful or app crashes for error message
                         }
                     });
 
                 } else
-                    Toast.makeText(DoctorRegistration.this, "Registration Unsuccessful.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Registration Unsuccessful.", Toast.LENGTH_SHORT).show();
 
             }
-
         });
 
     }
-
 }
+
+
+
+
+
