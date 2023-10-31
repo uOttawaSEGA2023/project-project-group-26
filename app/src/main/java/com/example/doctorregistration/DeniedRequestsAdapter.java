@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -44,7 +45,23 @@ public class DeniedRequestsAdapter extends RecyclerView.Adapter<DeniedRequestsAd
         final DeniedRequestItem item = deniedRequestsList.get(position);
 
         // Bind data to views
-        holder.userNameId.setText(item.getUserId());
+        String userIdWithPrefix = "ID: " + item.getUserId();
+        holder.userNameId.setText(userIdWithPrefix);
+        String firstNameWithPrefix = "First Name: " + item.getFirstName();
+        holder.userFirstName.setText(firstNameWithPrefix);
+        String lastNameWithPrefix = "Last Name: " + item.getLastName();
+        holder.userLastName.setText(lastNameWithPrefix);
+        // Retrieve the address map
+        Map<String, String> addressMap = item.getAddress();
+        if (addressMap != null) {
+            // Access subfields from the "address" map
+            String street = (String) addressMap.get("street");
+            String city = (String) addressMap.get("city");
+            String country = (String) addressMap.get("country");
+            String postalCode = (String) addressMap.get("postalCode");
+        String fullAddressWithPrefix = "Address: " + street +"," + city + "," + country + "," + postalCode;
+        holder.userAddress.setText(fullAddressWithPrefix);}
+
 
         // Change Status Button Click Event
         holder.changeStatusButton.setOnClickListener(new View.OnClickListener() {
@@ -67,12 +84,18 @@ public class DeniedRequestsAdapter extends RecyclerView.Adapter<DeniedRequestsAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView userNameId;
+        private TextView userFirstName;
+        private TextView userLastName;
+        private TextView userAddress;
         private Button changeStatusButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
             userNameId = itemView.findViewById(R.id.userNameId);
             changeStatusButton = itemView.findViewById(R.id.changeStatusButton);
+            userFirstName = itemView.findViewById(R.id.userFirstName);
+            userLastName = itemView.findViewById(R.id.userLastName);
+            userAddress = itemView.findViewById(R.id.userAddress);
         }
     }
 

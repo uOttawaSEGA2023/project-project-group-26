@@ -15,6 +15,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -74,10 +75,19 @@ public class AdminDeniedRequest extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                             // Create DeniedRequestItem objects from the retrieved data
                             String userId = document.getId(); // Assuming user ID is the document ID
-                            DeniedRequestItem deniedRequestItem = new DeniedRequestItem(userId, "denied");
+                            String firstName = document.getString("firstName");
+                            String lastName = document.getString("lastName");
+                            Map<String, String> addressMap = (Map<String, String>) document.get("address");
+                            if (addressMap != null) {
+                                String city = addressMap.get("city");
+                                String country = addressMap.get("country");
+                                String postalCode = addressMap.get("postalCode");
+                                String street = addressMap.get("street");
+                                DeniedRequestItem deniedRequestItem = new DeniedRequestItem(userId, "denied", firstName, lastName, city, country, postalCode, street, addressMap);
 
-                            // Add the item to the deniedRequestsList
-                            deniedRequestsList.add(deniedRequestItem);
+                                // Add the item to the deniedRequestsList
+                                deniedRequestsList.add(deniedRequestItem);
+                            }
                         }
 
                         // Notify the adapter that the data has changed
