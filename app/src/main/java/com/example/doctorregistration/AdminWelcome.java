@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class AdminWelcome extends AppCompatActivity {
 
     private Button logout;
+    private Button deniedRequests;
     FirebaseAuth adminLogoutAuth;
 
 
@@ -30,5 +31,19 @@ public class AdminWelcome extends AppCompatActivity {
             }
         });
 
+        deniedRequests = findViewById(R.id.buttonDeniedRequests);
+        deniedRequests.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                openDeniedRequests();
+            }
+        });
+
+    }
+
+    public void openDeniedRequests() {
+        Intent intent = new Intent(getApplicationContext(), AdminDeniedRequest.class);
+        startActivity(intent);
     }
 }
