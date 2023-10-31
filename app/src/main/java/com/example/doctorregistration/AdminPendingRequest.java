@@ -15,6 +15,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -23,17 +24,17 @@ import java.util.List;
  * including initializing the RecyclerView and the adapter.
  *
  */
-public class AdminDeniedRequest extends AppCompatActivity {
+public class AdminPendingRequest extends AppCompatActivity {
 
     private Button buttonbacktoAWP;
     private RecyclerView recyclerView;
-    private DeniedRequestsAdapter adapter;
-    private List<DeniedRequestItem> deniedRequestsList;
+    private PendingRequestsAdapter adapter;
+    private List<PendingRequestItem> pendingRequestsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_denied_request);
+        setContentView(R.layout.activity_admin_pending_request);
 
         buttonbacktoAWP = findViewById(R.id.backtoAWP);
         buttonbacktoAWP.setOnClickListener(new View.OnClickListener() {
@@ -46,14 +47,14 @@ public class AdminDeniedRequest extends AppCompatActivity {
         // Initialize RecyclerView and data
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        deniedRequestsList = new ArrayList<>();
+        pendingRequestsList = new ArrayList<>();
 
         // Initialize and set the adapter
-        adapter = new DeniedRequestsAdapter(deniedRequestsList);
+        adapter = new PendingRequestsAdapter(pendingRequestsList);
         recyclerView.setAdapter(adapter);
 
         // Populate the deniedRequestsList with data from Firebase Firestore
-        fetchDeniedRequestsFromFirestore();
+        fetchPendingRequestsFromFirestore();
     }
 
     public void openAdminWelcome() {
@@ -61,29 +62,39 @@ public class AdminDeniedRequest extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void fetchDeniedRequestsFromFirestore() {
+    private void fetchPendingRequestsFromFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Query Firestore for denied requests collection
-        db.collection("Denied Requests")
-                .whereEqualTo("accountStatus", "denied") // Filter based on your criteria
+        // Query Firestore for pending requests collection
+        db.collection("Pending Requests")
+                .whereEqualTo("accountStatus", "Pending") // Filter based on your criteria
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            // Create DeniedRequestItem objects from the retrieved data
+                            // Create PendingRequestItem objects from the retrieved data
                             String userId = document.getId(); // Assuming user ID is the document ID
-                            DeniedRequestItem deniedRequestItem = new DeniedRequestItem(userId, "denied");
+                            String firstName = document.getString("firstName");
+                            String lastName = document.getString("lastName");
+                            Map<String, String> addressMap = (Map<String, String>) document.get("address");
+                            if (addressMap != null) {
+                                String city = addressMap.get("city");
+                                String country = addressMap.get("country");
+                                String postalCode = addressMap.get("postalCode");
+                                String street = addressMap.get("street");
+                                PendingRequestItem pendingRequestItem = new PendingRequestItem(userId, "pending", firstName, lastName, city, country, postalCode, street, addressMap);
 
-                            // Add the item to the deniedRequestsList
-                            deniedRequestsList.add(deniedRequestItem);
+                                // Add the item to the deniedRequestsList
+                                pendingRequestItem.add(pendingRequestItem);
+                            }
                         }
 
                         // Notify the adapter that the data has changed
                         adapter.notifyDataSetChanged();
                     }
                 });
+
     }
 }
 

@@ -32,7 +32,7 @@ import java.util.ArrayList;
         @NonNull
         @Override
         public MyAdapterPatient.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(context).inflate(R.layout.pendinglistitempatient,parent,false);
+            View v = LayoutInflater.from(context).inflate(R.layout.activity_item_pending_request,parent,false);
             return new MyViewHolder(v);
         }
 
