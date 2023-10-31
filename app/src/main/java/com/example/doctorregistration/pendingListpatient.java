@@ -15,7 +15,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class pendingListpatient extends AppCompatActivity {
 
@@ -32,18 +35,19 @@ public class pendingListpatient extends AppCompatActivity {
         setContentView(R.layout.activity_pending_list);
 
         recyclerView = findViewById(R.id.pendingList);
+        //find pending requests in database
         database = FirebaseDatabase.getInstance().getReference("Pending Requests");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         list = new ArrayList<>();
-        myAdapter = new MyAdapterPatient(this,list);
+        myAdapter = new MyAdapterPatient(this,list); // store pending  patients
         recyclerView.setAdapter(myAdapter);
 
         database.addValueEventListener(new ValueEventListener(){
 
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){    //for each patient object store details
                     Patient user = dataSnapshot.getValue(Patient.class);
                     list.add(user);
                 }

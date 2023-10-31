@@ -123,20 +123,13 @@ public class DeniedRequestsAdapter extends RecyclerView.Adapter<DeniedRequestsAd
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 // User moved successfully
+                                                // Update the "accountStatus" field
+                                                newUserRef.update("accountStatus", "approved");
                                             }
                                         });
                                     }
                                 });
                     }
-
-                    // Update the "accountStatus" field
-                    userRef.update("accountStatus", newStatus)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    // Update was successful
-                                }
-                            });
                 }
             }
         });
