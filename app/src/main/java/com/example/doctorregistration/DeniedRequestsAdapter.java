@@ -61,6 +61,12 @@ public class DeniedRequestsAdapter extends RecyclerView.Adapter<DeniedRequestsAd
             String postalCode = (String) addressMap.get("postalCode");
         String fullAddressWithPrefix = "Address: " + street +"," + city + "," + country + "," + postalCode;
         holder.userAddress.setText(fullAddressWithPrefix);}
+        String emailWithPrefix = "Email: " + item.getEmail();
+        holder.userEmail.setText(emailWithPrefix);
+        String phoneNumberWithPrefix = "Phone Number: " + item.getPhoneNumber();
+        holder.userPhoneNumber.setText(phoneNumberWithPrefix);
+        String userTypeWithPrefix = "Type: " + item.getUserType();
+        holder.userType.setText(userTypeWithPrefix);
 
 
         // Change Status Button Click Event
@@ -87,6 +93,9 @@ public class DeniedRequestsAdapter extends RecyclerView.Adapter<DeniedRequestsAd
         private TextView userFirstName;
         private TextView userLastName;
         private TextView userAddress;
+        private TextView userEmail;
+        private TextView userPhoneNumber;
+        private TextView userType;
         private Button changeStatusButton;
 
         public ViewHolder(View itemView) {
@@ -96,6 +105,9 @@ public class DeniedRequestsAdapter extends RecyclerView.Adapter<DeniedRequestsAd
             userFirstName = itemView.findViewById(R.id.userFirstName);
             userLastName = itemView.findViewById(R.id.userLastName);
             userAddress = itemView.findViewById(R.id.userAddress);
+            userEmail = itemView.findViewById(R.id.userEmail);
+            userPhoneNumber = itemView.findViewById(R.id.userPhoneNumber);
+            userType = itemView.findViewById(R.id.userType);
         }
     }
 

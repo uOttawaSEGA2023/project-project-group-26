@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#365B6D"
-    tools:context=".AdminDeniedRequest">
+    tools:context=".adminDeniedRequest">
 
     <Button
         android:id="@+id/backtoAWP"

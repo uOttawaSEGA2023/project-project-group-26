@@ -20,13 +20,19 @@ public class DeniedRequestItem {
     private String postalCode;
     private String street;
     private Map<String, String> address;
+    private String email;
+    private String phoneNumber;
+    private String userType;
 
-    public DeniedRequestItem(String userId, String status, String firstName, String lastName, String city, String country, String postalCode, String street, Map<String, String> address) {
+    public DeniedRequestItem(String userId, String status, String firstName, String lastName, String city, String country, String postalCode, String street, Map<String, String> address, String email, String phoneNumber, String userType) {
         this.userId = userId;
         this.status = status;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.userType = userType;
 
 
     }
@@ -45,4 +51,7 @@ public class DeniedRequestItem {
     public String getFirstName() { return firstName;}
     public String getLastName() {return lastName;}
     public Map<String, String> getAddress() {return address;}
+    public String getEmail() {return email;}
+    public String getPhoneNumber() {return phoneNumber;}
+    public String getUserType() {return userType;}
 }

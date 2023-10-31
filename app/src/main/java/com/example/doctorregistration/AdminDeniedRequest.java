@@ -77,13 +77,16 @@ public class AdminDeniedRequest extends AppCompatActivity {
                             String userId = document.getId(); // Assuming user ID is the document ID
                             String firstName = document.getString("firstName");
                             String lastName = document.getString("lastName");
+                            String email = document.getString("email");
+                            String phoneNumber = document.getString("phoneNUmber");
+                            String userType = document.getString("userType");
                             Map<String, String> addressMap = (Map<String, String>) document.get("address");
                             if (addressMap != null) {
                                 String city = addressMap.get("city");
                                 String country = addressMap.get("country");
                                 String postalCode = addressMap.get("postalCode");
                                 String street = addressMap.get("street");
-                                DeniedRequestItem deniedRequestItem = new DeniedRequestItem(userId, "denied", firstName, lastName, city, country, postalCode, street, addressMap);
+                                DeniedRequestItem deniedRequestItem = new DeniedRequestItem(userId, "denied", firstName, lastName, city, country, postalCode, street, addressMap, email, phoneNumber, userType);
 
                                 // Add the item to the deniedRequestsList
                                 deniedRequestsList.add(deniedRequestItem);

@@ -18,7 +18,7 @@
             android:name=".pendingListDoctor"
             android:exported="false" />
         <activity
-            android:name=".AdminDeniedRequest"
+            android:name=".adminDeniedRequest"
             android:exported="false" />
         <activity
             android:name=".MainWelcome"
