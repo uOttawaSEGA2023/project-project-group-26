@@ -8,6 +8,8 @@
     android:layout_margin="16dp">
 
 
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -266,8 +268,6 @@
             android:text="Reject" />
 
     </LinearLayout>
-
-   ]
 
 
 </androidx.cardview.widget.CardView>
