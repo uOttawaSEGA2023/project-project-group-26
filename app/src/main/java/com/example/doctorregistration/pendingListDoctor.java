@@ -28,7 +28,7 @@ public class pendingListDoctor extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pending_list);
+        setContentView(R.layout.activity_admin_pending_request);
 
         recyclerView = findViewById(R.id.pendingList);
 
