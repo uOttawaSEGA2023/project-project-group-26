@@ -24,7 +24,7 @@ import java.util.Map;
  * handling the "Change Status" button click, and updating Firestore accordingly.
  *
  */
-public class PendingRequestsAdapter extends RecyclerView.Adapter<PendingRequestsAdapter.ViewHolder> {
+public class PendingRequestsAdapter extends RecyclerView.Adapter<PendingRequestsAdapter.ViewHolder>{
     private List<PendingRequestItem> pendingRequestsList;
     private FirebaseFirestore db;
 
