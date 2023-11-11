@@ -27,6 +27,8 @@ public class Address {
         this.country = country;
     }
 
+    public Address(){}
+
     public String getStreet() {
         return street;
     }
@@ -51,6 +53,13 @@ public class Address {
     }
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String displayAddress(){
+        return("    \nCountry: " + country +
+                "   \nCity: " + city +
+                "   \nStreet: " + street +
+                "   \nPostal Code: " + postalCode);
     }
 
 }

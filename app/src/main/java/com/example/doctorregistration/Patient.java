@@ -23,23 +23,33 @@ public class Patient extends User{
      * @param address the object Address which holds variables street, postal code, city, and country
      */
 
-    public Patient(String firstName, String lastName, String email, int healthCardNum, int phoneNumber, Address address, String password){
-        super(firstName, lastName, email, phoneNumber, password, address);
-        this.healthCardNum = healthCardNum;
+    public Patient(String firstName, String lastName, String email, int healthCardNum,
+                   int phoneNumber, Address address, String password){
+        super(firstName, lastName, email, phoneNumber, password, healthCardNum, address);
 
         /*
          * Even though parent User constructor is called, each inherited variable must be set in child class
          * This is to ensure that all information is serialized and stored to the Firestore database
          */
+        setUserType("Patient");
         setFirstName(firstName);
         setLastName(lastName);
         setPassword(password);
         setPhoneNumber(phoneNumber);
         setAddress(address);
         setEmail(email);
+        setIdNumber(healthCardNum);
 
     }
 
-    public int getHealthCardNum(){return healthCardNum;}
-    public void setHealthCardNum(int healthCardNum){this.healthCardNum = healthCardNum;}
+    public Patient(){}
+
+    @Override
+    public String displayUserInformation() {
+        return ("Name: " + getLastName() + ", " + getFirstName() +
+                "\nEmail: " + getEmail() +
+                "\nPhone Number: " + getPhoneNumber() +
+                "\nAddress: " + getAddress().displayAddress() +
+                "\nHealth Card Number: " + getIdNumber());
+    }
 }

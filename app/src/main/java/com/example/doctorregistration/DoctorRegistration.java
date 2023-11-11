@@ -1,5 +1,7 @@
 package com.example.doctorregistration;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -251,69 +253,26 @@ public class DoctorRegistration extends AppCompatActivity {
                  * All Doctor variables (parameters in Doctor constructor) is store in the Firestore database
                  *
                  */
-                int finalEmployeeNumber = employeeNumber;
-                int finalPhoneNumber = phoneNumber;
+
 
                 if (allFieldsFilled && validEmployeeNumber && validEmail && validPhoneNumber && minCheckBox && validPassword) {
+                    Firebase firebase = new Firebase();
 
-                    fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(DoctorRegistration.this, "Registration Successful.", Toast.LENGTH_SHORT).show();
-
-                                ArrayList<String> doctorSpecialtyList = new ArrayList<>(); //create ArrayList of Doctor user specialties
-                                for (CheckBox cb : specialtyList) {
-                                    if (cb.isChecked())
-                                        doctorSpecialtyList.add(cb.getText().toString()); //copies all checked boxes from previously defined specialty ArrayList
-
+                    firebase.createNewUser(DoctorRegistration.this, "Doctor", employeeNumber, specialtyList,
+                            firstName, lastName, email, password, phoneNumber, country, city, street, postalCode,
+                            new Firebase.AuthenticationCallback() {
+                                @Override
+                                public void onSuccess(String userType) {
+                                    Intent intent = new Intent (DoctorRegistration.this, Login.class);
+                                    startActivity(intent);
+                                    finish();
                                 }
 
-                                Address address = new Address(street, postalCode, city, country);   //create Doctor user address
-                                Doctor doctorUser = new Doctor(finalEmployeeNumber, doctorSpecialtyList, firstName, lastName, //create Doctor user
-                                        email, password, finalPhoneNumber, address);
-
-                                userID = fAuth.getCurrentUser().getUid();
-                                DocumentReference documentReferenceUser = fStore.collection("user").document(userID);
-                                DocumentReference documentReferencePending = fStore.collection("Pending Requests").document(userID);
-
-                                //Places user data into Firestore collection "user"
-                                Map<String, Object> user = new HashMap<>();
-                                user.put("Doctor", doctorUser);       //Stores Doctor user information if Firestore database
-                                user.put("userType", "Doctor");
-                                user.put("accountStatus", "pending");
-                                user.put("email", email);
-
-                                //Places user data into Firestore collection "Pending Requests"
-                                Map<String, Object> pendingRequests = new HashMap<>();
-                                pendingRequests.put("Doctor", doctorUser);
-                                pendingRequests.put("userType", "Doctor");
-                                pendingRequests.put("accountStatus", "pending");
-                                pendingRequests.put("email", email);
-
-
-                                documentReferenceUser.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.d(TAG, "User profile created " + userID);
-                                    }
-                                });
-
-                                documentReferencePending.set(pendingRequests).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.d(TAG, "User profile created and account is pending" + userID);
-                                    }
-                                });
-
-                                Intent intent = new Intent(getApplicationContext(), Login.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                            else
-                                task.getException(); //Check Logcat if task is unsuccessful or app crashes for error message
-                        }
-                    });
+                                @Override
+                                public void onFailure(String message) {
+                                    Log.d(TAG, "ERROR when creating Doctor profile in firebase");
+                                }
+                            });
 
                 } else
                     Toast.makeText(DoctorRegistration.this, "Registration Unsuccessful.", Toast.LENGTH_SHORT).show();

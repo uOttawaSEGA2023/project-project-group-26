@@ -17,41 +17,36 @@
 
         <!-- User id TextView -->
         <TextView
-            android:id="@+id/userNameId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/userFirstName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/userLastName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/userAddress"
+            android:id="@+id/userIdNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
-        <!-- Change Status Button -->
-        <Button
-            android:id="@+id/changeStatusButton"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"></LinearLayout>
+
+        <TextView
+            android:id="@+id/userInformation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:backgroundTint="@color/white"
-            android:padding="8dp"
-            android:text="Change Status"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/buttonApprove"
+            android:layout_width="132dp"
+            android:layout_height="wrap_content"
+            android:text="Approve" />
+
+        <Button
+            android:id="@+id/buttonReject"
+            android:layout_height="wrap_content"
+            android:layout_width="132dp"
+            android:text="Reject" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,8 @@ public class User {
     protected int phoneNumber;
     protected String password;
     protected Address address;
+    protected String userType;
+    protected int idNumber;
 
     /**
      * Constructs a general user
@@ -27,14 +29,18 @@ public class User {
      * @param address the Address object of the user, contains specific
      *                information street, postal code, city, and country
      */
-    public User(String firstName, String lastName, String email, int phoneNumber, String password, Address address){
+    public User(String firstName, String lastName, String email, int phoneNumber, String password,
+                int idNumber, Address address){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.address = address;
+        this.idNumber = idNumber;
     }
+
+    public User(){}
 
     public String getFirstName() {
         return firstName;
@@ -54,6 +60,8 @@ public class User {
     public String getPassword() {
         return password;
     }
+    public String getUserType(){return userType;}
+    public int getIdNumber(){return idNumber;}
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -72,6 +80,12 @@ public class User {
     }
     public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    public void setUserType(String userType){this.userType = userType;}
+    public void setIdNumber(int idNumber){this.idNumber = idNumber;}
+
+    public String displayUserInformation(){
+        return "user info";
     }
 
 }

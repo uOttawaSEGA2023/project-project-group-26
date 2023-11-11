@@ -13,6 +13,7 @@ public class AdminWelcome extends AppCompatActivity {
 
     private Button logout;
     private Button deniedRequests;
+    private Button pendingRequests;
     FirebaseAuth adminLogoutAuth;
 
 
@@ -33,17 +34,22 @@ public class AdminWelcome extends AppCompatActivity {
 
         deniedRequests = findViewById(R.id.buttonDeniedRequests);
         deniedRequests.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                openDeniedRequests();
+                Intent intent = new Intent(getApplicationContext(), AdminDeniedRequest.class);
+                startActivity(intent);
             }
         });
 
+
+        pendingRequests = findViewById(R.id.buttonPendingRequests);
+        pendingRequests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AdminPendingRequest.class);
+                 startActivity(intent);
+            }
+        });
     }
 
-    public void openDeniedRequests() {
-        Intent intent = new Intent(getApplicationContext(), AdminDeniedRequest.class);
-        startActivity(intent);
-    }
 }

@@ -29,7 +29,6 @@ public class Login extends AppCompatActivity {
     Button loginButton;
 
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -56,8 +55,8 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                //FirebaseFirestore db = FirebaseFirestore.getInstance();
+               // FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
                 /*
                  *Admin Login Credentials
@@ -66,97 +65,50 @@ public class Login extends AppCompatActivity {
                  */
 
 
-                fAuth.signInWithEmailAndPassword(emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                Firebase firebase = new Firebase();
+                firebase.loginAuthentication(Login.this, emailAddress, password, new Firebase.AuthenticationCallback() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            //Toast.makeText(Login.this, "Logged in successfully. Redirecting to new page.", Toast.LENGTH_SHORT).show();
-
-                            String userId = fAuth.getCurrentUser().getUid(); //Obtains current users userID
-                            DocumentReference docRef = db.collection("user").document(userId); //Navigates to users data in Firestore
-
-                            docRef.get().addOnSuccessListener(documentSnapshot -> {
-                                if (documentSnapshot.exists()) {
-                                    String userType = documentSnapshot.getString("userType");
-                                    String accountStatus = documentSnapshot.getString("accountStatus");
-                                    String email = documentSnapshot.getString("email");
-
-                                    if (userType != null) {
-                                        if (userType.equals("Doctor") && accountStatusApproved(accountStatus, email)) {
-                                            Intent intentDoctor = new Intent(Login.this, DoctorWelcome.class);
-                                            startActivity(intentDoctor);
-                                            finish();
-
-                                        } else if (userType.equals("Patient") && accountStatusApproved(accountStatus, email)) {
-                                            Intent intentPatient = new Intent(Login.this, PatientWelcome.class);
-                                            startActivity(intentPatient);
-                                            finish();
-
-                                        } else if(userType.equals("Admin")){
-                                            Intent intentAdmin = new Intent(Login.this, AdminWelcome.class);
-                                            startActivity(intentAdmin);
-                                            finish();
-                                        }
-
-                                    } else
-                                        Log.d(TAG, "Document Data is null");
-                                }
-
-                                else
-                                    Log.d(TAG, "Document does not exist");
-
-                            });
-
-
-                        } else {
-                            Toast.makeText(Login.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                    public void onSuccess(String userType) {
+                        // Handle authentication success here
+                        switch (userType) {
+                            case "Doctor":
+                                Toast.makeText(Login.this, "Registration was approved by Administrator", Toast.LENGTH_SHORT).show();
+                                Intent intentDoctor = new Intent(Login.this, DoctorWelcome.class);
+                                startActivity(intentDoctor);
+                                finish();
+                                break;
+                            case "Patient":
+                                Intent intentPatient = new Intent(Login.this, PatientWelcome.class);
+                                startActivity(intentPatient);
+                                finish();
+                                break;
+                            case "Admin":
+                                Intent intentAdmin = new Intent(Login.this, AdminWelcome.class);
+                                startActivity(intentAdmin);
+                                finish();
+                                break;
+                            default:
+                                // Handle other cases
+                                break;
                         }
-
                     }
 
+                    @Override
+                    public void onFailure(String message) {
+                        // Handle authentication failure here
+                        switch (message) {
+                            case "Invalid":
+                                Toast.makeText(Login.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            default:
+                                // Handle other failure cases
+                                break;
+                        }
+                    }
                 });
+
             }
         });
-
-
     }
-
-    /**
-     * This method accesses the users information in Firestore and finds if the account status has been
-     * approved, denied or is still pending by the Administrator
-     *
-     * @param accountStatus
-     *              The status of the registration
-     * @param email
-     *           The users email that will receive the email
-     * @return true if the status is approved, false otherwise
-     */
-    private boolean accountStatusApproved(String accountStatus, String email){
-        SendEmail task = new SendEmail();
-        String message = "";
-
-        if (accountStatus.equals("approved")){
-            message = "Your registration request for the Tellewellness health app" +
-                    " has been approved! You can now login with your credentials";
-            task.sendEmail(email, message);
-            return true;
-        }
-
-        else if (accountStatus.equals("denied")){
-            message = "Unfortunately, your registration request has been rejected by the Administrator." +
-                    " Please contact us to resolve this issue, (613) 123 - 4567";
-            task.sendEmail(email, message);
-            Toast.makeText(Login.this, "Registration was rejected by Administrator. Please contact" +
-                            "the Administrator resolve this issue, (613) 123 - 4567", Toast.LENGTH_SHORT).show();
-        }
-
-        else {
-            Toast.makeText(Login.this, "Registration has not yet been approved by Administrator",
-                    Toast.LENGTH_SHORT).show();
-        }
-
-       return false;
-    }
-
 }

@@ -224,60 +224,25 @@ public class PatientRegistration extends AppCompatActivity {
                  *
                  */
 
-                int finalHealthCardNumber = healthCardNumber;
-                int finalPhoneNumber = phoneNumber;
 
                 if (allFieldsFilled && validHealthCardNumber && validEmail && validPhoneNumber && validPassword) {
+                    Firebase firebase = new Firebase();
 
-                    fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), "Registration Successful.", Toast.LENGTH_SHORT).show();
-                                //create Patient user address
-                                Address address = new Address(street, postalCode, city, country);
-                                Patient patientUser = new Patient(firstName, lastName, email, finalHealthCardNumber, finalPhoneNumber, address, password);
-                                //Patient patientUser = (firstName,lastName,email,healthCardNum,phoneNum,address,password);
+                    firebase.createNewUser(PatientRegistration.this, "Patient", healthCardNumber, null,
+                            firstName, lastName, email, password, phoneNumber, country, city, street, postalCode,
+                            new Firebase.AuthenticationCallback() {
+                                @Override
+                                public void onSuccess(String userType) {
+                                    Intent intent = new Intent (PatientRegistration.this, Login.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
 
-                                userID = fAuth.getCurrentUser().getUid();
-                                DocumentReference documentReferenceUser = fStore.collection("user").document(userID);
-                                DocumentReference documentReferencePending = fStore.collection("Pending Requests").document(userID);
-
-                                Map<String, Object> user = new HashMap<>();
-                                user.put("Patient", patientUser);       //Stores Patient user information in Firestore database
-                                user.put("userType", "Patient");
-                                user.put("accountStatus", "pending");
-                                user.put("email", email);
-
-                                //Places user data into Firestore collection "Pending Requests"
-                                Map<String, Object> pendingRequests = new HashMap<>();
-                                pendingRequests.put("Patient", patientUser);
-                                pendingRequests.put("userType", "Patient");
-                                pendingRequests.put("accountStatus", "pending");
-                                pendingRequests.put("email", email);
-
-                                documentReferenceUser.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.d(TAG, "User profile created " + userID);
-                                    }
-                                });
-
-                                documentReferencePending.set(pendingRequests).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.d(TAG, "User profile created and account is pending" + userID);
-                                    }
-                                });
-
-                                Intent intent = new Intent(getApplicationContext(), Login.class);
-                                startActivity(intent);
-                                finish();
-
-                            } else
-                                task.getException(); //Check Logcat if task is unsuccessful or app crashes for error message
-                        }
-                    });
+                                @Override
+                                public void onFailure(String message) {
+                                    Log.d(TAG, "ERROR when creating Patient profile in firebase");
+                                }
+                            });
 
                 } else
                     Toast.makeText(getApplicationContext(), "Registration Unsuccessful.", Toast.LENGTH_SHORT).show();

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Doctor extends User{
 
-    private int employeeNumber;
+    //private int employeeNumber;
     private ArrayList<String> specialty;
 
     /**
@@ -28,37 +28,51 @@ public class Doctor extends User{
      * @param phoneNumber the phone number of the Doctor
      * @param address the object Address which holds variables street, postal code, city, and country
      */
-    public Doctor(int employeeNumber, ArrayList<String> specialty, String firstName, String lastName, String email,
-                  String password, int phoneNumber, Address address){
+    public Doctor(int employeeNumber, ArrayList<String> specialty, String firstName,
+                  String lastName, String email, String password, int phoneNumber,
+                  Address address){
 
-        super(firstName, lastName, email, phoneNumber, password, address); //calls parent User constructor
-        this.employeeNumber = employeeNumber;
+        super(firstName, lastName, email, phoneNumber, password, employeeNumber, address); //calls parent User constructor
         this.specialty = specialty;
 
         /*
          * Even though parent User constructor is called, each inherited variable must be set in child class
          * This is to ensure that all information is serialized and stored to the Firestore database
          */
+        setUserType("Doctor");
         setFirstName(firstName);
         setLastName(lastName);
         setPassword(password);
         setPhoneNumber(phoneNumber);
         setAddress(address);
         setEmail(email);
+        setIdNumber(employeeNumber);
     }
 
-    public int getEmployeeNumber() {
-        return employeeNumber;
-    }
+    public Doctor(){}
+
+    //public int getEmployeeNumber() {
+     //   return employeeNumber;
+    //}
     public ArrayList<String> getSpecialty(){
         return specialty;
     }
 
-    public void setEmployeeNumber(int employeeNumber) {
-        this.employeeNumber = employeeNumber;
-    }
+    //public void setEmployeeNumber(int employeeNumber) {
+    //    this.employeeNumber = employeeNumber;
+    //}
     public void setSpecialty(ArrayList<String> specialty) {  //TODO May cause errors
         this.specialty = specialty;
+    }
+
+    @Override
+    public String displayUserInformation() {
+        return ("Name: " + getLastName() + ", " + getFirstName() +
+                "\nEmail: " + getEmail() +
+                "\nPhone Number: " + getPhoneNumber() +
+                "\nAddress: " + getAddress().displayAddress() +
+                "\nEmployee Number: " + getIdNumber() +
+                "\nSpecialty(s) : " + getSpecialty());
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.doctorregistration;
 
 import java.util.Properties;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
