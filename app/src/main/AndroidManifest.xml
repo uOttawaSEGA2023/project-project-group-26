@@ -1,6 +1,7 @@
+<<<<<<< Original
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -13,25 +14,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoctorRegistration"
-        tools:targetApi="31">
+        tools:targetApi="31" >
+        <activity
+            android:name=".DoctorShiftCalendar"
+            android:exported="false" />
         <activity
             android:name=".AdminPendingRequest"
             android:exported="false" />
         <activity
-            android:name=".AdminPendingRequests"
-            android:exported="false" />
-        <activity
-            android:name=".pendingListDoctor"
-            android:exported="false" />
+            android:name=".AdminPendingRequest"
+            android:exported="false"
+            tools:ignore="DuplicateActivity" />
         <activity
             android:name=".AdminDeniedRequest"
             android:exported="true" />
         <activity
             android:name=".MainWelcome"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity 
+            android:exported="true"
+            android:name=".DoctorShiftCalendar"
+            tools:ignore="DuplicateActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -42,6 +52,19 @@
         <activity android:name=".PatientWelcome" />
         <activity android:name=".RegisterDorP" />
         <activity android:name=".Login" />
+        
     </application>
 
 </manifest>
+=======
+
+    <manifest xmlns:android ="http://schemas.android.com/apk/res/android"
+    >
+    <application>
+    <activity android:name ="com.example.doctorregistration.WeekViewActivity"
+    android:exported="false"
+    
+     />
+    </application>
+    </manifest>
+    >>>>>>> Added
