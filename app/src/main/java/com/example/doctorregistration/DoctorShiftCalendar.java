@@ -16,7 +16,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAdapter.OnItemListener{
+public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAdapter.OnItemListener {
 
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
@@ -58,11 +58,10 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
             LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
             int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
 
-            for(int i = 1; i <= 42; i++){
-                if(i <= dayOfWeek || i > daysInMonth + dayOfWeek){
+            for (int i = 1; i <= 42; i++) {
+                if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                     daysInMonthArray.add("");
-                }
-                else{
+                } else {
                     daysInMonthArray.add(String.valueOf(i - dayOfWeek));
                 }
             }
@@ -73,7 +72,7 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
         return null;
     }
 
-    private String monthYearFromDate(LocalDate date){
+    private String monthYearFromDate(LocalDate date) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
             return date.format(formatter);
@@ -82,7 +81,7 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
         return null;
     }
 
-    public void previousMonthAction(View view){
+    public void previousMonthAction(View view) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             selectedDate = selectedDate.minusMonths(1);
@@ -90,7 +89,7 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
         }
     }
 
-    public void nextMonthAction(View view){
+    public void nextMonthAction(View view) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             selectedDate = selectedDate.plusMonths(1);
             setMonthView();
@@ -99,13 +98,9 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
 
     @Override
     public void onItemClick(int position, String dayText) {
-        if(dayText.equals("")){
+        if (dayText.equals("")) {
             String message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDate);
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
-    }
-
-    public void weeklyAction(View view) {
-        startActivity(new Intent(this, WeekViewActivity.class));
     }
 }
