@@ -92,6 +92,7 @@ public class CalendarUtils {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
         }
+        return null;
     }
 }
 
