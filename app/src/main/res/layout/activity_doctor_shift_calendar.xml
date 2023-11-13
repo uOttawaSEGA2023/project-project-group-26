@@ -6,7 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DoctorShiftCalendar">
+    tools:context=".DoctorShiftCalendar"
+    tools:ignore="ExtraText">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Weekly"
+        android:textColor="green"
+        android:background="@null"
+        android:textStyle="bold"
+        android:onClick="weeklyAction"
+        android:textSize="20sp"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,32 +33,34 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:text="@string/back"
-            android:textColor="@color/white"
+            android:onClick="previousMonthAction"
+            android:text="back"
+            android:textColor="white"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:onClick="previousMonthAction"/>
+            tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/monthYearTextView"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:text="     November 2023"
+            android:text="November 2023"
             android:textSize="20sp"
             android:textAlignment="center"
-            android:textColor="@color/black"/>
+            android:textColor="black"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/forward"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:textColor="@color/white"
             android:background="@null"
-            android:onClick="nextMonthAction"/>
+            android:onClick="nextMonthAction"
+            android:text="forward"
+            android:textColor="white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="TouchTargetSizeCheck" />
 
 
     </LinearLayout>
@@ -122,8 +137,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
 
 
 </LinearLayout>

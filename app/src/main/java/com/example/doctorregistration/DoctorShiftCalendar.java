@@ -28,7 +28,7 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
         setContentView(R.layout.activity_doctor_shift_calendar);
         initWidgets();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            selectedDate = LocalDate.now();
+            CalendarUtils.selectedDate = LocalDate.now();
         }
         setMonthView();
 
@@ -40,8 +40,8 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
     }
 
     private void setMonthView() {
-        monthYearText.setText(monthYearFromDate(selectedDate));
-        ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
+        monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
+        ArrayList<String> daysInMonth = daysInMonthArray(CalendarUtils.selectedDate);
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
@@ -49,13 +49,13 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
 
-    private ArrayList<String> daysInMonthArray(LocalDate date) {
+    public static ArrayList<String> daysInMonthArray(LocalDate date) {
         ArrayList<String> daysInMonthArray = new ArrayList<>();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             YearMonth yearMonth = YearMonth.from(date);
             int daysInMonth = yearMonth.lengthOfMonth();
 
-            LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
+            LocalDate firstOfMonth = CalendarUtils.selectedDate.withDayOfMonth(1);
             int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
 
             for (int i = 1; i <= 42; i++) {
@@ -72,7 +72,7 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
         return null;
     }
 
-    private String monthYearFromDate(LocalDate date) {
+    public static String monthYearFromDate(LocalDate date) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
             return date.format(formatter);
@@ -84,23 +84,26 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
     public void previousMonthAction(View view) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            selectedDate = selectedDate.minusMonths(1);
+            CalendarUtils.selectedDate = CalendarUtils.selectedDate.minusMonths(1);
             setMonthView();
         }
     }
 
     public void nextMonthAction(View view) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            selectedDate = selectedDate.plusMonths(1);
+            CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusMonths(1);
             setMonthView();
         }
     }
 
-    @Override
-    public void onItemClick(int position, String dayText) {
-        if (dayText.equals("")) {
-            String message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDate);
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public void onItemClick(int position, LocalDate  date) {
+        if(date != null) {
+
+            CalendarUtils.selectedDate = date;
+            setWeekView();
         }
+    }
+    public void weeklyAction( View view){
+        startActivity(new Intent(this, WeekViewActivity.class)); //connecting this file to the weekview class
     }
 }
