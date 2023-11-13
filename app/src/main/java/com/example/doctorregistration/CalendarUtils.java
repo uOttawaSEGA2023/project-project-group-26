@@ -59,9 +59,6 @@ public class CalendarUtils {
         }
         return days ;
 
-
-
-
     }
 
     public static LocalDate sundayforDate(LocalDate current) {
@@ -80,4 +77,10 @@ public class CalendarUtils {
         }
         return null;
     }
+
+    public static String formattedDate(LocalDate selectedDate) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
         }
+    }
+}
