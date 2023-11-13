@@ -1,11 +1,13 @@
 package com.example.doctorregistration;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDate;
@@ -42,16 +44,17 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         return new CalendarViewHolder(view, onItemListener,days);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         {
             final LocalDate date = days.get(position);
             if (date == null)
-                holder.dayofMonth.setText("");
+                holder.dayOfMonth.setText("");
             else {
-                holder.dayOfMonth.setText(String.valueof(date.getDayofMonth()));
+                holder.dayOfMonth.setText(String.valueOf(date.getDayOfMonth()));
                 if (date.equals(CalendarUtils.selectedDate)) {
-                    holder.parentview.setBackgroundColor(Color.LTGRAY);
+                    holder.parentView.setBackgroundColor(Color.LTGRAY);
                 }
             }
         }
