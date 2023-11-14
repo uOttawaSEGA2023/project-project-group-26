@@ -4,4 +4,6 @@
     <string name="welcome">WELCOME!</string>
     <string name="register_here">Register Here</string>
     <string name="log_in_here">Log-in Here</string>
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
 </resources>
