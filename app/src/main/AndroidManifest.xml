@@ -18,14 +18,11 @@
             android:name=".AdminPendingRequest"
             android:exported="false" />
         <activity
-            android:name=".AdminPendingRequests"
-            android:exported="false" />
-        <activity
-            android:name=".pendingListDoctor"
-            android:exported="false" />
-        <activity
             android:name=".AdminDeniedRequest"
             android:exported="true" />
+        <activity
+            android:name=".DoctorAppointmentsList"
+            android:exported="false"/>
         <activity
             android:name=".MainWelcome"
             android:exported="true">
@@ -42,6 +39,7 @@
         <activity android:name=".PatientWelcome" />
         <activity android:name=".RegisterDorP" />
         <activity android:name=".Login" />
+
     </application>
 
 </manifest>
