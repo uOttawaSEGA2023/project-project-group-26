@@ -13,6 +13,20 @@ import java.time.LocalTime;
 
 public class CalendarUtils {
     public static LocalDate selectedDate;
+    public static String formattedTime(LocalTime time) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+            return time.format(formatter);
+        }
+        return null;
+    }
+    public static String formattedDate(LocalDate date) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+            return date.format(formatter);
+        }
+        return null;
+    }
 
     public static String monthYearFromDate(LocalDate date) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -86,13 +100,6 @@ public class CalendarUtils {
             }
             return null;
         }
-    }
-
-    public static String formattedDate(LocalDate selectedDate) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
-        }
-        return null;
     }
 }
 

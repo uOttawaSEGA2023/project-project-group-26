@@ -2,6 +2,7 @@ package com.example.doctorregistration;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -22,7 +23,9 @@ public class EventEditActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_edit);
         initWidgets();
-        time = LocalTime.now();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            time = LocalTime.now();
+        }
         eventDateTV.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
         eventTimeTV.setText("Time: " + CalendarUtils.formattedTime(time));
     }
