@@ -2,7 +2,6 @@ package com.example.doctorregistration;
 
 
 
-import android.content.Intent;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 
@@ -147,22 +145,111 @@ public class DoctorAppointmentsList extends AppCompatActivity {
 
         // Extracting patients info
         Patient patient = clickedItem.getPatient();
+        String userID = clickedItem.getUserID();
+        //String appointmentStatus = clickedItem.getappointmentStatus();
         if (patient != null) {
             // Displaying patients info
-            showPatientInformation(patient);
+            showPatientInformation(patient, userID);
         }
     }
 
     //showing patients info
-    private void showPatientInformation(Patient patient) {
+    private void showPatientInformation(Patient patient, String userID) {
         // Show the patient information in a dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Patient Information");
-        builder.setMessage(patient.displayUserInformation()
-                // add extra if you want to show other stuff
-        );
+        builder.setMessage(patient.displayUserInformation());// add extra if you want to show other stuff
         builder.setPositiveButton("OK", null);
+
+        // Inflate the layout for the buttons
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.pending_request_user_info, null);
+        builder.setView(dialogView);
+
+        Button btApprove = (Button) dialogView.findViewById(R.id.buttonApprove);
+        Button btReject = (Button) dialogView.findViewById(R.id.buttonReject);
+        Button btCancel = (Button) dialogView.findViewById(R.id.buttonCancel);
+
+        /*
+        switch (appointmentStatus) {
+            case "approved":
+                btCancel.setVisibility(View.VISIBLE);
+                btApprove.setVisibility(View.GONE);
+                btReject.setVisibility(View.GONE);
+                break;
+            case "rejected":
+            case "cancelled":
+                // No buttons for cancelled status
+                // No buttons for rejected status
+                btCancel.setVisibility(View.GONE);
+                btApprove.setVisibility(View.GONE);
+                btReject.setVisibility(View.GONE);
+                break;
+            case "pending":
+                btApprove.setVisibility(View.VISIBLE);
+                btReject.setVisibility(View.VISIBLE);
+                btCancel.setVisibility(View.GONE);
+                break;
+        }
+         */
+        btApprove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firebase.updateUserField(DoctorAppointmentsList.this, "user", userID,
+                        "appointmentapproval", "approved");
+                firebase.updateUserField(DoctorAppointmentsList.this, "Approved Requests", userID,
+                        "appointmentapproval", "approved");
+
+                btApprove.setVisibility(View.GONE);
+                btReject.setVisibility(View.GONE);
+                btCancel.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        btReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firebase.updateUserField(DoctorAppointmentsList.this, "user", userID,
+                        "appointmentapproval", "denied");
+
+                firebase.updateUserField(DoctorAppointmentsList.this, "Approved Requests", userID,
+                        "appointmentapproval", "denied");
+
+                btApprove.setVisibility(View.GONE);
+                btReject.setVisibility(View.GONE);
+                btCancel.setVisibility(View.GONE);
+
+            }
+        });
+
+        btCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firebase.updateUserField(DoctorAppointmentsList.this, "Approved Requests", userID,
+                        "appointmentapproval", "cancelled");
+
+                btApprove.setVisibility(View.GONE);
+                btReject.setVisibility(View.GONE);
+                btCancel.setVisibility(View.GONE);
+
+            }
+        });
+
+        // Showing buttons depending on in old or new appointment
+        if (getListType.equals("upcomingAppointments")) {
+            btApprove.setVisibility(View.VISIBLE);
+            btReject.setVisibility(View.VISIBLE);
+            btCancel.setVisibility(View.GONE);
+        } else {
+            btApprove.setVisibility(View.GONE);
+            btReject.setVisibility(View.GONE);
+            btCancel.setVisibility(View.GONE);
+        }
+
         builder.show();
     }
+
+
 
 }
