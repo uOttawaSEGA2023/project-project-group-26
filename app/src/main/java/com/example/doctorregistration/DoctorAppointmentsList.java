@@ -2,6 +2,7 @@ package com.example.doctorregistration;
 
 
 
+import android.content.Intent;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,8 @@ public class DoctorAppointmentsList extends AppCompatActivity {
 
 
 
+
+
     String getListType = DoctorWelcome.test;
 
 
@@ -51,6 +54,16 @@ public class DoctorAppointmentsList extends AppCompatActivity {
 
         firebase = new Firebase();
         collectionRef = firebase.getCollectionRef("Approved Requests");
+
+        //this is the starter code for the code that decides what happens when we click on a patient
+        listViewRequests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Handle item click
+                handleItemClick(position);
+            }
+        });
+
     }
 
     @Override
@@ -126,4 +139,30 @@ public class DoctorAppointmentsList extends AppCompatActivity {
 
         });
     }
+
+    //code that decides what happens when clicking on patient info
+    private void handleItemClick(int position) {
+        // Getting clicked item
+        RegistrationRequestItem clickedItem = appointments.get(position);
+
+        // Extracting patients info
+        Patient patient = clickedItem.getPatient();
+        if (patient != null) {
+            // Displaying patients info
+            showPatientInformation(patient);
+        }
+    }
+
+    //showing patients info
+    private void showPatientInformation(Patient patient) {
+        // Show the patient information in a dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Patient Information");
+        builder.setMessage(patient.displayUserInformation()
+                // add extra if you want to show other stuff
+        );
+        builder.setPositiveButton("OK", null);
+        builder.show();
+    }
+
 }
