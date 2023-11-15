@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background = "#365B6D"
-    tools:context=".MainActivity">
+    tools:context=".DoctorWelcome">
 
     <ImageView
         android:id="@+id/imageView"
@@ -50,12 +50,46 @@
         android:textColor="#ffff"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/upcomingAppointments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Upcoming Appointments"
+        android:textColor="#ffff"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.44"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="4.895" />
+
+    <Button
+        android:id="@+id/pastAppointments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Past Appointments"
+        android:textColor="#ffff"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.44"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="5.495" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

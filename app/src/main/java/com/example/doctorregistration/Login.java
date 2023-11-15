@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity {
                         // Handle authentication success here
                         switch (userType) {
                             case "Doctor":
-                                Toast.makeText(Login.this, "Registration was approved by Administrator", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(Login.this, "Registration was approved by Administrator", Toast.LENGTH_SHORT).show();
                                 Intent intentDoctor = new Intent(Login.this, DoctorWelcome.class);
                                 startActivity(intentDoctor);
                                 finish();

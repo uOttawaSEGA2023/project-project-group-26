@@ -11,6 +11,9 @@ public class Patient extends User{
 
     private int healthCardNum;
 
+    //instance variable
+    private boolean treatmentStatus;
+
     /**
      * Constructs user of type Patient
      *
@@ -39,10 +42,20 @@ public class Patient extends User{
         setAddress(address);
         setEmail(email);
         setIdNumber(healthCardNum);
+        setTreatmentStatus(false);
+
 
     }
 
     public Patient(){}
+
+    public void setTreatmentStatus(boolean status){
+        treatmentStatus = status;
+    }
+
+    public boolean getTreatmentStatus(){
+        return treatmentStatus;
+    }
 
     @Override
     public String displayUserInformation() {
@@ -52,4 +65,5 @@ public class Patient extends User{
                 "\nAddress: " + getAddress().displayAddress() +
                 "\nHealth Card Number: " + getIdNumber());
     }
+
 }

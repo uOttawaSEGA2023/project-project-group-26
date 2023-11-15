@@ -175,8 +175,8 @@ public class AdminPendingRequest extends AppCompatActivity {
             public void onClick(View view) {
                 firebase.updateUserField(AdminPendingRequest.this, "user", userID,
                         "accountStatus", "approved");
-
-                firebase.removeUserFromCollection("Pending Requests", userID);
+                firebase.moveUserToAnotherCollection("Pending Requests","Approved Requests",userID);
+                //firebase.removeUserFromCollection("Pending Requests", userID);
             }
         });
 

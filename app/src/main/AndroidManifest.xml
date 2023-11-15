@@ -25,6 +25,9 @@
             android:name=".AdminDeniedRequest"
             android:exported="true" />
         <activity
+            android:name=".DoctorAppointmentsList"
+            android:exported="false"/>
+        <activity
             android:name=".MainWelcome"
             android:exported="true">
             <intent-filter>
@@ -32,21 +35,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".DoctorRegistration" />
-        <activity
-            android:name=".PatientRegistration" />
-        <activity
-            android:name=".DoctorWelcome" />
-        <activity
-            android:name=".AdminWelcome" />
-        <activity
-            android:name=".PatientWelcome" />
-        <activity
-            android:name=".RegisterDorP" />
-        <activity
-            android:name=".Login" />
-        <activity android:name=".EventEditActivity"/>
+        <activity android:name=".DoctorRegistration" />
+        <activity android:name=".PatientRegistration" />
+        <activity android:name=".DoctorWelcome" />
+        <activity android:name=".AdminWelcome" />
+        <activity android:name=".PatientWelcome" />
+        <activity android:name=".RegisterDorP" />
+        <activity android:name=".Login" />
+
+
 
         <!-- WeekViewActivity added -->
         <activity
