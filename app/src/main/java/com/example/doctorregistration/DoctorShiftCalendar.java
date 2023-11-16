@@ -1,5 +1,7 @@
 package com.example.doctorregistration;
 
+import static com.example.doctorregistration.CalendarUtils.daysInMonthArray;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,7 +45,7 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
 
     private void setMonthView() {
         monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
-        ArrayList<String> daysInMonth = daysInMonthArray(CalendarUtils.selectedDate);
+        ArrayList<LocalDate> daysInMonth = daysInMonthArray(CalendarUtils.selectedDate);
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
@@ -51,7 +53,7 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
 
-    public static ArrayList<String> daysInMonthArray(LocalDate date) {
+    /*public static ArrayList<String> daysInMonthArray(LocalDate date) {
         ArrayList<String> daysInMonthArray = new ArrayList<>();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             YearMonth yearMonth = YearMonth.from(date);
@@ -72,7 +74,7 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
         }
 
         return null;
-    }
+    }*/
 
     public static String monthYearFromDate(LocalDate date) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

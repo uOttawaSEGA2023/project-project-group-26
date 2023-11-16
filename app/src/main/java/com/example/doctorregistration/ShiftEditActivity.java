@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.time.LocalTime;
 import java.util.Calendar;
 
-public class EventEditActivity extends AppCompatActivity
+public class ShiftEditActivity extends AppCompatActivity
 {
     private EditText eventNameET;
     private TextView eventDateTV, eventTimeTV;
@@ -60,8 +60,8 @@ public class EventEditActivity extends AppCompatActivity
     public void saveEventAction(View view)
     {
         String eventName = eventNameET.getText().toString();
-        Event newEvent = new Event(eventName, CalendarUtils.selectedDate, time);
-        Event.eventsList.add(newEvent);
+        Shifts newEvent = new Shifts(eventName, CalendarUtils.selectedDate, time);
+        Shifts.eventsList.add(newEvent);
         finish();
     }
 

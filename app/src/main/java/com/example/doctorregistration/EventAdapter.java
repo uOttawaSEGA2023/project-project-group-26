@@ -14,13 +14,13 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class EventAdapter extends ArrayAdapter<Event> {
-    public EventAdapter(@NonNull Context context, List<Event> events) {
+public class EventAdapter extends ArrayAdapter<Shifts> {
+    public EventAdapter(@NonNull Context context, List<Shifts> events) {
         super(context, 0, events);
     }
     @NonNull
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-        Event event = getItem(position);
+        Shifts event = getItem(position);
 
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_cell, parent, false);

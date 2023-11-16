@@ -4,12 +4,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class Event {
-    public static ArrayList<Event> eventsList = new ArrayList<>();
+public class Shifts {
+    public static ArrayList<Shifts> eventsList = new ArrayList<>();
 
-    public static ArrayList<Event> eventsForDate(LocalDate date) {
-        ArrayList<Event> events = new ArrayList<>();
-        for (Event event : eventsList) {
+    public static ArrayList<Shifts> eventsForDate(LocalDate date) {
+        ArrayList<Shifts> events = new ArrayList<>();
+        for (Shifts event : eventsList) {
             if (event.getDate().equals(date))
                 events.add(event);
         }
@@ -37,7 +37,7 @@ public class Event {
         return name;
     }
 
-    public Event(String name, LocalDate date, LocalTime time) {
+    public Shifts(String name, LocalDate date, LocalTime time) {
         this.name = name;
         this.date = date;
         this.time = time;

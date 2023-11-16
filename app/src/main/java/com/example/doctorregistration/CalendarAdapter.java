@@ -24,10 +24,7 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         this.onItemListener = onItemListener;
     }
 
-    public CalendarAdapter(ArrayList<LocalDate> days, WeekViewActivity onItemListener) {
-        this.days = days;
-        this.onItemListener = onItemListener;
-    }
+
 
     @NonNull
     @Override
