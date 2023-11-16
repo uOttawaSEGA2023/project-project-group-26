@@ -38,7 +38,7 @@
             android:textColor="white"
             android:textSize="20sp"
             android:textStyle="bold"
-            tools:ignore="TouchTargetSizeCheck" />
+             />
 
         <TextView
             android:id="@+id/monthYearTextView"
