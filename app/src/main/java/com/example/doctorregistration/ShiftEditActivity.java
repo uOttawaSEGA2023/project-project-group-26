@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -11,9 +12,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.time.LocalTime;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class ShiftEditActivity extends AppCompatActivity
 {
@@ -23,6 +26,8 @@ public class ShiftEditActivity extends AppCompatActivity
     private LocalTime time;
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
+    Button timeButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,6 +38,8 @@ public class ShiftEditActivity extends AppCompatActivity
         initDatePicker();
         dateButton = findViewById(R.id.datePickerButton);
         dateButton.setText(getTodaysDate());
+        timeButton = findViewById(R.id.timeButton);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             time = LocalTime.now();
         }
@@ -120,5 +127,22 @@ public class ShiftEditActivity extends AppCompatActivity
 
     public void openDatePicker(View view) {
         datePickerDialog.show();
+    }
+
+    int hour, minute;
+    public void popTimePicker(View view) {
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int selectedMinute) {
+                hour = hourOfDay;
+                minute = selectedMinute;
+                timeButton.setText(String.format(Locale.getDefault(),"%02d:%02d", hour, minute));
+            }
+        };
+        int style = AlertDialog.THEME_HOLO_DARK;
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, style, onTimeSetListener,hour , minute, true);
+
+        timePickerDialog.setTitle("Select Time");
+        timePickerDialog.show();
     }
 }
