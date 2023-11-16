@@ -27,6 +27,10 @@ public class ShiftEditActivity extends AppCompatActivity
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
     Button timeButton;
+    String savedate;
+
+    private DoctorShifts saveShifts;
+
 
 
     @Override
@@ -74,10 +78,13 @@ public class ShiftEditActivity extends AppCompatActivity
 
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            private String savedate;
+
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month+1;
                 String date = makeDateString(dayOfMonth, month, year);
+                this.savedate = date;
                 dateButton.setText(date);
             }
         };
@@ -137,6 +144,8 @@ public class ShiftEditActivity extends AppCompatActivity
                 hour = hourOfDay;
                 minute = selectedMinute;
                 timeButton.setText(String.format(Locale.getDefault(),"%02d:%02d", hour, minute));
+
+                handleDateTime(savedate,hourOfDay, minute);
             }
         };
         int style = AlertDialog.THEME_HOLO_DARK;
@@ -144,5 +153,12 @@ public class ShiftEditActivity extends AppCompatActivity
 
         timePickerDialog.setTitle("Select Time");
         timePickerDialog.show();
+    }
+
+    private void handleDateTime(String savedate, int hourOfDay, int minute) {
+        String date = savedate;
+        String startTime = String.format("%02d:%02d:00", hourOfDay, minute);
+        String endTime = String.format("%02d:%02d:00", hourOfDay + 4, minute);
+        saveShifts.addShift(date,startTime, endTime);
     }
 }

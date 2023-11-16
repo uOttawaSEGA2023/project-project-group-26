@@ -12,7 +12,7 @@ public class ShiftValidity {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     @SuppressLint("NewApi")
-    private static final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); //have to change this based on the format of the strings
+    private static final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss"); //have to change this based on the format of the strings
 
     @SuppressLint("NewApi")
     public ShiftValidity(String date, String startTime, String endTime) throws ParseException {
