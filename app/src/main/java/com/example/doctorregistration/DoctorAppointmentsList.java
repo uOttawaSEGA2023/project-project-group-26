@@ -176,7 +176,7 @@ public class DoctorAppointmentsList extends AppCompatActivity {
 
         // Inflate the layout for the buttons
         LayoutInflater inflater = getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.pending_request_user_info, null);
+        final View dialogView = inflater.inflate(R.layout.upcoming_appointment_approval, null);
         builder.setView(dialogView);
 
         Button btApprove = (Button) dialogView.findViewById(R.id.buttonApprove);

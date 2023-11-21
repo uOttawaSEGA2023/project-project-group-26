@@ -49,6 +49,13 @@
             android:layout_height="wrap_content"
             android:text="Reject" />
 
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="132dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
