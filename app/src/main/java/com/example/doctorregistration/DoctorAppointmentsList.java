@@ -2,6 +2,7 @@ package com.example.doctorregistration;
 
 
 
+import android.content.Intent;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,8 @@ public class DoctorAppointmentsList extends AppCompatActivity {
     ArrayList<RegistrationRequestItem> appointments;
     CollectionReference collectionRef;
     Firebase firebase;
+    private Button buttonpasttodoctorwelcome;
+    private Button buttonupcomingtodoctorwelcome;
 
 
 
@@ -43,9 +46,19 @@ public class DoctorAppointmentsList extends AppCompatActivity {
         if(getListType.equals("upcomingAppointments")){
             setContentView(R.layout.activity_doctor_upcomingappointments_list);
             listViewRequests = (ListView) findViewById(R.id.listView2);
+            buttonupcomingtodoctorwelcome = findViewById(R.id.backtoDW2);
+            buttonupcomingtodoctorwelcome.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {openDoctorWelcome();}
+            });
         }else{
             setContentView(R.layout.activity_doctor_pastappointments_list);
             listViewRequests = (ListView) findViewById(R.id.listView1);
+            buttonpasttodoctorwelcome = findViewById(R.id.backtoDW1);
+            buttonpasttodoctorwelcome.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {openDoctorWelcome();}
+            });
         }
 
         appointments = new ArrayList<>();
@@ -248,6 +261,11 @@ public class DoctorAppointmentsList extends AppCompatActivity {
         }
 
         builder.show();
+    }
+
+    public void openDoctorWelcome(){
+        Intent intent = new Intent(getApplicationContext(), DoctorWelcome.class);
+        startActivity(intent);
     }
 
 
