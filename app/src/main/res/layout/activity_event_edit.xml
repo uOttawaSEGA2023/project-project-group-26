@@ -55,8 +55,9 @@
         android:onClick="openDatePicker"
         />
 
-    <TextView
-            android:id="@+id/eventTimeTV"
+
+        <Button
+            android:id="@+id/eventTimeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -65,7 +66,8 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:textAlignment="center"
-            android:textColor="@color/black"/>
+            android:textColor="@color/white"
+            android:onClick="popTimePicker"/>
 
     <Button
         android:id="@+id/timeButton"
@@ -86,9 +88,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Save"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:background="@null"
-            android:textStyle="bold"
             android:onClick="saveEventAction"
             android:layout_gravity="center"
             android:textSize="20sp"/>

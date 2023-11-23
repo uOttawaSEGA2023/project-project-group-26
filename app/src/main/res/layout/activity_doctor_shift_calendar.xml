@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DoctorShiftCalendar"
+    tools:context=".Doctor.Frontend.DoctorShiftCalendar"
     tools:ignore="ExtraText">
 
     <Button
@@ -16,7 +16,7 @@
         android:background="@null"
         android:onClick="weeklyAction"
         android:text="Weekly"
-        android:textColor="green"
+
         android:textSize="25sp"
         android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
             android:background="@null"
             android:onClick="previousMonthAction"
             android:text="back"
-            android:textColor="white"
+
             android:textSize="20sp"
             android:textStyle="bold"
              />
@@ -47,8 +47,7 @@
             android:layout_height="wrap_content"
             android:text="November 2023"
             android:textSize="20sp"
-            android:textAlignment="center"
-            android:textColor="black"/>
+            android:textAlignment="center" />
 
         <Button
             android:layout_width="0dp"
@@ -57,7 +56,6 @@
             android:background="@null"
             android:onClick="nextMonthAction"
             android:text="forward"
-            android:textColor="white"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:ignore="TouchTargetSizeCheck" />
