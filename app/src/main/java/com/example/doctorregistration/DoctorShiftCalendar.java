@@ -41,7 +41,7 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
 
     private void setMonthView() {
         monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
-        ArrayList<String> daysInMonth = daysInMonthArray(CalendarUtils.selectedDate);
+        ArrayList<LocalDate> daysInMonth = daysInMonthArray(CalendarUtils.selectedDate);
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
@@ -100,7 +100,7 @@ public class DoctorShiftCalendar extends AppCompatActivity implements CalendarAd
         if(date != null) {
 
             CalendarUtils.selectedDate = date;
-            setWeekView();
+            //setWeekView();
         }
     }
     public void weeklyAction( View view){
