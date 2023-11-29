@@ -1,5 +1,6 @@
 package com.example.doctorregistration.Patient;
 
+
 //Appointment class used to store patient's appointment details
 public class Appointment {
     private String date;

@@ -264,7 +264,7 @@ public class Firebase {
     /**
      * Deletes specific document(specified by userID) from specific collection
      */
-    public static void removeUserFromCollection(String collectionPath, String userId) {
+    public void removeUserFromCollection(String collectionPath, String userId) {
         // Reference to the document in the specified collection
         DocumentReference documentReference = fStore.collection(collectionPath).document(userId);
 
@@ -277,6 +277,29 @@ public class Firebase {
                 .addOnFailureListener(e -> {
                     // Handle errors during the delete operation
                 });
+    }
+    public void copyUserToAnotherCollection(String sourceCollection, String destinationCollection,
+                                            String userID) {
+
+        DocumentReference sourceDocumentRef = fStore.collection(sourceCollection).document(userID);
+        DocumentReference destinationDocumentRef = fStore.collection(destinationCollection).document(userID);
+
+        sourceDocumentRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                // checking to see that document exists in the source collection
+
+                // writing the document to the destination collection
+                destinationDocumentRef.set(documentSnapshot.getData())
+                        .addOnSuccessListener(aVoid -> {
+                            // document successfully written to the destination collection!!!
+                            Log.i(TAG, "User document copied from " + sourceCollection +
+                                    " to " + destinationCollection);
+                        });
+            } else {
+                // or if document does not exist in the source collection
+                Log.e(TAG, "User document does not exist " + sourceCollection);
+            }
+        });
     }
 
 }

@@ -8,12 +8,17 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.doctorregistration.Launcher.MainWelcome;
+import com.example.doctorregistration.Patient.Backend.PatientAppointmentsList;
 import com.example.doctorregistration.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class PatientWelcome extends AppCompatActivity {
     private Button logout;
     FirebaseAuth patientLogoutAuth;
+
+    private Button upcomingAppointmentsbtn;
+    private Button pastAppointmentsbtn;
+    public static String test;
 
 
     @Override
@@ -27,6 +32,35 @@ public class PatientWelcome extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), MainWelcome.class));
+            }
+        });
+        upcomingAppointmentsbtn = (Button) findViewById(R.id.upcomingAppointments2);
+        upcomingAppointmentsbtn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getApplicationContext(), PatientAppointmentsList.class);
+                startActivity(intent);
+                test = "upcomingAppointments";
+                finish();
+
+
+            }
+        });
+
+        pastAppointmentsbtn = (Button) findViewById(R.id.pastAppointments2);
+        pastAppointmentsbtn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v){
+
+                Intent intent = new Intent(getApplicationContext(), PatientAppointmentsList.class);
+                startActivity(intent);
+                test = "pastAppointments";
+                finish();
+
+            }
+        });
     }
-});
-    }}
+}
