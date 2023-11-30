@@ -55,8 +55,13 @@
         android:onClick="openDatePicker"
         />
 
+
     <TextView
-            android:id="@+id/eventTimeTV"
+            android:id="@+id/eventTimeTV"/>
+
+
+        <Button
+            android:id="@+id/eventTimeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

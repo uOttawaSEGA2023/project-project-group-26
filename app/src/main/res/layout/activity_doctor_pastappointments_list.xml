@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#365B6D"
-    tools:context=".DoctorAppointmentsList">
+    tools:context=".Doctor.Backend.DoctorAppointmentsList">
 
     <Button
-        android:id="@+id/backtoDW"
+        android:id="@+id/backtoDW1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -32,7 +32,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backtoDW"/>
+        app:layout_constraintTop_toBottomOf="@+id/backtoDW1"/>
 
     <ListView
         android:id="@+id/listView1"
