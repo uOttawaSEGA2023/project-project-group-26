@@ -72,8 +72,6 @@ public class DoctorCreateShift extends AppCompatActivity {
                 // Convert Date to Timestamp
                 Timestamp timestamp = new Timestamp(date);
                 doctorShift.setShiftDate(timestamp);
-
-                //doctorShift.setShiftDate(calendarShift);
             }
         });
 
@@ -102,49 +100,6 @@ public class DoctorCreateShift extends AppCompatActivity {
     }
 
 
-/*
-    private void showTimePickerDialog(final boolean isStartTime) {
-        // Get the current time
-        final Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-
-        // Create a time picker dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(
-                this,
-                new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        // Round the minute to the nearest 30 minutes
-                        doctorShiftManager = new DoctorShiftManager();
-
-                        minute = doctorShiftManager.roundToNearest30Minutes(minute);
-
-                        // Create a LocalTime instance
-                        LocalTime selectedTime = LocalTime.of(hourOfDay, minute);
-
-                        // Format the selected time
-                        String formattedTime = selectedTime.toString();
-
-                        // Update the corresponding EditText with the selected time
-                        if (isStartTime) {
-                            doctorShift.setStartTime(selectedTime);
-                            startTimePicker.setText(formattedTime);
-                        } else {
-                            doctorShift.setEndTime(selectedTime);
-                            endTimePicker.setText(formattedTime);
-                        }
-                    }
-                },
-                hour,
-                minute,
-                false // 24-hour format
-        );
-
-        // Show the dialog
-        timePickerDialog.show();
-    }*/
-
     private void showTimePickerDialog(final boolean isStartTime) {
         // Get the current time
         final Calendar calendar = Calendar.getInstance();
@@ -165,6 +120,8 @@ public class DoctorCreateShift extends AppCompatActivity {
                         Calendar selectedTimeCalendar = Calendar.getInstance();
                         selectedTimeCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         selectedTimeCalendar.set(Calendar.MINUTE, minute);
+                        selectedTimeCalendar.set(Calendar.SECOND, 0);
+                        selectedTimeCalendar.set(Calendar.MILLISECOND, 0);
 
                         // Convert Calendar to Date
                         Date selectedTimeDate = selectedTimeCalendar.getTime();
@@ -184,7 +141,7 @@ public class DoctorCreateShift extends AppCompatActivity {
                 },
                 hour,
                 minute,
-                true // 24-hour format
+                false // 24-hour format
         );
 
         timePickerDialog.show();
@@ -193,7 +150,7 @@ public class DoctorCreateShift extends AppCompatActivity {
     private String formatTimestamp(Timestamp timestamp) {
         Date date = timestamp.toDate();
         // Format the date as needed
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.US); //displays in 24 hour format
         return sdf.format(date);
     }
 

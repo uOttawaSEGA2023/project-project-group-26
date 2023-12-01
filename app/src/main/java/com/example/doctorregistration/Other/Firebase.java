@@ -254,33 +254,6 @@ public class Firebase {
                     boolean conflict = false;
 
                     if (userType.equals("Doctor")) {
-                        /*
-                        List<HashMap<String, Object>> rawShifts = (List<HashMap<String, Object>>) documentSnapshot.get("Doctor." + arrayFieldName);
-
-                        // Convert the List<HashMap> to a List<DoctorShift>
-                        ArrayList<DoctorShift> existingShifts = new ArrayList<>();
-                        for (HashMap<String, Object> rawShift : rawShifts) {
-                            DoctorShift doctorShift = convertHashMapToDoctorShift(rawShift);
-                            existingShifts.add(doctorShift);
-                        }
-
-                        DoctorShift shiftToAdd = (DoctorShift) elementToBeAdded;
-
-                        for(DoctorShift currentShift : existingShifts){
-                            if (currentShift.overlapsWith(shiftToAdd)) {
-                                conflict = true;
-                                break;
-                            }
-                        }
-
-                        if(!conflict) {
-                            existingShifts.add(shiftToAdd);
-                            updateUserField(null, collectionPath, userID, "Doctor." + arrayFieldName, existingShifts);
-                            //Toast.makeText(context, "Shift Created", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                            Toast.makeText(context, "Shift Conflict!", Toast.LENGTH_SHORT).show();
-*/
 
                         ArrayList<HashMap<String, Object>> existingShiftsRaw = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Doctor."+arrayFieldName);
                         DoctorShift shiftToAdd = (DoctorShift) elementToBeAdded;
@@ -321,10 +294,6 @@ public class Firebase {
         });
     }
 
-    // Helper method to convert HashMap to DoctorShift
-   // private DoctorShift convertHashMapToDoctorShift(HashMap<String, Object> data) {
-    //    return DoctorShift.convertHashMapToDoctorShift(data);
-    //}
 
     public void deleteElementFromArrayList(Context context, String collectionPath, String userID, String arrayFieldName, Object elementToBeDeleted){
         CollectionReference collectionReference = fStore.collection(collectionPath);
