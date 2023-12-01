@@ -1,28 +1,31 @@
-package com.example.doctorregistration.Doctor.Backend;
+package com.example.doctorregistration.Other;
 
+import com.example.doctorregistration.Doctor.Doctor;
+import com.example.doctorregistration.Patient.Patient;
 import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 
-public class DoctorShift {
+public class EventItem {
     private Timestamp startTime;
     private Timestamp endTime;
-    //private Date date;
     private Timestamp date;
 
-    public DoctorShift(Timestamp startTime, Timestamp endTime, Timestamp date) {
+    private Doctor doctor;
+    private Patient patient;
+    private String userType;
+
+    private String userID;
+
+    public EventItem(Timestamp startTime, Timestamp endTime, Timestamp date) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
     }
 
-    public DoctorShift(){}
+    public EventItem(){}
 
     public Timestamp getStartTime() {
         return startTime;
@@ -42,11 +45,25 @@ public class DoctorShift {
         this.endTime = endTime;
     }
 
-    public void setShiftDate(Timestamp date){
+    public void setEventDate(Timestamp date){
         this.date = date;
     }
+    public String getEventUserType(){return userType;}
 
-    public boolean overlapsWith(DoctorShift otherShift) {
+    public void setEventUserType(String userType){
+        this.userType = userType;
+    }
+
+    public String getEventUserID() {
+        return userID;
+    }
+
+    public void setEventUserID(String userID) {
+        this.userID = userID;
+    }
+
+
+    public boolean overlapsWith(EventItem otherShift) {
         // Check if the dates are the same
         if (!this.date.equals(otherShift.getDate())) {
             return false;  // Different dates, no overlap
@@ -79,10 +96,32 @@ public class DoctorShift {
         return sdf.format(date);
     }
 
-    private static Date extractDateFromTimestamp(Timestamp timestamp) {
+    public static Date extractDateFromTimestamp(Timestamp timestamp) {
         // Convert Timestamp to Date
         return timestamp.toDate();
     }
 
+    public static String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        return sdf.format(date);
+    }
+
+    //Display Doctor Shifts
+    public String displayDoctorEventInfo(){
+        return("Dr. " + doctor.getFirstName() +
+                "\nDate: " + formatDate(extractDateFromTimestamp(date)) +
+                "\nStart Time: " + extractTimeIn24HourFormat(startTime) +
+                "\nEnd Time: " + extractTimeIn24HourFormat(endTime));
+    }
+
+
+    //Display PatientAppointments
+    public String displayPatientEventInfo(){
+        //maybe add display of the doctors specialities
+        return("Dr. " + doctor.getFirstName() +
+                "\nDate: " + formatDate(extractDateFromTimestamp(date)) +
+                "\nStart Time: " + extractTimeIn24HourFormat(startTime) +
+                "\nEnd Time: " + extractTimeIn24HourFormat(endTime));
+    }
 
 }

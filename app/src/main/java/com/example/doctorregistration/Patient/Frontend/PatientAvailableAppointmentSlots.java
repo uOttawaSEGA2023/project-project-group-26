@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,10 +16,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
-import com.example.doctorregistration.Doctor.Backend.DoctorShift;
+import com.example.doctorregistration.Other.EventItem;
 import com.example.doctorregistration.Doctor.Doctor;
 import com.example.doctorregistration.Other.Firebase;
-import com.example.doctorregistration.Other.User;
 import com.example.doctorregistration.Patient.Backend.DoctorItem;
 import com.example.doctorregistration.Patient.Backend.PatientAppointment;
 import com.example.doctorregistration.Patient.Backend.PatientAppointmentListView;
@@ -31,8 +29,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class PatientAvailableAppointmentSlots extends AppCompatActivity {
@@ -141,7 +137,7 @@ public class PatientAvailableAppointmentSlots extends AppCompatActivity {
                         ArrayList<String> specialtyList = (ArrayList<String>) documentSnapshot.get("Doctor.specialty");
                         doctor.setSpecialty(new ArrayList<>(specialtyList));
 
-                        ArrayList<DoctorShift> availability = (ArrayList<DoctorShift>) documentSnapshot.get("Doctor.availability");
+                        ArrayList<EventItem> availability = (ArrayList<EventItem>) documentSnapshot.get("Doctor.availability");
                         doctor.setAvailability(new ArrayList<>(availability));
 
                         doc.setDoctor(doctor);
@@ -194,7 +190,7 @@ public class PatientAvailableAppointmentSlots extends AppCompatActivity {
                 // Generate checkboxes based on doctor's shifts for the selected date
                 int i = 0;
                 for(DoctorItem item : doctorList){
-                    DoctorShift shift = item.getDoctor().getAvailability().get(i);
+                    EventItem shift = item.getDoctor().getAvailability().get(i);
                     i++;
 /*
                     if(shift.getDate().equals(selectedDate)) {
@@ -218,7 +214,7 @@ public class PatientAvailableAppointmentSlots extends AppCompatActivity {
     }
 
 
-    public void generateCheckboxesForDoctorShifts(DoctorShift shift, ListView checkboxList, DoctorItem docInfo, Calendar date){
+    public void generateCheckboxesForDoctorShifts(EventItem shift, ListView checkboxList, DoctorItem docInfo, Calendar date){
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
         //FIXXXX
         Calendar calendar = null;//(Calendar) shift.getStartTime().clone();

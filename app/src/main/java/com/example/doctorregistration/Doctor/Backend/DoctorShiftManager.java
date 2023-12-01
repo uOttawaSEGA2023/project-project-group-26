@@ -1,22 +1,18 @@
 package com.example.doctorregistration.Doctor.Backend;
-import android.util.Log;
 
 import com.example.doctorregistration.Doctor.Frontend.DoctorCreateShift;
+import com.example.doctorregistration.Other.EventItem;
 import com.example.doctorregistration.Other.Firebase;
-
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DoctorShiftManager {
     Firebase firebase = new Firebase();
     private String userID = firebase.getCurrentUser();
-    private DoctorShift shift;
+    private EventItem shift;
 
     public DoctorShiftManager() {}
 
 
-    public void addShift(DoctorShift shiftToAdd){
+    public void addShift(EventItem shiftToAdd){
         DoctorCreateShift doctorCreateShift = new DoctorCreateShift();
 
         //Updates the shift and availability ArrayList in both the "user" and "Approved Requests" collection
@@ -27,7 +23,7 @@ public class DoctorShiftManager {
         firebase.addElementToArrayList(doctorCreateShift,"Approved Requests", userID, "availability", shiftToAdd);
     }
 
-    public void deleteShift(DoctorShift shiftToDelete){
+    public void deleteShift(EventItem shiftToDelete){
         /*
         if (firebase.canDeleteShift()){
 

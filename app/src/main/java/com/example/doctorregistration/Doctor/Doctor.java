@@ -1,6 +1,6 @@
 package com.example.doctorregistration.Doctor;
 
-import com.example.doctorregistration.Doctor.Backend.DoctorShift;
+import com.example.doctorregistration.Other.EventItem;
 import com.example.doctorregistration.Other.Address;
 import com.example.doctorregistration.Other.User;
 
@@ -16,8 +16,8 @@ public class Doctor extends User {
 
     //private int employeeNumber;
     private ArrayList<String> specialty;
-    private ArrayList<DoctorShift> shifts;
-    private ArrayList<DoctorShift> availability;
+    private ArrayList<EventItem> shifts;
+    private ArrayList<EventItem> availability;
 
 
     /**
@@ -34,7 +34,7 @@ public class Doctor extends User {
      */
     public Doctor(int employeeNumber, ArrayList<String> specialty, String firstName,
                   String lastName, String email, String password, int phoneNumber,
-                  Address address, ArrayList<DoctorShift> shifts, ArrayList<DoctorShift> availability){
+                  Address address, ArrayList<EventItem> shifts, ArrayList<EventItem> availability){
 
         super(firstName, lastName, email, phoneNumber, password, employeeNumber, address); //calls parent User constructor
         this.specialty = specialty;
@@ -71,19 +71,19 @@ public class Doctor extends User {
         this.specialty = specialty;
     }
 
-    public ArrayList<DoctorShift> getShifts(){
+    public ArrayList<EventItem> getShifts(){
         return shifts;
     }
 
-    public void setShifts(ArrayList<DoctorShift> shifts){
+    public void setShifts(ArrayList<EventItem> shifts){
         this.shifts = shifts;
     }
 
-    public ArrayList<DoctorShift> getAvailability(){
+    public ArrayList<EventItem> getAvailability(){
         return availability;
     }
 
-    public void setAvailability(ArrayList<DoctorShift> availability){
+    public void setAvailability(ArrayList<EventItem> availability){
         this.availability = availability;
     }
 

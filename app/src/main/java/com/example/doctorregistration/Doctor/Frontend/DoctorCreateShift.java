@@ -11,19 +11,12 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import com.example.doctorregistration.Doctor.Backend.DoctorShift;
+import com.example.doctorregistration.Other.EventItem;
 import com.example.doctorregistration.Doctor.Backend.DoctorShiftManager;
-import com.example.doctorregistration.Doctor.Doctor;
 import com.example.doctorregistration.R;
 import com.google.firebase.Timestamp;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -35,7 +28,7 @@ public class DoctorCreateShift extends AppCompatActivity {
     private EditText startTimePicker;
     private EditText endTimePicker;
     private DoctorShiftManager doctorShiftManager;
-    private DoctorShift doctorShift;
+    private EventItem event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +41,7 @@ public class DoctorCreateShift extends AppCompatActivity {
         createShiftbtn = findViewById(R.id.createShift);
 
         calendar = Calendar.getInstance();
-        doctorShift = new DoctorShift();
+        event = new EventItem();
 
 
         setDate(1,11,2023); //set initial date of the calendar (currently set to November 1)
@@ -71,7 +64,7 @@ public class DoctorCreateShift extends AppCompatActivity {
                 Date date = calendarShift.getTime();
                 // Convert Date to Timestamp
                 Timestamp timestamp = new Timestamp(date);
-                doctorShift.setShiftDate(timestamp);
+                event.setEventDate(timestamp);
             }
         });
 
@@ -93,12 +86,10 @@ public class DoctorCreateShift extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                doctorShiftManager.addShift(doctorShift);
+                doctorShiftManager.addShift(event);
             }
         });
-
     }
-
 
     private void showTimePickerDialog(final boolean isStartTime) {
         // Get the current time
@@ -131,10 +122,10 @@ public class DoctorCreateShift extends AppCompatActivity {
 
                         // Update the corresponding EditText with the selected time
                         if (isStartTime) {
-                            doctorShift.setStartTime(selectedTimestamp);
+                            event.setStartTime(selectedTimestamp);
                             startTimePicker.setText(formatTimestamp(selectedTimestamp));
                         } else {
-                            doctorShift.setEndTime(selectedTimestamp);
+                            event.setEndTime(selectedTimestamp);
                             endTimePicker.setText(formatTimestamp(selectedTimestamp));
                         }
                     }

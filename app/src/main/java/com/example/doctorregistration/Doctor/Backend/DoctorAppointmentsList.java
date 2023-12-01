@@ -38,9 +38,6 @@ public class DoctorAppointmentsList extends AppCompatActivity {
     private Button buttonupcomingtodoctorwelcome;
 
 
-
-
-
     String getListType = DoctorWelcome.test;
 
 

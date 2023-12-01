@@ -87,9 +87,8 @@ public class DoctorWelcome extends AppCompatActivity {
         viewShiftbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
+                Intent intent = new Intent(getApplicationContext(), DoctorViewShift.class);
+                startActivity(intent);
             }
         });
 

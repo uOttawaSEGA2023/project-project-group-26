@@ -2,6 +2,7 @@ package com.example.doctorregistration.Other;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.widget.CheckBox;
@@ -9,9 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.doctorregistration.Doctor.Backend.DoctorShift;
 import com.example.doctorregistration.Doctor.Doctor;
-import com.example.doctorregistration.Doctor.Frontend.DoctorCreateShift;
 import com.example.doctorregistration.Patient.Backend.PatientAppointment;
 import com.example.doctorregistration.Patient.Patient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,11 +24,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.Timestamp;
 
-import org.checkerframework.checker.units.qual.A;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -153,8 +149,8 @@ public class Firebase {
 
                         }
 
-                        ArrayList<DoctorShift> shifts = new ArrayList<>();
-                        ArrayList<DoctorShift> availabilty = shifts;
+                        ArrayList<EventItem> shifts = new ArrayList<>();
+                        ArrayList<EventItem> availabilty = shifts;
 
                         Address address = new Address(street, postalCode, city, country);   //create Doctor user address
                         Doctor doctorUser = new Doctor(idNumber, doctorSpecialtyList, firstName, lastName, //create Doctor user
@@ -228,7 +224,7 @@ public class Firebase {
      * This method updates document fields
      * (May cause issue if you attempt to change field inside an Object, may require testing!)
      */
-    public static <T> void updateUserField(Context context, String collectionPath,
+    public static <T> void updateUserField(Activity context, String collectionPath,
                                            String userID, String fieldName, T newValue) {
         CollectionReference collectionReference = fStore.collection(collectionPath);
         DocumentReference documentReference = collectionReference.document(userID);
@@ -242,7 +238,7 @@ public class Firebase {
     }
 
 
-    public void addElementToArrayList(Context context, String collectionPath, String userID, String arrayFieldName, Object elementToBeAdded) {
+    public void addElementToArrayList(Activity context, String collectionPath, String userID, String arrayFieldName, Object elementToBeAdded) {
         CollectionReference collectionReference = fStore.collection(collectionPath);
         DocumentReference documentReference = collectionReference.document(userID);
 
@@ -256,15 +252,15 @@ public class Firebase {
                     if (userType.equals("Doctor")) {
 
                         ArrayList<HashMap<String, Object>> existingShiftsRaw = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Doctor."+arrayFieldName);
-                        DoctorShift shiftToAdd = (DoctorShift) elementToBeAdded;
-                        ArrayList<DoctorShift> existingShifts = new ArrayList<>();
+                        EventItem shiftToAdd = (EventItem) elementToBeAdded;
+                        ArrayList<EventItem> existingShifts = new ArrayList<>();
 
                         for (HashMap<String, Object> existingShiftMap : existingShiftsRaw) {
                             Timestamp existingDate = (Timestamp) existingShiftMap.get("date");
                             Timestamp existingStartTime = (Timestamp) existingShiftMap.get("startTime");
                             Timestamp existingEndTime = (Timestamp) existingShiftMap.get("endTime");
 
-                            DoctorShift existingShift = new DoctorShift(existingStartTime, existingEndTime, existingDate);
+                            EventItem existingShift = new EventItem(existingStartTime, existingEndTime, existingDate);
                             existingShifts.add(existingShift);
 
                             if (shiftToAdd.overlapsWith(existingShift)) {
@@ -295,7 +291,7 @@ public class Firebase {
     }
 
 
-    public void deleteElementFromArrayList(Context context, String collectionPath, String userID, String arrayFieldName, Object elementToBeDeleted){
+    public void deleteElementFromArrayList(Activity context, String collectionPath, String userID, String arrayFieldName, Object elementToBeDeleted){
         CollectionReference collectionReference = fStore.collection(collectionPath);
         DocumentReference documentReference = collectionReference.document(userID);
         //Will add test if
@@ -310,7 +306,7 @@ public class Firebase {
                     String userType = documentSnapshot.getString("userType");
 
                     if (userType.equals("Doctor")) {
-                        ArrayList<DoctorShift> existingShifts = (ArrayList<DoctorShift>) documentSnapshot.get("Doctor." + arrayFieldName);
+                        ArrayList<EventItem> existingShifts = (ArrayList<EventItem>) documentSnapshot.get("Doctor." + arrayFieldName);
                         existingShifts.remove(elementToBeDeleted);
 
                         updateUserField(context, "user", userID, "Doctor." + arrayFieldName, existingShifts);
@@ -347,8 +343,8 @@ public class Firebase {
                     String userType = documentSnapshot.getString("userType");
 
                     if (userType.equals("Doctor")) {
-                        ArrayList<DoctorShift> shifts = (ArrayList<DoctorShift>) documentSnapshot.get("Doctor.shifts");
-                        ArrayList<DoctorShift> availability = (ArrayList<DoctorShift>) documentSnapshot.get("Doctor.shifts");
+                        ArrayList<EventItem> shifts = (ArrayList<EventItem>) documentSnapshot.get("Doctor.shifts");
+                        ArrayList<EventItem> availability = (ArrayList<EventItem>) documentSnapshot.get("Doctor.shifts");
 
                         areEqual.set(shifts.equals(availability));
 
