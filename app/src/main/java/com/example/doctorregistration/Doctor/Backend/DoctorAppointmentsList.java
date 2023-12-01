@@ -219,6 +219,8 @@ public class DoctorAppointmentsList extends AppCompatActivity {
                         "appointmentapproval", "approved");
                 firebase.updateUserField(DoctorAppointmentsList.this, "Approved Requests", userID,
                         "appointmentapproval", "approved");
+                // Copy user document to "Approved Appointments" collection
+                firebase.copyUserToAnotherCollection("Approved Requests", "Approved Appointments", userID);
 
                 btApprove.setVisibility(View.GONE);
                 btReject.setVisibility(View.GONE);
@@ -248,6 +250,7 @@ public class DoctorAppointmentsList extends AppCompatActivity {
             public void onClick(View view) {
                 firebase.updateUserField(DoctorAppointmentsList.this, "Approved Requests", userID,
                         "appointmentapproval", "cancelled");
+                firebase.removeUserFromCollection("Approved Appointments", userID);
 
                 btApprove.setVisibility(View.GONE);
                 btReject.setVisibility(View.GONE);
