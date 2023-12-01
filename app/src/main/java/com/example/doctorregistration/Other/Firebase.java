@@ -9,7 +9,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.doctorregistration.Doctor.Backend.DoctorShift;
 import com.example.doctorregistration.Doctor.Doctor;
+import com.example.doctorregistration.Doctor.Frontend.DoctorCreateShift;
+import com.example.doctorregistration.Patient.Backend.PatientAppointment;
 import com.example.doctorregistration.Patient.Patient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,11 +21,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.Timestamp;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The Firebase class holds all variables and methods related to firebase and firestore
@@ -117,7 +126,6 @@ public class Firebase {
 
     /**
      * This method creates new users, used when registering Doctors and Patients
-     *
      */
     public void createNewUser(Context context, String userType, int idNumber, ArrayList<CheckBox> specialtyList, String firstName,
                               String lastName, String email, String password, int phoneNumber, String country, String city,
@@ -145,32 +153,50 @@ public class Firebase {
 
                         }
 
+                        ArrayList<DoctorShift> shifts = new ArrayList<>();
+                        ArrayList<DoctorShift> availabilty = shifts;
+
                         Address address = new Address(street, postalCode, city, country);   //create Doctor user address
                         Doctor doctorUser = new Doctor(idNumber, doctorSpecialtyList, firstName, lastName, //create Doctor user
-                                email, password, phoneNumber, address);
+                                email, password, phoneNumber, address, shifts, availabilty);
 
                         //Places user data into Firestore collection "user"
                         user.put(userType, doctorUser);
                         user.put("userType", userType); //Stores Doctor user information if Firestore database
                         user.put("accountStatus", "pending");
+                        user.put("shifts", shifts);
+                        user.put("availability", availabilty);
 
                         //Places user data into Firestore collection "Pending Requests"
                         pendingRequests.put(userType, doctorUser);
                         pendingRequests.put("userType", userType);
                         pendingRequests.put("accountStatus", "pending");
+                        pendingRequests.put("shifts", shifts);
+                        pendingRequests.put("availability", availabilty);
+
+
 
                     } else if (userType.equals("Patient")) {
                         Address address = new Address(street, postalCode, city, country);
                         Patient patientUser = new Patient(firstName, lastName, email, idNumber, phoneNumber, address, password);
 
+                        ArrayList<PatientAppointment> upcomingAppointments = new ArrayList<>();
+                        ArrayList<PatientAppointment> pastAppointments = new ArrayList<>();
+
                         user.put(userType, patientUser);       //Stores Patient user information in Firestore database
                         user.put("userType", userType);
                         user.put("accountStatus", "pending");
+
+              //          user.put("upcomingAppointments", upcomingAppointments);
+              //          user.put("pastAppointments", pastAppointments);
 
                         //Places user data into Firestore collection "Pending Requests"
                         pendingRequests.put(userType, patientUser);
                         pendingRequests.put("userType", userType);
                         pendingRequests.put("accountStatus", "pending");
+
+            //            pendingRequests.put("upcomingAppointments", upcomingAppointments);
+            //            pendingRequests.put("pastAppointments", pastAppointments);
 
                     } else {
                         Log.d(TAG, "Invalid userType in Firebase.class -> createNewUser()");
@@ -196,14 +222,11 @@ public class Firebase {
                     task.getException(); //Check Logcat if task is unsuccessful or app crashes for error message
             }
         });
-
     }
 
     /**
      * This method updates document fields
-     *
-     *             (May cause issue if you attempt to change field inside an Object, may require testing!)
-     *
+     * (May cause issue if you attempt to change field inside an Object, may require testing!)
      */
     public static <T> void updateUserField(Context context, String collectionPath,
                                            String userID, String fieldName, T newValue) {
@@ -211,16 +234,172 @@ public class Firebase {
         DocumentReference documentReference = collectionReference.document(userID);
 
         documentReference.update(fieldName, newValue).addOnSuccessListener(aVoid -> {
-            Toast.makeText(context, "Information updated", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Information updated", Toast.LENGTH_SHORT).show();
 
         }).addOnFailureListener(e -> {
             // Handle errors
         });
+    }
+
+
+    public void addElementToArrayList(Context context, String collectionPath, String userID, String arrayFieldName, Object elementToBeAdded) {
+        CollectionReference collectionReference = fStore.collection(collectionPath);
+        DocumentReference documentReference = collectionReference.document(userID);
+
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String userType = documentSnapshot.getString("userType");
+                    boolean conflict = false;
+
+                    if (userType.equals("Doctor")) {
+                        /*
+                        List<HashMap<String, Object>> rawShifts = (List<HashMap<String, Object>>) documentSnapshot.get("Doctor." + arrayFieldName);
+
+                        // Convert the List<HashMap> to a List<DoctorShift>
+                        ArrayList<DoctorShift> existingShifts = new ArrayList<>();
+                        for (HashMap<String, Object> rawShift : rawShifts) {
+                            DoctorShift doctorShift = convertHashMapToDoctorShift(rawShift);
+                            existingShifts.add(doctorShift);
+                        }
+
+                        DoctorShift shiftToAdd = (DoctorShift) elementToBeAdded;
+
+                        for(DoctorShift currentShift : existingShifts){
+                            if (currentShift.overlapsWith(shiftToAdd)) {
+                                conflict = true;
+                                break;
+                            }
+                        }
+
+                        if(!conflict) {
+                            existingShifts.add(shiftToAdd);
+                            updateUserField(null, collectionPath, userID, "Doctor." + arrayFieldName, existingShifts);
+                            //Toast.makeText(context, "Shift Created", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            Toast.makeText(context, "Shift Conflict!", Toast.LENGTH_SHORT).show();
+*/
+
+                        ArrayList<HashMap<String, Object>> existingShiftsRaw = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Doctor."+arrayFieldName);
+                        DoctorShift shiftToAdd = (DoctorShift) elementToBeAdded;
+                        ArrayList<DoctorShift> existingShifts = new ArrayList<>();
+
+                        for (HashMap<String, Object> existingShiftMap : existingShiftsRaw) {
+                            Timestamp existingDate = (Timestamp) existingShiftMap.get("date");
+                            Timestamp existingStartTime = (Timestamp) existingShiftMap.get("startTime");
+                            Timestamp existingEndTime = (Timestamp) existingShiftMap.get("endTime");
+
+                            DoctorShift existingShift = new DoctorShift(existingStartTime, existingEndTime, existingDate);
+                            existingShifts.add(existingShift);
+
+                            if (shiftToAdd.overlapsWith(existingShift)) {
+                                //Toast.makeText(context, "Shift Conflict!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+
+                        existingShifts.add(shiftToAdd);
+                        updateUserField(null, collectionPath, userID, "Doctor." + arrayFieldName, existingShifts);
+                        //Toast.makeText(context, "Shift Created", Toast.LENGTH_SHORT).show();
+
+
+
+                    } else if (userType.equals("Patient")) {
+                        //need to add test for appointment conflict before adding
+
+                        ArrayList<PatientAppointment> appointments = (ArrayList<PatientAppointment>) documentSnapshot.get("Patient." + arrayFieldName);
+                        appointments.add((PatientAppointment) elementToBeAdded);
+
+                        updateUserField(null, collectionPath, userID, "Patient." + arrayFieldName, appointments);
+                    }
+
+                } else
+                    Log.e(TAG, "Document not found!");
+            }
+        });
+    }
+
+    // Helper method to convert HashMap to DoctorShift
+   // private DoctorShift convertHashMapToDoctorShift(HashMap<String, Object> data) {
+    //    return DoctorShift.convertHashMapToDoctorShift(data);
+    //}
+
+    public void deleteElementFromArrayList(Context context, String collectionPath, String userID, String arrayFieldName, Object elementToBeDeleted){
+        CollectionReference collectionReference = fStore.collection(collectionPath);
+        DocumentReference documentReference = collectionReference.document(userID);
+        //Will add test if
+
+        //When deleting MAY have to shift down elements in arraylist to avoid having gaps,
+        //idk if it is needed though, will need to test
+
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String userType = documentSnapshot.getString("userType");
+
+                    if (userType.equals("Doctor")) {
+                        ArrayList<DoctorShift> existingShifts = (ArrayList<DoctorShift>) documentSnapshot.get("Doctor." + arrayFieldName);
+                        existingShifts.remove(elementToBeDeleted);
+
+                        updateUserField(context, "user", userID, "Doctor." + arrayFieldName, existingShifts);
+
+
+                    } else if (userType.equals("Patient")) {
+                        //functionality for appointments array list
+
+
+
+
+
+                    }
+
+                } else
+                    Log.e(TAG, "Document not found!");
+            }
+        });
 
     }
 
+
+    //used for doctor functionality
+    public boolean canDeleteShift(String userID){
+        AtomicBoolean areEqual = new AtomicBoolean(false);
+
+        CollectionReference collectionReference = fStore.collection("user");
+        DocumentReference documentReference = collectionReference.document(userID);
+
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String userType = documentSnapshot.getString("userType");
+
+                    if (userType.equals("Doctor")) {
+                        ArrayList<DoctorShift> shifts = (ArrayList<DoctorShift>) documentSnapshot.get("Doctor.shifts");
+                        ArrayList<DoctorShift> availability = (ArrayList<DoctorShift>) documentSnapshot.get("Doctor.shifts");
+
+                        areEqual.set(shifts.equals(availability));
+
+                    } else
+                        Log.e(TAG, "Document not found!");
+                }
+            }
+        });
+
+        return areEqual.get();
+    }
+
+
+
+
+
+
+
     //returns Firestore collection specified by String
-    public CollectionReference getCollectionRef(String collection){
+    public CollectionReference getCollectionRef(String collection) {
         return collectionRef = fStore.collection(collection);
     }
 
@@ -277,6 +456,10 @@ public class Firebase {
                 .addOnFailureListener(e -> {
                     // Handle errors during the delete operation
                 });
+    }
+
+    public String getCurrentUser(){
+        return fAuth.getCurrentUser().getUid();
     }
 
 }

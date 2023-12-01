@@ -1,5 +1,6 @@
 package com.example.doctorregistration.Doctor;
 
+import com.example.doctorregistration.Doctor.Backend.DoctorShift;
 import com.example.doctorregistration.Other.Address;
 import com.example.doctorregistration.Other.User;
 
@@ -15,6 +16,9 @@ public class Doctor extends User {
 
     //private int employeeNumber;
     private ArrayList<String> specialty;
+    private ArrayList<DoctorShift> shifts;
+    private ArrayList<DoctorShift> availability;
+
 
     /**
      * Constructs user of type Doctor
@@ -30,10 +34,12 @@ public class Doctor extends User {
      */
     public Doctor(int employeeNumber, ArrayList<String> specialty, String firstName,
                   String lastName, String email, String password, int phoneNumber,
-                  Address address){
+                  Address address, ArrayList<DoctorShift> shifts, ArrayList<DoctorShift> availability){
 
         super(firstName, lastName, email, phoneNumber, password, employeeNumber, address); //calls parent User constructor
         this.specialty = specialty;
+        this.shifts = shifts;
+        this.availability = availability;
 
         /*
          * Even though parent User constructor is called, each inherited variable must be set in child class
@@ -64,6 +70,23 @@ public class Doctor extends User {
     public void setSpecialty(ArrayList<String> specialty) {  //TODO May cause errors
         this.specialty = specialty;
     }
+
+    public ArrayList<DoctorShift> getShifts(){
+        return shifts;
+    }
+
+    public void setShifts(ArrayList<DoctorShift> shifts){
+        this.shifts = shifts;
+    }
+
+    public ArrayList<DoctorShift> getAvailability(){
+        return availability;
+    }
+
+    public void setAvailability(ArrayList<DoctorShift> availability){
+        this.availability = availability;
+    }
+
 
     @Override
     public String displayUserInformation() {
