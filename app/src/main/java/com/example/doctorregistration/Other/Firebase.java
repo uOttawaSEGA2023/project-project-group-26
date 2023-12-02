@@ -150,25 +150,25 @@ public class Firebase {
                         }
 
                         ArrayList<EventItem> shifts = new ArrayList<>();
-                        ArrayList<EventItem> availabilty = shifts;
+                        ArrayList<EventItem> availability = new ArrayList<>();
 
                         Address address = new Address(street, postalCode, city, country);   //create Doctor user address
                         Doctor doctorUser = new Doctor(idNumber, doctorSpecialtyList, firstName, lastName, //create Doctor user
-                                email, password, phoneNumber, address, shifts, availabilty);
+                                email, password, phoneNumber, address, shifts, availability);
 
                         //Places user data into Firestore collection "user"
                         user.put(userType, doctorUser);
                         user.put("userType", userType); //Stores Doctor user information if Firestore database
                         user.put("accountStatus", "pending");
                         user.put("shifts", shifts);
-                        user.put("availability", availabilty);
+                        user.put("availability", availability);
 
                         //Places user data into Firestore collection "Pending Requests"
                         pendingRequests.put(userType, doctorUser);
                         pendingRequests.put("userType", userType);
                         pendingRequests.put("accountStatus", "pending");
                         pendingRequests.put("shifts", shifts);
-                        pendingRequests.put("availability", availabilty);
+                        pendingRequests.put("availability", availability);
 
 
 
@@ -293,10 +293,6 @@ public class Firebase {
     public void deleteElementFromArrayList(Activity context, String collectionPath, String userID, String arrayFieldName, Object elementToBeDeleted){
         CollectionReference collectionReference = fStore.collection(collectionPath);
         DocumentReference documentReference = collectionReference.document(userID);
-        //Will add test if
-
-        //When deleting MAY have to shift down elements in arraylist to avoid having gaps,
-        //idk if it is needed though, will need to test
 
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -305,10 +301,24 @@ public class Firebase {
                     String userType = documentSnapshot.getString("userType");
 
                     if (userType.equals("Doctor")) {
-                        ArrayList<EventItem> existingShifts = (ArrayList<EventItem>) documentSnapshot.get("Doctor." + arrayFieldName);
-                        existingShifts.remove(elementToBeDeleted);
+                        ArrayList<HashMap<String, Object>> existingShiftsRaw = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Doctor."+arrayFieldName);
+                        EventItem shiftToBeDeleted = (EventItem) elementToBeDeleted;
+                        ArrayList<EventItem> existingShifts = new ArrayList<>();
 
-                        updateUserField(context, "user", userID, "Doctor." + arrayFieldName, existingShifts);
+                        for (HashMap<String, Object> existingShiftMap : existingShiftsRaw) {
+                            Timestamp existingDate = (Timestamp) existingShiftMap.get("date");
+                            Timestamp existingStartTime = (Timestamp) existingShiftMap.get("startTime");
+                            Timestamp existingEndTime = (Timestamp) existingShiftMap.get("endTime");
+
+                            EventItem existingShift = new EventItem(existingStartTime, existingEndTime, existingDate);
+                            existingShifts.add(existingShift);
+
+                            if (existingShift.equals(shiftToBeDeleted))
+                                existingShifts.remove(existingShift); //shift was found and remove
+                        }
+
+                        //update the new shifts with the deleted element
+                        updateUserField(context, collectionPath, userID, "Doctor." + arrayFieldName, existingShifts);
 
 
                     } else if (userType.equals("Patient")) {
@@ -328,7 +338,7 @@ public class Firebase {
     }
 
 
-    //used for doctor functionality
+    //Re work how availability is stored
     public boolean canDeleteShift(String userID){
         AtomicBoolean areEqual = new AtomicBoolean(false);
 
@@ -342,10 +352,31 @@ public class Firebase {
                     String userType = documentSnapshot.getString("userType");
 
                     if (userType.equals("Doctor")) {
-                        ArrayList<EventItem> shifts = (ArrayList<EventItem>) documentSnapshot.get("Doctor.shifts");
-                        ArrayList<EventItem> availability = (ArrayList<EventItem>) documentSnapshot.get("Doctor.shifts");
+                        ArrayList<HashMap<String, Object>> existingShiftsRaw = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Doctor.shifts");
+                        ArrayList<EventItem> shiftsList = new ArrayList<>();
 
-                        areEqual.set(shifts.equals(availability));
+                        for (HashMap<String, Object> existingShiftMap : existingShiftsRaw) {
+                            Timestamp existingDate = (Timestamp) existingShiftMap.get("date");
+                            Timestamp existingStartTime = (Timestamp) existingShiftMap.get("startTime");
+                            Timestamp existingEndTime = (Timestamp) existingShiftMap.get("endTime");
+
+                            EventItem shift = new EventItem(existingStartTime, existingEndTime, existingDate);
+                            shiftsList.add(shift); //shift was found and remove
+                        }
+
+                        ArrayList<HashMap<String, Object>> existingAvailabilityRaw = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Doctor.availability");
+                        ArrayList<EventItem> availabilityList = new ArrayList<>();
+
+                        for (HashMap<String, Object> existingAvailabilityMapRaw : existingAvailabilityRaw) {
+                            Timestamp existingDate = (Timestamp) existingAvailabilityMapRaw.get("date");
+                            Timestamp existingStartTime = (Timestamp) existingAvailabilityMapRaw.get("startTime");
+                            Timestamp existingEndTime = (Timestamp) existingAvailabilityMapRaw.get("endTime");
+
+                            EventItem availability = new EventItem(existingStartTime, existingEndTime, existingDate);
+                            availabilityList.add(availability); //shift was found and remove
+                        }
+
+                        //areEqual.set(shiftsList.equals(availabilityList));
 
                     } else
                         Log.e(TAG, "Document not found!");

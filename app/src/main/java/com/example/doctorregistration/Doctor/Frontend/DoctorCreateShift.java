@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.doctorregistration.Other.EventItem;
 import com.example.doctorregistration.Doctor.Backend.DoctorShiftManager;
@@ -25,8 +27,8 @@ public class DoctorCreateShift extends AppCompatActivity {
     private CalendarView calendarView;
     private Calendar calendar;
     private Button createShiftbtn;
-    private EditText startTimePicker;
-    private EditText endTimePicker;
+    private TextView startTimePicker;
+    private TextView endTimePicker;
     private DoctorShiftManager doctorShiftManager;
     private EventItem event;
 
@@ -60,11 +62,17 @@ public class DoctorCreateShift extends AppCompatActivity {
                 calendarShift.set(Calendar.SECOND, 0);
                 calendarShift.set(Calendar.MILLISECOND, 0);
 
-                // Convert Calendar to Date
-                Date date = calendarShift.getTime();
-                // Convert Date to Timestamp
-                Timestamp timestamp = new Timestamp(date);
-                event.setEventDate(timestamp);
+                if(event.isDateValid(calendarShift)) { //Checks if the date selected has not passed
+                    // Convert Calendar to Date
+                    Date date = calendarShift.getTime();
+                    // Convert Date to Timestamp
+                    Timestamp timestamp = new Timestamp(date);
+                    event.setEventDate(timestamp);
+                }
+                else {
+                    Toast.makeText(DoctorCreateShift.this, "Select date that has not passed"
+                            , Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -85,12 +93,21 @@ public class DoctorCreateShift extends AppCompatActivity {
         createShiftbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                doctorShiftManager.addShift(event);
+                //Checks if all fields are set
+                if(event.getEndTime() != null && event.getStartTime() != null && event.getDate() != null) {
+                    if(event.isValidTime()){ //checks if start time comes before end time
+                        doctorShiftManager.addShift(event);
+                    }
+                    else
+                        Toast.makeText(DoctorCreateShift.this, "Please select valid time range", Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(DoctorCreateShift.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    //This method shows the time picker dialog
     private void showTimePickerDialog(final boolean isStartTime) {
         // Get the current time
         final Calendar calendar = Calendar.getInstance();
@@ -105,7 +122,7 @@ public class DoctorCreateShift extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         // Round the minute to the nearest 30 minutes
                         doctorShiftManager = new DoctorShiftManager();
-                        minute = doctorShiftManager.roundToNearest30Minutes(minute);
+                        minute = doctorShiftManager.roundToNearest30Minutes(minute); //rounds inputted value to nearest 30 min
 
                         // Create a Calendar instance
                         Calendar selectedTimeCalendar = Calendar.getInstance();
@@ -120,14 +137,14 @@ public class DoctorCreateShift extends AppCompatActivity {
                         // Create a Timestamp from the Date
                         Timestamp selectedTimestamp = new Timestamp(selectedTimeDate);
 
-                        // Update the corresponding EditText with the selected time
-                        if (isStartTime) {
-                            event.setStartTime(selectedTimestamp);
-                            startTimePicker.setText(formatTimestamp(selectedTimestamp));
-                        } else {
-                            event.setEndTime(selectedTimestamp);
-                            endTimePicker.setText(formatTimestamp(selectedTimestamp));
-                        }
+                            // Update the corresponding TextView with the selected time
+                            if (isStartTime) {
+                                event.setStartTime(selectedTimestamp);
+                                startTimePicker.setText(event.formatTimestamp(selectedTimestamp));
+                            } else {
+                                event.setEndTime(selectedTimestamp);
+                                endTimePicker.setText(event.formatTimestamp(selectedTimestamp));
+                            }
                     }
                 },
                 hour,
@@ -138,13 +155,7 @@ public class DoctorCreateShift extends AppCompatActivity {
         timePickerDialog.show();
     }
 
-    private String formatTimestamp(Timestamp timestamp) {
-        Date date = timestamp.toDate();
-        // Format the date as needed
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.US); //displays in 24 hour format
-        return sdf.format(date);
-    }
-
+    //This method sets the Calendar view to a specific date
     public void setDate(int day, int month, int year){
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month-1);
@@ -154,5 +165,6 @@ public class DoctorCreateShift extends AppCompatActivity {
 
         calendarView.setDate(milli);
     }
+
 
 }

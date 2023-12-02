@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.doctorregistration.Admin.Backend.AdminDeniedRequest;
+import com.example.doctorregistration.Doctor.Backend.DoctorShiftManager;
 import com.example.doctorregistration.Doctor.Doctor;
 import com.example.doctorregistration.Other.Address;
 import com.example.doctorregistration.Other.EventItem;
@@ -37,6 +38,7 @@ public class DoctorViewShift extends AppCompatActivity {
     ArrayList<EventItem> shifts;
     CollectionReference collectionRef;
     Firebase firebase;
+    DoctorShiftManager shiftManager;
 
 
     @Override
@@ -50,14 +52,14 @@ public class DoctorViewShift extends AppCompatActivity {
         firebase = new Firebase();
         collectionRef = firebase.getCollectionRef("Approved Requests");
 
+        shiftManager = new DoctorShiftManager();
+
         //When item is clicked, alert box will appear displaying user information
         listViewShifts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Handle item click
                 EventItem shift = shifts.get(position);
-
-                String userID = shift.getEventUserID();
 
                 showShiftInformation(shift);
 
@@ -71,48 +73,53 @@ public class DoctorViewShift extends AppCompatActivity {
         super.onStart();
 
         // Add a real-time listener to the collectionRef
-        collectionRef.document(firebase.getCurrentUser()).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
+        collectionRef.document(firebase.getCurrentUser()).addSnapshotListener((document, error) -> {
+            if (error != null) {
+                Log.e("Debug", "Error listening for changes", error);
+                return;
+            }
 
-                if (document.exists()) {
+            if (document != null && document.exists()) {
+                shifts.clear();
 
-                    Doctor doctor = new Doctor();
-                    doctor.setLastName(document.getString("Doctor.lastName"));
+                Doctor doctor = new Doctor();
+                doctor.setLastName(document.getString("Doctor.lastName"));
 
-                    ArrayList<HashMap<String, Object>> existingShiftsRaw = (ArrayList<HashMap<String, Object>>) document.get("Doctor.shifts");
+                //To extract the Event data, must extract has HashMap
+                ArrayList<HashMap<String, Object>> existingShiftsRaw = (ArrayList<HashMap<String, Object>>) document.get("Doctor.shifts");
 
-                    for (HashMap<String, Object> existingShiftMap : existingShiftsRaw) {
-                        EventItem doctorShift = new EventItem();
+                //Copies all values in firestore into manageable and displayable ArrayList<EventItem>
+                for (HashMap<String, Object> existingShiftMap : existingShiftsRaw) {
+                    EventItem doctorShift = new EventItem();
 
-                        doctorShift.setEventDate((Timestamp)existingShiftMap.get("date"));
-                        doctorShift.setStartTime((Timestamp) existingShiftMap.get("startTime"));
-                        doctorShift.setEndTime((Timestamp) existingShiftMap.get("endTime"));
+                    doctorShift.setEventDate((Timestamp) existingShiftMap.get("date"));
+                    doctorShift.setStartTime((Timestamp) existingShiftMap.get("startTime"));
+                    doctorShift.setEndTime((Timestamp) existingShiftMap.get("endTime"));
 
-                        doctorShift.setEventDoctor(doctor);
-                        shifts.add(doctorShift);
-                    }
-                }
-
-
-                if (adapter == null) {
-                    //If there is no adapter, create one
-                    adapter = new EventListView(DoctorViewShift.this, shifts);
-                    listViewShifts.setAdapter(adapter);
-                } else {
-                    // Adapter already exists, update the data and notifyDataSetChanged
-                    adapter.clear();
-                    adapter.addAll(shifts);
-                    adapter.notifyDataSetChanged();
+                    doctorShift.setEventDoctor(doctor);
+                    shifts.add(doctorShift);
                 }
             }
+
+
+            if (adapter == null) {
+                //If there is no adapter, create one
+                adapter = new EventListView(DoctorViewShift.this, shifts);
+                listViewShifts.setAdapter(adapter);
+            } else {
+                // Adapter already exists, update the data and notifyDataSetChanged
+                adapter.clear();
+                adapter.addAll(shifts);
+                adapter.notifyDataSetChanged();
+            }
+
         });
     }
 
 
-    /**
-     * This method displays the Alert Box when clicked
-     */
+
+     // This method displays the Alert Box when clicked
+
     private void showShiftInformation(EventItem doctorShiftEvent) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -131,10 +138,8 @@ public class DoctorViewShift extends AppCompatActivity {
         btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //firebase.updateUserField(DoctorViewShift.this, "user", userID,
-                //        "accountStatus", "approved");
-
-                //firebase.removeUserFromCollection("Denied Requests", userID);
+                shiftManager.deleteShift(doctorShiftEvent);
+                adapter.notifyDataSetChanged();
             }
         });
     }

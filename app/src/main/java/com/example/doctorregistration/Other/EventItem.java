@@ -5,6 +5,8 @@ import com.example.doctorregistration.Patient.Patient;
 import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -13,16 +15,21 @@ public class EventItem {
     private Timestamp endTime;
     private Timestamp date;
 
+    private ArrayList<Patient> doctorPatients;
     private Doctor doctor;
     private Patient patient;
-    private String userType;
-
-    private String userID;
 
     public EventItem(Timestamp startTime, Timestamp endTime, Timestamp date) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
+    }
+
+    public EventItem(Timestamp startTime, Timestamp endTime, Timestamp date, ArrayList<Patient> doctorPatients) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.date = date;
+        this.doctorPatients = doctorPatients;
     }
 
     public EventItem(){}
@@ -48,19 +55,6 @@ public class EventItem {
     public void setEventDate(Timestamp date){
         this.date = date;
     }
-    public String getEventUserType(){return userType;}
-
-    public void setEventUserType(String userType){
-        this.userType = userType;
-    }
-
-    public String getEventUserID() {
-        return userID;
-    }
-
-    public void setEventUserID(String userID) {
-        this.userID = userID;
-    }
 
     public Doctor getEventDoctor() {
         return doctor;
@@ -70,7 +64,15 @@ public class EventItem {
         this.doctor = doctor;
     }
 
+    public ArrayList<Patient> getDoctorPatients() {
+        return doctorPatients;
+    }
 
+    public void setDoctorPatients(ArrayList<Patient> doctorPatients) {
+        this.doctorPatients = doctorPatients;
+    }
+
+    //This method checks if EventItem conflicts with another EventItem
     public boolean overlapsWith(EventItem otherShift) {
         // Check if the dates are the same
         if (!this.date.equals(otherShift.getDate())) {
@@ -92,10 +94,8 @@ public class EventItem {
         return startDate1.before(endDate2) && endDate1.after(startDate2);
     }
 
-    //Use these methods when you want to extract data from database and display in readable format
-    //is currently un tested
-    //may no
-    public static String extractTimeIn24HourFormat(Timestamp timestamp) {
+    //Displays time in readable format
+    public static String formatTimestamp(Timestamp timestamp) {
         // Convert the Firestore timestamp to a Date
         Date date = timestamp.toDate();
 
@@ -104,22 +104,39 @@ public class EventItem {
         return sdf.format(date);
     }
 
+    //This method converts timestamp to date (date is more manageable in code, timestamp is best
+    //stored in firebase)
     public static Date extractDateFromTimestamp(Timestamp timestamp) {
         // Convert Timestamp to Date
         return timestamp.toDate();
     }
 
+    //This method formats date into readable format
     public static String formatDate(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         return sdf.format(date);
+    }
+
+    //This method is a custom comparator for EventItem type
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        EventItem other = (EventItem) obj;
+
+        // Compare the Timestamps for equality
+        return startTime.equals(other.startTime) &&
+                endTime.equals(other.endTime) &&
+                date.equals(other.date);
     }
 
     //Display Doctor Shifts
     public String displayDoctorEventInfo(){
         return("Dr. " + doctor.getLastName() +
                 "\nDate: " + formatDate(extractDateFromTimestamp(date)) +
-                "\nStart Time: " + extractTimeIn24HourFormat(startTime) +
-                "\nEnd Time: " + extractTimeIn24HourFormat(endTime));
+                "\nStart Time: " + formatTimestamp(startTime) +
+                "\nEnd Time: " + formatTimestamp(endTime));
     }
 
 
@@ -128,8 +145,24 @@ public class EventItem {
         //maybe add display of the doctors specialities
         return("Dr. " + doctor.getLastName() +
                 "\nDate: " + formatDate(extractDateFromTimestamp(date)) +
-                "\nStart Time: " + extractTimeIn24HourFormat(startTime) +
-                "\nEnd Time: " + extractTimeIn24HourFormat(endTime));
+                "\nStart Time: " + formatTimestamp(startTime) +
+                "\nEnd Time: " + formatTimestamp(endTime));
+    }
+
+    //This method checks if selected date hasn't already passed
+    public static boolean isDateValid(Calendar selectedDate) {
+        // Get the current date
+        Calendar currentDate = Calendar.getInstance();
+        // Compare the selected date with the current date
+        return !selectedDate.before(currentDate);
+    }
+
+    //This method checks if start time comes before end time
+    public boolean isValidTime() {
+        Date startDate = startTime.toDate();
+        Date endDate = endTime.toDate();
+
+        return (startDate.before(endDate));
     }
 
 }
