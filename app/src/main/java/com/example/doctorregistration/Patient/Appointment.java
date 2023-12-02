@@ -1,21 +1,25 @@
 package com.example.doctorregistration.Patient;
 
 
+import com.google.firebase.Timestamp;
+
 //Appointment class used to store patient's appointment details
 public class Appointment {
+    private Timestamp appointmentTime;
     private String date;
     private String startTime;
     private String endTime;
 
-    public Appointment(String date, String startTime, String endTime) {
+    public Appointment(Timestamp appointmentTime) {
 
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.appointmentTime = appointmentTime;
 
     }
 
     //getters
+    /*
+
+
     public String getDate(){
         return this.date;
     }
@@ -39,6 +43,16 @@ public class Appointment {
 
     public void setEndTime(String endTime){
         this.endTime = endTime;
+    }
+
+     */
+
+    public Timestamp getAppointmentTime() {
+        return appointmentTime;
+    }
+
+    public void setAppointmentTime(Timestamp appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
 
 }

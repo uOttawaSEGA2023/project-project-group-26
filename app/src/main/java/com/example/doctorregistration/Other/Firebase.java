@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.doctorregistration.Doctor.Doctor;
+import com.example.doctorregistration.Patient.Appointment;
 import com.example.doctorregistration.Patient.Patient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -300,6 +302,14 @@ public class Firebase {
                 Log.e(TAG, "User document does not exist " + sourceCollection);
             }
         });
+    }
+
+    public void addAppointmentToUpcomingAppointments(String userID, Appointment newAppointment) {
+        // Get the reference to the user's document
+        DocumentReference userDocRef = fStore.collection("Approved Requests").document(userID);
+
+        // Update the "upcomingAppointments" array
+        userDocRef.update("upcomingAppointment", FieldValue.arrayUnion(newAppointment));
     }
 
 }

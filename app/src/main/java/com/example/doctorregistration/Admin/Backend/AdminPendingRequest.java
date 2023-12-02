@@ -24,6 +24,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * The AdminPendingRequest class sets up the activity where
@@ -102,7 +103,21 @@ public class AdminPendingRequest extends AppCompatActivity {
                         doctor.setLastName(documentSnapshot.getString("Doctor.lastName"));
                         doctor.setPhoneNumber(documentSnapshot.getLong("Doctor.phoneNumber").intValue());
                         doctor.setEmail(documentSnapshot.getString("Doctor.email"));
-                        doctor.setIdNumber(documentSnapshot.getLong("Doctor.idNumber").intValue());
+                        Long idNumberLong = documentSnapshot.getLong("Doctor.idNumber");
+                        if (idNumberLong != null) {
+                            doctor.setIdNumber(idNumberLong.intValue());
+                        } else {
+                            // Generate a random ID as a placeholder
+                            Random random = new Random();
+                            int randomId = random.nextInt(Integer.MAX_VALUE);
+
+                            // Set the random ID
+                            doctor.setIdNumber(randomId);
+
+                            // Log a message or perform other actions based on your requirements
+                            Log.w("Firestore", "Doctor.idNumber is null, setting a random ID: " + randomId);
+                        }
+
 
                         ArrayList<String> specialtyList = (ArrayList<String>) documentSnapshot.get("Doctor.specialty");
                         doctor.setSpecialty(new ArrayList<>(specialtyList));
@@ -182,6 +197,8 @@ public class AdminPendingRequest extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 firebase.updateUserField(AdminPendingRequest.this, "user", userID,
+                        "accountStatus", "approved");
+                firebase.updateUserField(AdminPendingRequest.this, "Pending Requests", userID,
                         "accountStatus", "approved");
                 firebase.moveUserToAnotherCollection("Pending Requests","Approved Requests",userID);
                 //firebase.removeUserFromCollection("Pending Requests", userID);

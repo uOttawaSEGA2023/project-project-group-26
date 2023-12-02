@@ -11,10 +11,12 @@ import androidx.appcompat.app.AlertDialog;
 import com.example.doctorregistration.Other.Address;
 import com.example.doctorregistration.Doctor.Frontend.DoctorWelcome;
 import com.example.doctorregistration.Other.Firebase;
+import com.example.doctorregistration.Patient.Appointment;
 import com.example.doctorregistration.Patient.Patient;
 import com.example.doctorregistration.R;
 import com.example.doctorregistration.Other.RegistrationRequestItem;
 import com.example.doctorregistration.Other.RegistrationRequestListView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -27,6 +29,8 @@ import android.widget.Button;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class DoctorAppointmentsList extends AppCompatActivity {
     ListView listViewRequests;
@@ -36,6 +40,7 @@ public class DoctorAppointmentsList extends AppCompatActivity {
     Firebase firebase;
     private Button buttonpasttodoctorwelcome;
     private Button buttonupcomingtodoctorwelcome;
+    private RegistrationRequestItem clickedItem;
 
 
 
@@ -161,7 +166,7 @@ public class DoctorAppointmentsList extends AppCompatActivity {
     //code that decides what happens when clicking on patient info
     private void handleItemClick(int position) {
         // Getting clicked item
-        RegistrationRequestItem clickedItem = appointments.get(position);
+        clickedItem = appointments.get(position);
 
         // Extracting patients info
         Patient patient = clickedItem.getPatient();
@@ -215,12 +220,34 @@ public class DoctorAppointmentsList extends AppCompatActivity {
         btApprove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Patient patient = clickedItem.getPatient();
+                String userID = clickedItem.getUserID();
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, 9); // 9 AM
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                long startTimeMillis = calendar.getTimeInMillis();
+
+                calendar.set(Calendar.HOUR_OF_DAY, 17); // 5 PM
+                long endTimeMillis = calendar.getTimeInMillis();
+
+                long randomTimeMillis = startTimeMillis + (long) (Math.random() * (endTimeMillis - startTimeMillis));
+
+                // Create a Timestamp from the random time
+                Timestamp randomTimestamp = new Timestamp(new Date(randomTimeMillis));
+
+                // Create an Appointment object with the patient's appointment details
+                Appointment newAppointment = new Appointment(randomTimestamp);
+
+                // Add the new appointment to the "upcomingAppointments" array
+                firebase.addAppointmentToUpcomingAppointments(userID, newAppointment);
+
                 firebase.updateUserField(DoctorAppointmentsList.this, "user", userID,
                         "appointmentapproval", "approved");
                 firebase.updateUserField(DoctorAppointmentsList.this, "Approved Requests", userID,
                         "appointmentapproval", "approved");
-                // Copy user document to "Approved Appointments" collection
-                firebase.copyUserToAnotherCollection("Approved Requests", "Approved Appointments", userID);
 
                 btApprove.setVisibility(View.GONE);
                 btReject.setVisibility(View.GONE);
