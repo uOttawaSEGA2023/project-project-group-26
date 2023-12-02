@@ -19,6 +19,8 @@ public class DoctorWelcome extends AppCompatActivity {
 
     private Button upcomingAppointmentsbtn;
     private Button pastAppointmentsbtn;
+    private Button createShiftbtn;
+    private Button viewShiftbtn;
 
     public static String test;
 
@@ -66,6 +68,27 @@ public class DoctorWelcome extends AppCompatActivity {
                 test = "pastAppointments";
                 finish();
 
+            }
+        });
+
+        createShiftbtn = (Button) findViewById(R.id.createShift);
+
+        createShiftbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), DoctorCreateShift.class);
+                startActivity(intent);
+            }
+        });
+
+
+        //not set up
+        viewShiftbtn = (Button) findViewById(R.id.viewShifts);
+        viewShiftbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), DoctorViewShift.class);
+                startActivity(intent);
             }
         });
 

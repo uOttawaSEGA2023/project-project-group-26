@@ -11,10 +11,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.doctorregistration.Calendar.CalendarAdapter;
-import com.example.doctorregistration.Calendar.CalendarUtils;
-import com.example.doctorregistration.Event;
-import com.example.doctorregistration.EventAdapter;
 import com.example.doctorregistration.EventEditActivity;
 import com.example.doctorregistration.R;
 
@@ -58,7 +54,7 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
-        setEventAdapter();
+        //setEventAdapter();
     }
 
     private int monthYearFromDate(LocalDate selectedDate) {
@@ -79,14 +75,14 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
     @Override
     protected void onResume(){
         super.onResume();
-        setEventAdapter();
+     //   setEventAdapter();
     }
 
-    private void setEventAdapter() {
-        ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
-        EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
-        eventListView.setAdapter(eventAdapter);
-    }
+    //private void setEventAdapter() {
+    //    ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
+    //    EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
+   //     eventListView.setAdapter(eventAdapter);
+   // }
 
 
     public void newEventAction(View view){

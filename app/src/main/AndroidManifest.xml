@@ -14,7 +14,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DoctorRegistration"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Doctor.Frontend.DoctorViewShift"
+            android:exported="false" />
+        <activity
+            android:name=".Patient.Frontend.PatientViewAppointments"
+            android:exported="true"/>
+        <activity
+            android:name=".Doctor.Frontend.DoctorGeneralShiftPage"
+            android:exported="false" />
+        <activity
+            android:name=".Doctor.Frontend.DoctorCreateShift"
+            android:exported="false" />
+        <activity
+            android:name=".Patient.Frontend.PatientAvailableAppointmentSlots"
+            android:exported="false" />
         <activity
             android:name=".Doctor.Frontend.DoctorShiftCalendar"
             android:exported="false" />
@@ -26,15 +40,16 @@
             android:exported="true" />
         <activity
             android:name=".Doctor.Backend.DoctorAppointmentsList"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Patient.Backend.PatientAppointmentsList"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Launcher.MainWelcome"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -44,15 +59,10 @@
         <activity android:name=".Admin.Frontend.AdminWelcome" />
         <activity android:name=".Patient.Frontend.PatientWelcome" />
         <activity android:name=".Launcher.RegisterDorP" />
-        <activity android:name=".Launcher.Login" />
-
-
-
-        <!-- WeekViewActivity added -->
+        <activity android:name=".Launcher.Login" /> <!-- WeekViewActivity added -->
         <activity
-            android:name="com.example.doctorregistration.Calendar.WeekViewActivity"
+            android:name=".Calendar.WeekViewActivity"
             android:exported="false" />
     </application>
 
 </manifest>
-

@@ -9,15 +9,16 @@ import android.widget.TextView;
 import android.app.Activity;
 import android.widget.ArrayAdapter;
 
+import com.example.doctorregistration.Other.RegistrationRequestItem;
 import com.example.doctorregistration.Doctor.Doctor;
+import com.example.doctorregistration.Other.User;
 import com.example.doctorregistration.Patient.Patient;
 import com.example.doctorregistration.R;
 
 import java.util.ArrayList;
 
 /**
- * The DeniedRequestsAdapter class serves as the RecyclerView adapter,
- * responsible for displaying the denied request items,
+ * This class displays registration requests for Admin functionality,
  * handling the "Change Status" button click, and updating Firestore accordingly.
  */
 public class RegistrationRequestListView extends ArrayAdapter<RegistrationRequestItem> {

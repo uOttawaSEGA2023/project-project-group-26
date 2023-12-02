@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.doctorregistration"
-        minSdk = 24
+        minSdk = 26 //was 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -36,6 +36,9 @@ android {
             exclude("META-INF/LICENSE.md")
             exclude("META-INF/NOTICE.md")
         }
+    }
+    buildFeatures {
+        viewBinding = true
     }
 }
 

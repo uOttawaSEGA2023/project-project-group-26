@@ -43,9 +43,6 @@ public class DoctorAppointmentsList extends AppCompatActivity {
     private RegistrationRequestItem clickedItem;
 
 
-
-
-
     String getListType = DoctorWelcome.test;
 
 

@@ -1,5 +1,6 @@
 package com.example.doctorregistration.Doctor;
 
+import com.example.doctorregistration.Other.EventItem;
 import com.example.doctorregistration.Other.Address;
 import com.example.doctorregistration.Other.User;
 
@@ -15,6 +16,9 @@ public class Doctor extends User {
 
     //private int employeeNumber;
     private ArrayList<String> specialty;
+    private ArrayList<EventItem> shifts;
+    private ArrayList<EventItem> availability;
+
 
     /**
      * Constructs user of type Doctor
@@ -30,10 +34,12 @@ public class Doctor extends User {
      */
     public Doctor(int employeeNumber, ArrayList<String> specialty, String firstName,
                   String lastName, String email, String password, int phoneNumber,
-                  Address address){
+                  Address address, ArrayList<EventItem> shifts, ArrayList<EventItem> availability){
 
         super(firstName, lastName, email, phoneNumber, password, employeeNumber, address); //calls parent User constructor
         this.specialty = specialty;
+        this.shifts = shifts;
+        this.availability = availability;
 
         /*
          * Even though parent User constructor is called, each inherited variable must be set in child class
@@ -64,6 +70,23 @@ public class Doctor extends User {
     public void setSpecialty(ArrayList<String> specialty) {  //TODO May cause errors
         this.specialty = specialty;
     }
+
+    public ArrayList<EventItem> getShifts(){
+        return shifts;
+    }
+
+    public void setShifts(ArrayList<EventItem> shifts){
+        this.shifts = shifts;
+    }
+
+    public ArrayList<EventItem> getAvailability(){
+        return availability;
+    }
+
+    public void setAvailability(ArrayList<EventItem> availability){
+        this.availability = availability;
+    }
+
 
     @Override
     public String displayUserInformation() {
