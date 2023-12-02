@@ -62,6 +62,14 @@ public class EventItem {
         this.userID = userID;
     }
 
+    public Doctor getEventDoctor() {
+        return doctor;
+    }
+
+    public void setEventDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
 
     public boolean overlapsWith(EventItem otherShift) {
         // Check if the dates are the same
@@ -108,7 +116,7 @@ public class EventItem {
 
     //Display Doctor Shifts
     public String displayDoctorEventInfo(){
-        return("Dr. " + doctor.getFirstName() +
+        return("Dr. " + doctor.getLastName() +
                 "\nDate: " + formatDate(extractDateFromTimestamp(date)) +
                 "\nStart Time: " + extractTimeIn24HourFormat(startTime) +
                 "\nEnd Time: " + extractTimeIn24HourFormat(endTime));
@@ -118,7 +126,7 @@ public class EventItem {
     //Display PatientAppointments
     public String displayPatientEventInfo(){
         //maybe add display of the doctors specialities
-        return("Dr. " + doctor.getFirstName() +
+        return("Dr. " + doctor.getLastName() +
                 "\nDate: " + formatDate(extractDateFromTimestamp(date)) +
                 "\nStart Time: " + extractTimeIn24HourFormat(startTime) +
                 "\nEnd Time: " + extractTimeIn24HourFormat(endTime));

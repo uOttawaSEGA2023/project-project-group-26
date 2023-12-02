@@ -247,7 +247,6 @@ public class Firebase {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     String userType = documentSnapshot.getString("userType");
-                    boolean conflict = false;
 
                     if (userType.equals("Doctor")) {
 

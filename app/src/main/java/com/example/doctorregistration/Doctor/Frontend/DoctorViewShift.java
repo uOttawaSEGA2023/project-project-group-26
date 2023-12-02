@@ -23,10 +23,13 @@ import com.example.doctorregistration.Other.RegistrationRequestListView;
 import com.example.doctorregistration.Other.User;
 import com.example.doctorregistration.Patient.Patient;
 import com.example.doctorregistration.R;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DoctorViewShift extends AppCompatActivity {
     ListView listViewShifts;
@@ -54,17 +57,13 @@ public class DoctorViewShift extends AppCompatActivity {
                 // Handle item click
                 EventItem shift = shifts.get(position);
 
-                String userID = firebase.getCurrentUser();
-                String userType = shift.getEventUserType();;
+                String userID = shift.getEventUserID();
 
-                if (userType.equals("Doctor"))
-                    showShiftInformation(shift, userType, userID);
+                showShiftInformation(shift);
 
             }
         });
     }
-
-
 
 
     @Override
@@ -72,34 +71,27 @@ public class DoctorViewShift extends AppCompatActivity {
         super.onStart();
 
         // Add a real-time listener to the collectionRef
-        collectionRef.addSnapshotListener((value, error) -> {
-            if (error != null) {
-                Log.e("Debug", "Error listening for changes", error);
-                return;
-            }
+        collectionRef.document(firebase.getCurrentUser()).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
 
-            if (value != null) {
-                shifts.clear();
+                if (document.exists()) {
 
-                //Grabs documents from collection
-                for (QueryDocumentSnapshot documentSnapshot : value) {
+                    Doctor doctor = new Doctor();
+                    doctor.setLastName(document.getString("Doctor.lastName"));
+
+                    ArrayList<HashMap<String, Object>> existingShiftsRaw = (ArrayList<HashMap<String, Object>>) document.get("Doctor.shifts");
+
+                    for (HashMap<String, Object> existingShiftMap : existingShiftsRaw) {
                         EventItem doctorShift = new EventItem();
 
-                    doctorShift.setEventUserID(documentSnapshot.getId());
-                    String userType = documentSnapshot.getString("userType");
+                        doctorShift.setEventDate((Timestamp)existingShiftMap.get("date"));
+                        doctorShift.setStartTime((Timestamp) existingShiftMap.get("startTime"));
+                        doctorShift.setEndTime((Timestamp) existingShiftMap.get("endTime"));
 
-                    if ("Doctor".equals(userType)) {
-
-                        doctorShift.setStartTime(documentSnapshot.getTimestamp("Doctor.startTime"));
-                        doctorShift.setEndTime(documentSnapshot.getTimestamp("Doctor.endTime"));
-                        doctorShift.setEventDate(documentSnapshot.getTimestamp("Doctor.date"));
-
+                        doctorShift.setEventDoctor(doctor);
+                        shifts.add(doctorShift);
                     }
-
-                    else
-                        Log.e("ERROR","no userType");
-
-                    shifts.add(doctorShift);
                 }
 
 
@@ -121,7 +113,7 @@ public class DoctorViewShift extends AppCompatActivity {
     /**
      * This method displays the Alert Box when clicked
      */
-    private void showShiftInformation(EventItem doctorShiftEvent, String userType, String userID) {
+    private void showShiftInformation(EventItem doctorShiftEvent) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.view_event_info, null);
