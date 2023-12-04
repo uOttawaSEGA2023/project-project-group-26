@@ -53,11 +53,11 @@ public class PatientViewAppointments extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
+        //calls the UI page of upcoming appointments list if upcoming appointment button is pressed by user
         if(getListType.equals("upcomingAppointments")){
             setContentView(R.layout.activity_patient_upcomingappointmentsnew);
             listViewAppointments = (ListView) findViewById(R.id.listViewAppointments1);
-
-
+        //calls the UI page of past appointments list if past appointment button is pressed by user
         }else{
             setContentView(R.layout.activity_patientpastappoinments);
             listViewAppointments = (ListView) findViewById(R.id.listViewAppointments2);
@@ -65,6 +65,7 @@ public class PatientViewAppointments extends AppCompatActivity {
 
         }
 
+        //stores appointments to be displayed
         appointments = new ArrayList<>();
         firebase = new Firebase();
         collectionRef = firebase.getCollectionRef("Approved Requests");
@@ -101,16 +102,38 @@ public class PatientViewAppointments extends AppCompatActivity {
                 appointments.clear();
                 Patient patient = new Patient ();
                 patient.setLastName(document.getString("Patient.lastName"));
-                ArrayList<HashMap<String, Object>> existingAppointmentRaw = (ArrayList<HashMap<String, Object>>) document.get("Patient.appointments");
 
-                for (HashMap<String, Object> existingAppointmentMap: existingAppointmentRaw){
-                    EventItem patientAppointment = new EventItem();
-                    patientAppointment.setEventDate((Timestamp) existingAppointmentMap.get("date"));
-                    patientAppointment.setStartTime((Timestamp) existingAppointmentMap.get("startTime"));
-                    patientAppointment.setEndTime((Timestamp) existingAppointmentMap.get("endTime"));
-                    patientAppointment.setEventPatient(patient);
-                    appointments.add(patientAppointment);
+
+                //if upcoming appointments button is pressed adds upcoming appointments to appointment array
+                if(getListType.equals("upcomingAppointments")){
+                    ArrayList<HashMap<String, Object>> existingAppointmentRaw = (ArrayList<HashMap<String, Object>>) document.get("Patient.upcomingAppointments");
+
+                    for (HashMap<String, Object> existingAppointmentMap: existingAppointmentRaw){
+                        EventItem patientAppointment = new EventItem();
+                        patientAppointment.setEventDate((Timestamp) existingAppointmentMap.get("date"));
+                        patientAppointment.setStartTime((Timestamp) existingAppointmentMap.get("startTime"));
+                        patientAppointment.setEndTime((Timestamp) existingAppointmentMap.get("endTime"));
+                        patientAppointment.setEventPatient(patient);
+                        appointments.add(patientAppointment);
+                    }
+
+                }//if past appointments button is pressed adds past appointments to appointment array
+                else if (getListType.equals("pastAppointments")){
+
+                    ArrayList<HashMap<String, Object>> existingAppointmentRaw = (ArrayList<HashMap<String, Object>>) document.get("Patient.pastAppointments");
+
+                    for (HashMap<String, Object> existingAppointmentMap: existingAppointmentRaw){
+                        EventItem patientAppointment = new EventItem();
+                        patientAppointment.setEventDate((Timestamp) existingAppointmentMap.get("date"));
+                        patientAppointment.setStartTime((Timestamp) existingAppointmentMap.get("startTime"));
+                        patientAppointment.setEndTime((Timestamp) existingAppointmentMap.get("endTime"));
+                        patientAppointment.setEventPatient(patient);
+                        appointments.add(patientAppointment);
+                    }
+
                 }
+
+
             }
 
             if(adapter == null){
