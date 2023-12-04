@@ -304,14 +304,14 @@ public class Firebase {
 
                                             if (appointmentToAdd.equals(app)) {
                                                 appUpdated = new EventItem(existingAppStartTime, existingAppEndTime, existingAppDate,true);
-                                                appList.add(appUpdated);
-                                            } else
-                                                appList.add(app);
-                                        }
-                                        updateUserField(null, "Approved Requests", doctorUserID, "Doctor.availability", appList);
+                                                                     updateUserField(null, "Approved Requests", doctorUserID, "Doctor.availability", appList);
+                                        appList.add(appUpdated);
+                                    } else
+                                        appList.add(app);
+                                }
 
 
-                                        ArrayList<HashMap<String, Object>> existingShiftsRaw = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Doctor.shifts");
+                                ArrayList<HashMap<String, Object>> existingShiftsRaw = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Doctor.shifts");
                                         ArrayList<EventItem> shiftsList = new ArrayList<>();
                                         EventItem shiftUpdated;
                                         EventItem shift;
