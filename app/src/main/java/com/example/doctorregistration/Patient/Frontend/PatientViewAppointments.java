@@ -24,6 +24,7 @@ import com.example.doctorregistration.Other.Firebase;
 import com.example.doctorregistration.Other.RegistrationRequestItem;
 import com.example.doctorregistration.Other.RegistrationRequestListView;
 import com.example.doctorregistration.Other.User;
+import com.example.doctorregistration.Patient.Backend.DoctorItem;
 import com.example.doctorregistration.Patient.Backend.PatientAppointmentManager;
 import com.example.doctorregistration.Patient.Patient;
 import com.example.doctorregistration.R;
@@ -106,32 +107,62 @@ public class PatientViewAppointments extends AppCompatActivity {
 
                 //if upcoming appointments button is pressed adds upcoming appointments to appointment array
                 if(getListType.equals("upcomingAppointments")){
-                    ArrayList<HashMap<String, Object>> existingAppointmentRaw = (ArrayList<HashMap<String, Object>>) document.get("Patient.upcomingAppointments");
+                    ArrayList<HashMap<String, Object>> existingAppointmentRaw = (ArrayList<HashMap<String, Object>>) document.get("upcomingAppointments");
 
                     for (HashMap<String, Object> existingAppointmentMap: existingAppointmentRaw){
                         EventItem patientAppointment = new EventItem();
                         patientAppointment.setEventDate((Timestamp) existingAppointmentMap.get("date"));
                         patientAppointment.setStartTime((Timestamp) existingAppointmentMap.get("startTime"));
                         patientAppointment.setEndTime((Timestamp) existingAppointmentMap.get("endTime"));
+
+                        HashMap<String, Object> doctorInfoRaw = (HashMap<String, Object>) existingAppointmentMap.get("patientDoctor");
+                        HashMap<String, Object> doctorObjectInfoRaw = (HashMap<String, Object>) doctorInfoRaw.get("doctor");
+
+                        DoctorItem doctorItem = new DoctorItem();
+                        Doctor doctor = new Doctor();
+
+                        doctor.setLastName((String)doctorObjectInfoRaw.get("lastName"));
+                        doctor.setFirstName((String)doctorObjectInfoRaw.get("firstName"));
+                        doctor.setSpecialty((ArrayList<String>) doctorInfoRaw.get("speciality"));
+
+                        doctorItem.setDoctor(doctor);
+                        doctorItem.setUserID((String)doctorInfoRaw.get("userID"));
+
+                        patientAppointment.setPatientDoctor(doctorItem);
+
                         appointments.add(patientAppointment);
                     }
 
                 }//if past appointments button is pressed adds past appointments to appointment array
                 else if (getListType.equals("pastAppointments")){
 
-                    ArrayList<HashMap<String, Object>> existingAppointmentRaw = (ArrayList<HashMap<String, Object>>) document.get("Patient.pastAppointments");
+                    ArrayList<HashMap<String, Object>> existingAppointmentRaw = (ArrayList<HashMap<String, Object>>) document.get("pastAppointments");
 
                     for (HashMap<String, Object> existingAppointmentMap: existingAppointmentRaw){
                         EventItem patientAppointment = new EventItem();
                         patientAppointment.setEventDate((Timestamp) existingAppointmentMap.get("date"));
                         patientAppointment.setStartTime((Timestamp) existingAppointmentMap.get("startTime"));
                         patientAppointment.setEndTime((Timestamp) existingAppointmentMap.get("endTime"));
+
+                        HashMap<String, Object> doctorInfoRaw = (HashMap<String, Object>) existingAppointmentMap.get("patientDoctor");
+                        HashMap<String, Object> doctorObjectInfoRaw = (HashMap<String, Object>) doctorInfoRaw.get("doctor");
+
+                        DoctorItem doctorItem = new DoctorItem();
+                        Doctor doctor = new Doctor();
+
+                        doctor.setLastName((String)doctorObjectInfoRaw.get("lastName"));
+                        doctor.setFirstName((String)doctorObjectInfoRaw.get("firstName"));
+                        doctor.setSpecialty((ArrayList<String>) doctorInfoRaw.get("speciality"));
+
+                        doctorItem.setDoctor(doctor);
+                        doctorItem.setUserID((String)doctorInfoRaw.get("userID"));
+
+                        patientAppointment.setPatientDoctor(doctorItem);
+
                         appointments.add(patientAppointment);
                     }
 
                 }
-
-
             }
 
             if(adapter == null){
@@ -152,11 +183,21 @@ public class PatientViewAppointments extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.view_event_info, null);
         dialogBuilder.setView(dialogView);
         TextView tvAppointmentInfo = (TextView) dialogView.findViewById(R.id.eventInformation);
+        Button delete = (Button) dialogView.findViewById(R.id.deleteEvent);
+
         dialogBuilder.setTitle("Next Appointment: ");
         final AlertDialog b = dialogBuilder.create();
         b.show();
         tvAppointmentInfo.setText(patientAppointmentEvent.displayPatientEventInfo());
 
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                appointmentManager.deleteAppointment(getApplicationContext(), patientAppointmentEvent);
+                adapter.notifyDataSetChanged();
+
+            }
+        });
     }
 
 }

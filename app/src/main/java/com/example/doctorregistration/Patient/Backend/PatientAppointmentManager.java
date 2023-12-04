@@ -35,13 +35,13 @@ public class PatientAppointmentManager{
 
     //Deletes EventItem to upcoming appointment list, adds to past appointments
     // updates that time slot in doctor availability
-    public void deleteAppointment(EventItem appointmentToDelete){
+    public void deleteAppointment(Context context, EventItem appointmentToDelete){
         String doctorUserID = appointmentToDelete.getPatientDoctor().getUserID();
 
-        firebase.deleteElementFromArrayList(null, "Approved Requests", userID,
+        firebase.deleteElementFromArrayList(context, "Approved Requests", userID,
                 "upcomingAppointments", appointmentToDelete, doctorUserID);
 
-        firebase.deleteElementFromArrayList(null, "Approved Requests", userID,
+        firebase.addElementToArrayList(context, "Approved Requests", userID,
                 "pastAppointments", appointmentToDelete, doctorUserID);
     }
 

@@ -423,10 +423,27 @@ public class Firebase {
 
                     } else if (userType.equals("Patient")) {
 
-                        EventItem appointmentToAdd = (EventItem) elementToBeDeleted;
-                        updateUserFieldToAdd(null, collectionPath, userID, arrayFieldName, appointmentToAdd);
+                        ArrayList<HashMap<String, Object>> existingAppRaw = (ArrayList<HashMap<String, Object>>) documentSnapshot.get(arrayFieldName);
+                        EventItem appToBeDeleted = (EventItem) elementToBeDeleted;
+                        ArrayList<EventItem> existingApp = new ArrayList<>();
 
-                        Timestamp appointmentToAddDate = appointmentToAdd.getDate();
+                        for (HashMap<String, Object> existingShiftMap : existingAppRaw) {
+                            Timestamp existingDate = (Timestamp) existingShiftMap.get("date");
+                            Timestamp existingStartTime = (Timestamp) existingShiftMap.get("startTime");
+                            Timestamp existingEndTime = (Timestamp) existingShiftMap.get("endTime");
+
+                            EventItem existingShift = new EventItem(existingStartTime, existingEndTime, existingDate);
+                            existingApp.add(existingShift);
+
+                            if (existingShift.equals(appToBeDeleted))
+                                existingApp.remove(existingApp); //shift was found and remove
+                        }
+
+                        //update the new shifts with the deleted element
+                        updateUserField(context, collectionPath, userID, arrayFieldName, existingApp);
+                        Toast.makeText(context, "Appointment Deleted", Toast.LENGTH_SHORT).show();
+
+                        Timestamp appointmentToAddDate = appToBeDeleted.getDate();
 
                         DocumentReference documentReferenceDoctor = collectionReference.document(doctorUserID);
                         documentReferenceDoctor.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -451,7 +468,7 @@ public class Firebase {
 
                                             app = new EventItem(existingAppStartTime, existingAppEndTime, existingAppDate, existingPatient);
 
-                                            if (appointmentToAdd.equals(app)) {
+                                            if (appToBeDeleted.equals(app)) {
                                                 appUpdated = new EventItem(existingAppStartTime, existingAppEndTime, existingAppDate,false);
                                                 appList.add(appUpdated);
                                             } else
@@ -464,7 +481,6 @@ public class Firebase {
                             }
 
                         });
-                        Toast.makeText(context, "Appointment Deleted", Toast.LENGTH_SHORT).show();
                     }
 
                 } else

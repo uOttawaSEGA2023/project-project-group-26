@@ -168,7 +168,8 @@ public class EventItem {
     //Display PatientAppointments
     public String displayPatientEventInfo(){
         //maybe add display of the doctors specialities
-        return("Dr. " + doctor.getLastName() +
+        return("Dr. " + this.getPatientDoctor().getDoctor().getLastName() + ", " + this.getPatientDoctor().getDoctor().getFirstName() +
+                "\nSpeciality(s): " + this.getPatientDoctor().getDoctor().getSpecialty() +
                 "\nDate: " + formatDate(extractDateFromTimestamp(date)) +
                 "\nStart Time: " + formatTimestamp(startTime) +
                 "\nEnd Time: " + formatTimestamp(endTime));
