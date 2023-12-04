@@ -1,6 +1,7 @@
 package com.example.doctorregistration.Other;
 
 import com.example.doctorregistration.Doctor.Doctor;
+import com.example.doctorregistration.Patient.Backend.DoctorItem;
 import com.example.doctorregistration.Patient.Patient;
 import com.google.firebase.Timestamp;
 
@@ -15,9 +16,16 @@ public class EventItem {
     private Timestamp endTime;
     private Timestamp date;
 
-    private ArrayList<Patient> doctorPatients;
     private Doctor doctor;
-    private Patient patient;
+    private boolean associatedWithPatient;
+    private DoctorItem patientDoctor;
+
+    public EventItem(Timestamp startTime, Timestamp endTime, Timestamp date, boolean associatedWithPatient) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.date = date;
+        this.associatedWithPatient = associatedWithPatient;
+    }
 
     public EventItem(Timestamp startTime, Timestamp endTime, Timestamp date) {
         this.startTime = startTime;
@@ -25,14 +33,14 @@ public class EventItem {
         this.date = date;
     }
 
-    public EventItem(Timestamp startTime, Timestamp endTime, Timestamp date, ArrayList<Patient> doctorPatients) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.date = date;
-        this.doctorPatients = doctorPatients;
-    }
+
 
     public EventItem(){}
+
+    public EventItem(Timestamp intervalStartTime, Timestamp intervalEndTime) {
+        this.startTime = intervalStartTime;
+        this.endTime = intervalEndTime;
+    }
 
     public Timestamp getStartTime() {
         return startTime;
@@ -64,12 +72,23 @@ public class EventItem {
         this.doctor = doctor;
     }
 
-    public ArrayList<Patient> getDoctorPatients() {
-        return doctorPatients;
+
+
+    public DoctorItem getPatientDoctor() {
+        return patientDoctor;
     }
 
-    public void setDoctorPatients(ArrayList<Patient> doctorPatients) {
-        this.doctorPatients = doctorPatients;
+    public void setPatientDoctor(DoctorItem patientDoctor) {
+        this.patientDoctor = patientDoctor;
+    }
+
+
+    public boolean getAssociatedWithPatient(){
+        return associatedWithPatient;
+    }
+
+    public void setAssociatedWithPatient(boolean associatedWithPatient){
+        this.associatedWithPatient = associatedWithPatient;
     }
 
     //This method checks if EventItem conflicts with another EventItem
@@ -120,16 +139,22 @@ public class EventItem {
     //This method is a custom comparator for EventItem type
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+            EventItem event = (EventItem) obj;
 
-        EventItem other = (EventItem) obj;
+            Date otherDate = event.date.toDate();
+            Date thisDate = this.date.toDate();
 
-        // Compare the Timestamps for equality
-        return startTime.equals(other.startTime) &&
-                endTime.equals(other.endTime) &&
-                date.equals(other.date);
-    }
+            Date otherStartTime = event.getStartTime().toDate();
+            Date otherEndTime = event.getEndTime().toDate();
+
+            Date thisStartTime = this.getStartTime().toDate();
+            Date thisEndTime = this.getEndTime().toDate();
+
+
+            return (isSameDate(thisDate, otherDate) && areSameTime(otherStartTime, thisStartTime) &&
+                    areSameTime(otherEndTime, thisEndTime));
+        }
+
 
     //Display Doctor Shifts
     public String displayDoctorEventInfo(){
@@ -163,6 +188,27 @@ public class EventItem {
         Date endDate = endTime.toDate();
 
         return (startDate.before(endDate));
+    }
+    public boolean isSameDate(Date date1, Date date2) {
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
+                cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
+    }
+
+    private static boolean areSameTime(Date timestamp1, Date timestamp2) {
+        // Format the time portions using SimpleDateFormat
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        String time1 = timeFormat.format(timestamp1);
+        String time2 = timeFormat.format(timestamp2);
+
+        // Compare the formatted time strings
+        return time1.equals(time2);
     }
 
 }

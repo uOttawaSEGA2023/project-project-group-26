@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
+import android.media.metrics.Event;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -46,7 +47,7 @@ public class DoctorCreateShift extends AppCompatActivity {
         event = new EventItem();
 
 
-        setDate(1,11,2023); //set initial date of the calendar (currently set to November 1)
+        setDate(1,11,2023); //set initial date of the calendar (currently set to December 1)
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -96,7 +97,10 @@ public class DoctorCreateShift extends AppCompatActivity {
                 //Checks if all fields are set
                 if(event.getEndTime() != null && event.getStartTime() != null && event.getDate() != null) {
                     if(event.isValidTime()){ //checks if start time comes before end time
-                        doctorShiftManager.addShift(event);
+                        event.setAssociatedWithPatient(false);
+
+                        doctorShiftManager.addShift(event, getApplicationContext());
+                        doctorShiftManager.addAvailability(event, getApplicationContext());
                     }
                     else
                         Toast.makeText(DoctorCreateShift.this, "Please select valid time range", Toast.LENGTH_SHORT).show();

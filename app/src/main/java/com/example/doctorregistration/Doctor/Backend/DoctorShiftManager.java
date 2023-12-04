@@ -1,48 +1,119 @@
 package com.example.doctorregistration.Doctor.Backend;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.doctorregistration.Doctor.Frontend.DoctorCreateShift;
 import com.example.doctorregistration.Doctor.Frontend.DoctorViewShift;
 import com.example.doctorregistration.Other.EventItem;
 import com.example.doctorregistration.Other.Firebase;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.checkerframework.checker.units.qual.A;
+
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 
 public class DoctorShiftManager {
     Firebase firebase = new Firebase();
     private String userID = firebase.getCurrentUser();
     private EventItem shift;
 
+    static FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+    FirebaseAuth fAuth = FirebaseAuth.getInstance();
+
     public DoctorShiftManager() {}
 
 
-    public void addShift(EventItem shiftToAdd){
+    public void addShift(EventItem shiftToAdd, Context context){
         DoctorCreateShift doctorCreateShift = new DoctorCreateShift();
 
         //Updates the shift and availability ArrayList in both the "user" and "Approved Requests" collection
-        firebase.addElementToArrayList(doctorCreateShift, "user", userID, "shifts", shiftToAdd);
-        firebase.addElementToArrayList(doctorCreateShift,"user", userID, "availability", shiftToAdd);
-
-        firebase.addElementToArrayList(doctorCreateShift, "Approved Requests", userID, "shifts", shiftToAdd);
-        firebase.addElementToArrayList(doctorCreateShift,"Approved Requests", userID, "availability", shiftToAdd);
+        firebase.addElementToArrayList(context, "user", userID, "shifts", shiftToAdd, null);
+        firebase.addElementToArrayList(context, "Approved Requests", userID, "shifts", shiftToAdd, null);
 
     }
 
-    public void deleteShift(EventItem shiftToDelete){
-        DoctorViewShift doctorViewShift = new DoctorViewShift();
+    public void addAvailability(EventItem availabilityToAdd, Context context){
+        DoctorCreateShift doctorCreateShift = new DoctorCreateShift();
 
-        //if (firebase.canDeleteShift(firebase.getCurrentUser())){
-            firebase.deleteElementFromArrayList(doctorViewShift, "Approved Requests",
-                    firebase.getCurrentUser(), "shifts", shiftToDelete);
+        ArrayList<EventItem> availability = splitAvailability(availabilityToAdd.getStartTime(),
+                                                              availabilityToAdd.getEndTime());
 
-            firebase.deleteElementFromArrayList(doctorViewShift, "user",
-                    firebase.getCurrentUser(), "shifts", shiftToDelete);
-        //}
+        for (EventItem interval : availability) {
+            // Create a new EventItem for each 30-minute interval
+            EventItem newAvailabilityItem = new EventItem();
 
-        //else{
-            //display the message
-        //}
+            newAvailabilityItem.setStartTime(interval.getStartTime());
+            newAvailabilityItem.setEndTime(interval.getEndTime());
+            newAvailabilityItem.setEventDate(availabilityToAdd.getDate());
+            newAvailabilityItem.setAssociatedWithPatient(false);
+
+            // Add the new availability item to Firebase
+            firebase.addToAvailabilityArrayList(context, "user", userID, newAvailabilityItem);
+            firebase.addToAvailabilityArrayList(context, "Approved Requests", userID, newAvailabilityItem);
+        }
+
+    }
+
+    public static ArrayList<EventItem> splitAvailability(Timestamp startTime, Timestamp endTime) {
+        ArrayList<EventItem> intervals = new ArrayList<>();
+
+        // Create a Calendar instance for the start time
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(startTime.toDate().getTime());
+
+        // Iterate through 30-minute intervals until the end time is reached
+        while (calendar.getTimeInMillis() < endTime.toDate().getTime()) {
+            // Create a new Timestamp for the current interval's start time
+            Timestamp intervalStartTime = new Timestamp(new Date(calendar.getTimeInMillis()));
+
+            // Add 30 minutes to the current time to get the end time
+            calendar.add(Calendar.MINUTE, 30);
+
+            // Create a new Timestamp for the current interval's end time
+            Timestamp intervalEndTime = new Timestamp(new Date(calendar.getTimeInMillis()));
+
+            // Create an EventItem for the current interval
+            EventItem intervalItem = new EventItem(intervalStartTime, intervalEndTime);
+
+            // Add the interval to the list
+            intervals.add(intervalItem);
+        }
+
+        return intervals;
+    }
+
+
+
+    public void deleteShift(EventItem shiftToDelete, Context context){
+
+        if (firebase.canDeleteShift(shiftToDelete, firebase.getCurrentUser())){
+            firebase.deleteElementFromArrayList(context, "Approved Requests",
+                    firebase.getCurrentUser(), "shifts", shiftToDelete, null);
+
+            //firebase.deleteElementFromArrayList(doctorViewShift, "user",
+            //        firebase.getCurrentUser(), "shifts", shiftToDelete);
+
+
+        }
+
+        else{
+            Toast.makeText(context, "Shift associated with Patient\nCan't Delete!",
+                    Toast.LENGTH_SHORT).show();
+        }
 
     }
 

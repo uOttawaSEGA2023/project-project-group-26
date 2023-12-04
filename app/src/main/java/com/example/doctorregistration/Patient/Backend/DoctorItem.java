@@ -1,28 +1,32 @@
 package com.example.doctorregistration.Patient.Backend;
 
 import com.example.doctorregistration.Doctor.Doctor;
+import com.google.firebase.Timestamp;
 
 import java.util.Calendar;
 
+//This class stores
 public class DoctorItem {
-    private Calendar startTime;
-    private Calendar endTime;
+    private Timestamp startTime;
+    private Timestamp endTime;
+    private Timestamp date;
     private Doctor doctor;
     private String userID;
 
-    public DoctorItem(Calendar startTime, Calendar endTime, Doctor doctor) {
+    public DoctorItem(Timestamp startTime, Timestamp endTime, Timestamp date, Doctor doctor) {
         this.startTime = startTime;
         this.endTime = endTime;
+        this.date = date;
         this.doctor = doctor;
     }
 
     public DoctorItem(){}
 
-    public Calendar getStartTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public Calendar getEndTime() {
+    public Timestamp getEndTime() {
         return endTime;
     }
 
@@ -38,9 +42,5 @@ public class DoctorItem {
         this.userID = userID;
     }
     public void setDoctor(Doctor doctor){this.doctor = doctor;}
-
-
-
-
 
 }

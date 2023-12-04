@@ -18,6 +18,7 @@ public class PatientWelcome extends AppCompatActivity {
 
     private Button upcomingAppointmentsbtn;
     private Button pastAppointmentsbtn;
+    private Button createAppointmentbtn;
     public static String test;
 
 
@@ -60,6 +61,16 @@ public class PatientWelcome extends AppCompatActivity {
                 test = "pastAppointments";
                 finish();
 
+            }
+        });
+
+        createAppointmentbtn = findViewById(R.id.createAppointment);
+
+        createAppointmentbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PatientCreateAppointmentSlots.class);
+                startActivity(intent);
             }
         });
     }

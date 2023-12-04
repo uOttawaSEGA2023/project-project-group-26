@@ -1,7 +1,10 @@
 package com.example.doctorregistration.Patient;
 
 import com.example.doctorregistration.Other.Address;
+import com.example.doctorregistration.Other.EventItem;
 import com.example.doctorregistration.Other.User;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -16,6 +19,8 @@ public class Patient extends User {
 
     //instance variable
     private boolean treatmentStatus;
+    private ArrayList<EventItem> upcomingAppointments;
+    private ArrayList<EventItem> pastAppointments;
 
     /**
      * Constructs user of type Patient
@@ -30,8 +35,11 @@ public class Patient extends User {
      */
 
     public Patient(String firstName, String lastName, String email, int healthCardNum,
-                   int phoneNumber, Address address, String password){
+                   int phoneNumber, Address address, String password, ArrayList<EventItem> upcomingAppointments,
+                   ArrayList<EventItem> pastAppointments){
         super(firstName, lastName, email, phoneNumber, password, healthCardNum, address);
+        this.upcomingAppointments = upcomingAppointments;
+        this.pastAppointments = pastAppointments;
 
         /*
          * Even though parent User constructor is called, each inherited variable must be set in child class

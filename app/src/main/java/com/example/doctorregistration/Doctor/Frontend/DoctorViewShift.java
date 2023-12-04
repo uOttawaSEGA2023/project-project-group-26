@@ -138,7 +138,7 @@ public class DoctorViewShift extends AppCompatActivity {
         btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shiftManager.deleteShift(doctorShiftEvent);
+                shiftManager.deleteShift(doctorShiftEvent, getApplicationContext());
                 adapter.notifyDataSetChanged();
             }
         });

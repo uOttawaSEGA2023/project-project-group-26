@@ -1,6 +1,7 @@
 package com.example.doctorregistration.Patient.Backend;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +15,12 @@ import com.example.doctorregistration.R;
 
 import java.util.ArrayList;
 
-public class PatientAppointmentListView extends ArrayAdapter<DoctorItem> {
+//This class is an adapter class to show the list of doctors when searched
+public class PatientDoctorsListView extends ArrayAdapter<DoctorItem> {
     private ArrayList<DoctorItem> doctorList;
     private Activity context;
 
-    public PatientAppointmentListView(Activity context, ArrayList<DoctorItem> doctor) {
+    public PatientDoctorsListView(Activity context, ArrayList<DoctorItem> doctor) {
         super(context, R.layout.appointment_doctor_item);
         this.doctorList = doctor;
         this.context = context;
@@ -29,18 +31,16 @@ public class PatientAppointmentListView extends ArrayAdapter<DoctorItem> {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.appointment_doctor_item, null, true);
 
-        TextView tvFirstName = (TextView) listViewItem.findViewById(R.id.textViewFirstName);
-        TextView tvLastName = (TextView) listViewItem.findViewById(R.id.textViewLastName);
+        TextView tvName = (TextView) listViewItem.findViewById(R.id.textViewName);
         TextView tvEmail = (TextView) listViewItem.findViewById(R.id.textViewEmail);
         TextView tvSpecialty = (TextView) listViewItem.findViewById(R.id.textViewSpecialty);
 
         DoctorItem doctorItem = doctorList.get(position);
 
         Doctor doctor = doctorItem.getDoctor();
-        tvFirstName.setText(doctor.getFirstName());
-        tvLastName.setText(doctor.getLastName());
-        tvEmail.setText(doctor.getEmail());
-        tvSpecialty.setText((CharSequence) doctor.getSpecialty());
+        tvName.setText("Dr. " + doctor.getLastName() + ", " + doctor.getFirstName());
+        tvEmail.setText("Email: " + doctor.getEmail());
+        tvSpecialty.setText("Specialty(s): " + TextUtils.join(", ", doctor.getSpecialty()));
 
         return listViewItem;
     }

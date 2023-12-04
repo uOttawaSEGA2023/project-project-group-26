@@ -24,7 +24,7 @@
             android:name=".Doctor.Frontend.DoctorCreateShift"
             android:exported="false" />
         <activity
-            android:name=".Patient.Frontend.PatientAvailableAppointmentSlots"
+            android:name=".Patient.Frontend.PatientCreateAppointmentSlots"
             android:exported="false" />
         <activity
             android:name=".Doctor.Frontend.DoctorShiftCalendar"

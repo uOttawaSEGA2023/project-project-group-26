@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#365B6D"
-    tools:context=".Patient.Frontend.PatientAvailableAppointmentSlots">
+    tools:context=".Patient.Frontend.PatientCreateAppointmentSlots">
 
 
     <ListView
@@ -18,24 +18,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
-    <SearchView
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="350dp"
         android:layout_height="47dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:background="#CFCFCF"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:queryHint="Search Here..." />
+        app:queryHint="Search Here..."
+        app:iconifiedByDefault="false"
+        android:inputType="text"/>
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
-        android:text="Available Appointments"
+        android:text="Create Appointment"
         android:textColor="#CFCFCF"
         android:textSize="95px"
         android:textStyle="bold"
