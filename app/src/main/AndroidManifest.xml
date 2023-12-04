@@ -18,9 +18,6 @@
             android:name=".Doctor.Frontend.DoctorViewShift"
             android:exported="false" />
         <activity
-            android:name=".Doctor.Frontend.DoctorGeneralShiftPage"
-            android:exported="false" />
-        <activity
             android:name=".Doctor.Frontend.DoctorCreateShift"
             android:exported="false" />
         <activity
@@ -40,6 +37,9 @@
             android:exported="false" />
         <activity
             android:name=".Patient.Backend.PatientAppointmentsList"
+            android:exported="false" />
+        <activity
+            android:name=".Patient.Frontend.PatientViewAppointments"
             android:exported="false" />
         <activity
             android:name=".Launcher.MainWelcome"

@@ -149,7 +149,6 @@ public class PatientAvailableAppointmentSlots extends AppCompatActivity {
                     doctorList.add(doc);
                 }
 
-//may not be needed
                 if (adapter == null) {
                     //If there is no adapter, create one
                     adapter = new PatientAppointmentListView(PatientAvailableAppointmentSlots.this, doctorList);

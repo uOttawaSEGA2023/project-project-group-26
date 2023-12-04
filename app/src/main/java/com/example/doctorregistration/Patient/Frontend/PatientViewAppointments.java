@@ -113,7 +113,6 @@ public class PatientViewAppointments extends AppCompatActivity {
                         patientAppointment.setEventDate((Timestamp) existingAppointmentMap.get("date"));
                         patientAppointment.setStartTime((Timestamp) existingAppointmentMap.get("startTime"));
                         patientAppointment.setEndTime((Timestamp) existingAppointmentMap.get("endTime"));
-                        patientAppointment.setEventPatient(patient);
                         appointments.add(patientAppointment);
                     }
 
@@ -127,7 +126,6 @@ public class PatientViewAppointments extends AppCompatActivity {
                         patientAppointment.setEventDate((Timestamp) existingAppointmentMap.get("date"));
                         patientAppointment.setStartTime((Timestamp) existingAppointmentMap.get("startTime"));
                         patientAppointment.setEndTime((Timestamp) existingAppointmentMap.get("endTime"));
-                        patientAppointment.setEventPatient(patient);
                         appointments.add(patientAppointment);
                     }
 
