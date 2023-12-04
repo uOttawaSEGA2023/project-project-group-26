@@ -37,6 +37,9 @@ android {
             exclude("META-INF/NOTICE.md")
         }
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {

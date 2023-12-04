@@ -41,7 +41,7 @@ public class PatientWelcome extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getApplicationContext(), PatientAppointmentsList.class);
+                Intent intent = new Intent(getApplicationContext(), PatientViewAppointments.class);
                 startActivity(intent);
                 test = "upcomingAppointments";
                 finish();
@@ -56,7 +56,7 @@ public class PatientWelcome extends AppCompatActivity {
             @Override
             public void onClick(View v){
 
-                Intent intent = new Intent(getApplicationContext(), PatientAppointmentsList.class);
+                Intent intent = new Intent(getApplicationContext(), PatientViewAppointments.class);
                 startActivity(intent);
                 test = "pastAppointments";
                 finish();
