@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.doctorregistration.Launcher.MainWelcome;
-import com.example.doctorregistration.Patient.Backend.PatientAppointmentsList;
 import com.example.doctorregistration.R;
 import com.google.firebase.auth.FirebaseAuth;
 

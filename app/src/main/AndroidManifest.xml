@@ -36,9 +36,6 @@
             android:name=".Doctor.Backend.DoctorAppointmentsList"
             android:exported="false" />
         <activity
-            android:name=".Patient.Backend.PatientAppointmentsList"
-            android:exported="false" />
-        <activity
             android:name=".Patient.Frontend.PatientViewAppointments"
             android:exported="false" />
         <activity
