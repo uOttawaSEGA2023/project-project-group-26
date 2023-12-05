@@ -19,6 +19,7 @@ public class EventItem {
     private Doctor doctor;
     private boolean associatedWithPatient;
     private DoctorItem patientDoctor;
+    private int rating;
 
     public EventItem(Timestamp startTime, Timestamp endTime, Timestamp date, boolean associatedWithPatient) {
         this.startTime = startTime;
@@ -81,6 +82,11 @@ public class EventItem {
     public void setPatientDoctor(DoctorItem patientDoctor) {
         this.patientDoctor = patientDoctor;
     }
+
+    public int getRating() {return rating;}
+
+
+    public void setRating(int rating) {this.rating = rating;}
 
 
     public boolean getAssociatedWithPatient(){
@@ -168,11 +174,20 @@ public class EventItem {
     //Display PatientAppointments
     public String displayPatientEventInfo(){
         //maybe add display of the doctors specialities
-        return("Dr. " + this.getPatientDoctor().getDoctor().getLastName() + ", " + this.getPatientDoctor().getDoctor().getFirstName() +
+        String eventInfo = ("Dr. " + this.getPatientDoctor().getDoctor().getLastName() + ", " + this.getPatientDoctor().getDoctor().getFirstName() +
                 "\nSpeciality(s): " + this.getPatientDoctor().getDoctor().getSpecialty() +
                 "\nDate: " + formatDate(extractDateFromTimestamp(date)) +
                 "\nStart Time: " + formatTimestamp(startTime) +
                 "\nEnd Time: " + formatTimestamp(endTime));
+
+        //default value of rating is 0 so switch to unrated instead
+        if(rating == 0){
+            eventInfo += "\nRating: Unrated";
+        } else{
+            eventInfo += "\nRating: " + rating + "/5";
+        }
+
+        return eventInfo;
     }
 
     //This method checks if selected date hasn't already passed

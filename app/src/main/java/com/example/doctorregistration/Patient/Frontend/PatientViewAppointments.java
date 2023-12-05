@@ -3,7 +3,7 @@ package com.example.doctorregistration.Patient.Frontend;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.media.metrics.Event;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,27 +11,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.doctorregistration.Admin.Backend.AdminDeniedRequest;
-import com.example.doctorregistration.Doctor.Backend.DoctorShiftManager;
 import com.example.doctorregistration.Doctor.Doctor;
-import com.example.doctorregistration.Doctor.Frontend.DoctorWelcome;
-import com.example.doctorregistration.Other.Address;
 import com.example.doctorregistration.Other.EventItem;
 import com.example.doctorregistration.Other.EventListView;
 import com.example.doctorregistration.Other.Firebase;
-import com.example.doctorregistration.Other.RegistrationRequestItem;
-import com.example.doctorregistration.Other.RegistrationRequestListView;
-import com.example.doctorregistration.Other.User;
 import com.example.doctorregistration.Patient.Backend.DoctorItem;
 import com.example.doctorregistration.Patient.Backend.PatientAppointmentManager;
 import com.example.doctorregistration.Patient.Patient;
 import com.example.doctorregistration.R;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +42,8 @@ public class PatientViewAppointments extends AppCompatActivity {
     PatientAppointmentManager appointmentManager;
 
     String getListType = PatientWelcome.test;
+    private Button buttonpasttopatientwelcome;
+    private Button buttonupcomingtopatientwelcome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -58,10 +53,24 @@ public class PatientViewAppointments extends AppCompatActivity {
         if(getListType.equals("upcomingAppointments")){
             setContentView(R.layout.activity_patient_upcomingappointmentsnew);
             listViewAppointments = (ListView) findViewById(R.id.listViewAppointments1);
+            buttonupcomingtopatientwelcome = findViewById(R.id.backtoPW1);
+            buttonupcomingtopatientwelcome.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openPatientWelcome();
+                }
+            });
         //calls the UI page of past appointments list if past appointment button is pressed by user
         }else{
             setContentView(R.layout.activity_patientpastappoinments);
             listViewAppointments = (ListView) findViewById(R.id.listViewAppointments2);
+            buttonpasttopatientwelcome = findViewById(R.id.backtoPW2);
+            buttonpasttopatientwelcome.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openPatientWelcome();
+                }
+            });
 
 
         }
@@ -123,7 +132,7 @@ public class PatientViewAppointments extends AppCompatActivity {
 
                         doctor.setLastName((String)doctorObjectInfoRaw.get("lastName"));
                         doctor.setFirstName((String)doctorObjectInfoRaw.get("firstName"));
-                        doctor.setSpecialty((ArrayList<String>) doctorInfoRaw.get("speciality"));
+                        doctor.setSpecialty((ArrayList<String>)doctorObjectInfoRaw.get("specialty"));
 
                         doctorItem.setDoctor(doctor);
                         doctorItem.setUserID((String)doctorInfoRaw.get("userID"));
@@ -143,6 +152,7 @@ public class PatientViewAppointments extends AppCompatActivity {
                         patientAppointment.setEventDate((Timestamp) existingAppointmentMap.get("date"));
                         patientAppointment.setStartTime((Timestamp) existingAppointmentMap.get("startTime"));
                         patientAppointment.setEndTime((Timestamp) existingAppointmentMap.get("endTime"));
+                        patientAppointment.setRating(((Long) existingAppointmentMap.get("rating")).intValue());
 
                         HashMap<String, Object> doctorInfoRaw = (HashMap<String, Object>) existingAppointmentMap.get("patientDoctor");
                         HashMap<String, Object> doctorObjectInfoRaw = (HashMap<String, Object>) doctorInfoRaw.get("doctor");
@@ -152,7 +162,7 @@ public class PatientViewAppointments extends AppCompatActivity {
 
                         doctor.setLastName((String)doctorObjectInfoRaw.get("lastName"));
                         doctor.setFirstName((String)doctorObjectInfoRaw.get("firstName"));
-                        doctor.setSpecialty((ArrayList<String>) doctorInfoRaw.get("speciality"));
+                        doctor.setSpecialty((ArrayList<String>)doctorObjectInfoRaw.get("specialty"));
 
                         doctorItem.setDoctor(doctor);
                         doctorItem.setUserID((String)doctorInfoRaw.get("userID"));
@@ -184,6 +194,9 @@ public class PatientViewAppointments extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
         TextView tvAppointmentInfo = (TextView) dialogView.findViewById(R.id.eventInformation);
         Button delete = (Button) dialogView.findViewById(R.id.deleteEvent);
+        RatingBar ratingBar = dialogView.findViewById(R.id.ratingBar);
+        Button rate = dialogView.findViewById(R.id.rateEvent);
+
 
         dialogBuilder.setTitle("Next Appointment: ");
         final AlertDialog b = dialogBuilder.create();
@@ -198,6 +211,30 @@ public class PatientViewAppointments extends AppCompatActivity {
 
             }
         });
+        // Only show rating components for past appointments
+        if (getListType.equals("pastAppointments")) {
+            rate.setVisibility(View.VISIBLE);
+            ratingBar.setVisibility(View.VISIBLE);
+
+            rate.setOnClickListener(v -> {
+                int selectedRating = (int) ratingBar.getRating();
+                patientAppointmentEvent.setRating(selectedRating);
+                showRatingMessage(selectedRating);
+                b.dismiss();
+            });
+        } else {
+            rate.setVisibility(View.GONE);
+            ratingBar.setVisibility(View.GONE);
+        }
+    }
+    public void openPatientWelcome() {
+        Intent intent = new Intent(getApplicationContext(), PatientWelcome.class);
+        startActivity(intent);
+    }
+
+    private void showRatingMessage(int rating) {
+        String message = "Appointment rated " + rating + "/5 stars";
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
 }
