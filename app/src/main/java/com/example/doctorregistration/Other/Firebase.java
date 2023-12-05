@@ -304,12 +304,11 @@ public class Firebase {
 
                                             if (appointmentToAdd.equals(app)) {
                                                 appUpdated = new EventItem(existingAppStartTime, existingAppEndTime, existingAppDate,true);
-                                                                     updateUserField(null, "Approved Requests", doctorUserID, "Doctor.availability", appList);
-                                        appList.add(appUpdated);
+                                                appList.add(appUpdated);
                                     } else
                                         appList.add(app);
                                 }
-
+                                        updateUserField(null, "Approved Requests", doctorUserID, "Doctor.availability", appList);
 
                                 ArrayList<HashMap<String, Object>> existingShiftsRaw = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Doctor.shifts");
                                         ArrayList<EventItem> shiftsList = new ArrayList<>();
@@ -436,7 +435,7 @@ public class Firebase {
                             existingApp.add(existingShift);
 
                             if (existingShift.equals(appToBeDeleted))
-                                existingApp.remove(existingApp); //shift was found and remove
+                                existingApp.remove(existingShift); //shift was found and remove
                         }
 
                         //update the new shifts with the deleted element
@@ -453,15 +452,14 @@ public class Firebase {
                                     String userType = documentSnapshot.getString("userType");
 
                                     if (userType.equals("Doctor")) {
-
                                         ArrayList<HashMap<String, Object>> existingAppRaw = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Doctor.availability");
                                         ArrayList<EventItem> appList = new ArrayList<>();
                                         EventItem appUpdated;
                                         EventItem app;
-                                        Timestamp existingAppDate = null;
+                                        //Timestamp existingAppDate = null;
 
                                         for (HashMap<String, Object> existingAppMap : existingAppRaw) {
-                                            existingAppDate = (Timestamp) existingAppMap.get("date");
+                                            Timestamp existingAppDate = (Timestamp) existingAppMap.get("date");
                                             Timestamp existingAppStartTime = (Timestamp) existingAppMap.get("startTime");
                                             Timestamp existingAppEndTime = (Timestamp) existingAppMap.get("endTime");
                                             boolean existingPatient = (boolean) existingAppMap.get("associatedWithPatient");

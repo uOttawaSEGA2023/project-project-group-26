@@ -19,17 +19,11 @@ public class PatientAppointmentManager{
     //Adds EventItem to upcoming appointment list, updates that time slot in doctor availability
     public void addAppointment(EventItem appointmentToAdd, Context context){
         //will update availability array of the selected doctor
-
         String doctorUserID = appointmentToAdd.getPatientDoctor().getUserID();
 
         firebase.addElementToArrayList(context, "Approved Requests", userID, "upcomingAppointments", appointmentToAdd,
                 doctorUserID);
-        //firebase.addElementToArrayList(patientCreateAppointment, "user", userID, "upcomingAppointments", appointmentToAdd);
 
-        firebase.updateUserField(null, "Approved Requests",
-                doctorUserID, "associatedWithPatient", true);
-
-        //firebase.deleteElementFromArrayList(patientCreateAppointment,"user", doctorUserID, "availability", appointmentToAdd);
     }
 
 
