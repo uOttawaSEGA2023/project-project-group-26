@@ -123,7 +123,7 @@ public class DoctorViewShift extends AppCompatActivity {
     private void showShiftInformation(EventItem doctorShiftEvent) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.view_event_info, null);
+        final View dialogView = inflater.inflate(R.layout.view_event_info2, null);
         dialogBuilder.setView(dialogView);
 
         TextView tvShiftInfo = (TextView) dialogView.findViewById(R.id.eventInformation);
@@ -142,6 +142,8 @@ public class DoctorViewShift extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+
+
     }
 
 
