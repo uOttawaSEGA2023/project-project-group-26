@@ -489,7 +489,7 @@ public class Firebase {
     }
 
 
-    public boolean canDeleteShift(EventItem shiftToDelete, String userID) {
+    public boolean canDeleteShift(EventItem shiftToDelete, String userID, Context context) {
         AtomicBoolean canDelete = new AtomicBoolean(false);
 
         CollectionReference collectionReference = fStore.collection("Approved Requests");
@@ -516,7 +516,7 @@ public class Firebase {
 
                             if (shift.equals(shiftToDelete)) {
                                 if (existingPatient == false) { //no patients associated with particular shift, can delete
-                                    deleteElementFromArrayList(null, "Approved Requests", userID, "shifts", shift, null);
+                                    deleteElementFromArrayList(context, "Approved Requests", userID, "shifts", shift, null);
 
                                     //Deletes all associated available time slots
                                     ArrayList<HashMap<String, Object>> existingAppRaw = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Doctor.availability");
@@ -528,15 +528,18 @@ public class Firebase {
                                         Timestamp existingAppEndTime = (Timestamp) existingAppMap.get("endTime");
                                         boolean existingAppPatient = (boolean) existingAppMap.get("associatedWithPatient");
 
-                                        EventItem app = new EventItem(existingAppDate, existingAppStartTime, existingAppEndTime, true);
+                                        EventItem app = new EventItem(existingAppStartTime, existingAppEndTime, existingAppDate,true);
                                         appList.add(app);
 
                                         updateUserField(null, "Approved Requests", userID, "Doctor.availability", appList);
-                                    }
 
+
+                                    }
+                                    canDelete.set(true);
 
                                 } else {
-                                    return;
+                                    Toast.makeText(context, "Shift associated with Patient\nCan't Delete!",
+                                            Toast.LENGTH_SHORT).show();
                                 }
                             }
 

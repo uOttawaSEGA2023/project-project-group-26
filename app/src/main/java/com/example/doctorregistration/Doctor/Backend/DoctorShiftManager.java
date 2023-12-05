@@ -100,19 +100,18 @@ public class DoctorShiftManager {
 
     public void deleteShift(EventItem shiftToDelete, Context context){
 
-        if (firebase.canDeleteShift(shiftToDelete, firebase.getCurrentUser())){
+        if (firebase.canDeleteShift(shiftToDelete, firebase.getCurrentUser(), context)){
             firebase.deleteElementFromArrayList(context, "Approved Requests",
                     firebase.getCurrentUser(), "shifts", shiftToDelete, null);
 
-            //firebase.deleteElementFromArrayList(doctorViewShift, "user",
-            //        firebase.getCurrentUser(), "shifts", shiftToDelete);
+            Toast.makeText(context, "Shift Deleted", Toast.LENGTH_SHORT).show();
 
 
         }
 
         else{
-            Toast.makeText(context, "Shift associated with Patient\nCan't Delete!",
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Shift associated with Patient\nCan't Delete!",
+                //    Toast.LENGTH_SHORT).show();
         }
 
     }
