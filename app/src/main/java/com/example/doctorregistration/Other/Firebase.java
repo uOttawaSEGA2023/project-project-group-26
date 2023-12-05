@@ -528,8 +528,14 @@ public class Firebase {
                                         Timestamp existingAppEndTime = (Timestamp) existingAppMap.get("endTime");
                                         boolean existingAppPatient = (boolean) existingAppMap.get("associatedWithPatient");
 
-                                        EventItem app = new EventItem(existingAppStartTime, existingAppEndTime, existingAppDate,true);
-                                        appList.add(app);
+                                        EventItem app = new EventItem(existingAppStartTime, existingAppEndTime, existingAppDate,existingAppPatient);
+
+                                        if(isSameDate(existingDate.toDate(), existingAppDate.toDate())){
+                                            EventItem appUpdated = new EventItem(existingAppStartTime, existingAppEndTime, existingAppDate,true);
+                                            appList.add(appUpdated);
+                                        }
+                                        else
+                                            appList.add(app);
 
                                         updateUserField(null, "Approved Requests", userID, "Doctor.availability", appList);
 
